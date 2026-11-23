@@ -217,6 +217,50 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
   body{background:#fff}
   .task{border:0;padding:0;box-shadow:none}
 }
+
+/* --- grafiki --- */
+.tart{position:relative;margin:-22px -22px 6px;height:128px;color:var(--c);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 9%,white),color-mix(in srgb,var(--c) 3%,white));border-bottom:1px solid color-mix(in srgb,var(--c) 14%,var(--line));display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tart svg{width:92%;height:112px;transition:transform .3s}
+.tile:hover .tart svg{transform:scale(1.04)}
+.tart .pill{position:absolute;top:12px;right:12px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.subhead.banner{background:linear-gradient(110deg,color-mix(in srgb,var(--c) 8%,white),#fff 70%);border:1px solid color-mix(in srgb,var(--c) 16%,var(--line));border-radius:var(--r);padding:20px 24px;box-shadow:var(--sh);flex-wrap:nowrap;overflow:hidden}
+.subhead .grow{flex:1;min-width:0}
+.subart{flex:none;width:300px;color:var(--c);margin:-8px -6px -8px 0}
+.subart svg{width:100%;height:auto;display:block}
+@media(max-width:820px){.subart{display:none}.subhead.banner{flex-wrap:wrap}}
+.hero .deco svg{max-height:330px}
+.hp-gear{transform-box:fill-box;transform-origin:center;animation:spin 22s linear infinite}
+.hp-gear2{transform-box:fill-box;transform-origin:center;animation:spin 15s linear infinite reverse}
+.hp-led{animation:blink 1.6s steps(2) infinite}.hp-led2{animation:blink 2.3s steps(2) infinite .4s}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes blink{50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){.hp-gear,.hp-gear2,.hp-led,.hp-led2{animation:none}.hp-dot{display:none}}
+/* --- tablica ogłoszeń --- */
+.board{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh);padding:0 22px 8px;position:relative;overflow:hidden}
+.board:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c)}
+.bhead{display:flex;align-items:center;gap:14px;padding:18px 0 14px;border-bottom:1px solid var(--line2);flex-wrap:wrap}
+.bhead .grow{flex:1;min-width:180px}
+.bhead h2{margin:0;font-size:20px}.bhead p{margin:2px 0 0;font-size:13.5px;color:var(--muted)}
+.bico{width:44px;height:44px;flex:none;border-radius:12px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 11%,white)}
+.bico svg{width:24px;height:24px}
+.bempty{color:var(--muted);font-size:14px;margin:14px 0 10px}
+.ogls li{grid-template-columns:62px 1fr;padding:14px 0}
+.ogl .date{background:color-mix(in srgb,var(--c) 8%,white);color:var(--ink)}
+.ogl.pin{background:linear-gradient(90deg,rgba(242,163,58,.12),transparent 85%);margin:0 -22px;padding-left:22px;padding-right:22px;border-bottom-color:rgba(242,163,58,.3)}
+.ogl.pin .date{background:#fff4e2}
+.ogl.past{opacity:.62}
+.otop{display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap}
+.otype{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.otype svg{width:14px;height:14px}
+.r-konkurs .otype{color:#b7791f}.r-sprawdzian .otype{color:#c2462f}.r-wydarzenie .otype{color:#33689e}.r-termin .otype{color:#6d4bb0}
+.opin{font-family:var(--mono);font-size:11px;font-weight:700;color:#9a5b00;background:#ffe7c2;padding:2px 8px;border-radius:99px}
+.opast{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);padding:1px 7px;border-radius:99px}
+.ofoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.olink{font-size:13.5px;font-weight:600;color:var(--c,#33689e)}
+.kbadge{position:absolute;top:10px;right:10px;min-width:22px;height:22px;padding:0 6px;border-radius:99px;background:var(--accent);color:#1a1200;font-family:var(--mono);font-size:12px;font-weight:700;display:grid;place-items:center}
+.klasa .ogn{color:#9a5b00;font-weight:600}
+.oglnote{display:flex;align-items:center;gap:10px;text-decoration:none;background:#fff8ec;border:1px solid #f6d9a8;border-radius:12px;padding:10px 14px;margin:-6px 0 18px;color:var(--ink);font-size:14px}
+.oglnote svg{width:20px;height:20px;color:#b7791f;flex:none}.oglnote .arr{margin-left:auto;font-weight:700;color:#b7791f}
+.chk{display:flex;gap:8px;align-items:center;font-weight:600;font-size:14px;margin:2px 0 6px}
 </style>
 </head>
 <body>
@@ -251,7 +295,140 @@ var ICONS={
   me:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="24" cy="24" r="7"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.5 10.5l4.2 4.2M33.3 33.3l4.2 4.2M10.5 37.5l4.2-4.2M33.3 14.7l4.2-4.2"/></svg>',
   sz:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M24 44V22M16 44h16"/><circle cx="24" cy="18" r="3"/><path d="M16 10a11 11 0 000 16M32 10a11 11 0 010 16M10 5a18 18 0 000 26M38 5a18 18 0 010 26"/></svg>'
 };
-var HERO_SVG='<svg viewBox="0 0 320 300" fill="none" stroke="#fff" stroke-width="2" font-family="IBM Plex Mono,monospace" font-size="12"><g opacity=".9"><rect x="134" y="14" width="44" height="40" rx="3" stroke="#f2a33a"/><rect x="139" y="19" width="34" height="30" rx="2" stroke="#f2a33a"/><text x="152" y="39" fill="#f2a33a" stroke="none">0</text><path d="M156 54v26M140 67h32"/><text x="180" y="71" fill="#fff" stroke="none" opacity=".75">↑Start</text><rect x="136" y="80" width="40" height="36" rx="3"/><text x="148" y="103" fill="#fff" stroke="none">10</text><path d="M176 98h22"/><rect x="198" y="86" width="82" height="24" rx="5" fill="rgba(242,163,58,.12)" stroke="#f2a33a"/><text x="210" y="102" fill="#f2a33a" stroke="none">Silnik</text><path d="M156 116v28M140 130h32"/><text x="180" y="134" fill="#fff" stroke="none" opacity=".75">Czujnik</text><rect x="136" y="144" width="40" height="36" rx="3"/><text x="148" y="167" fill="#fff" stroke="none">20</text><path d="M176 162h22"/><rect x="198" y="150" width="82" height="24" rx="5" fill="rgba(255,255,255,.06)"/><text x="210" y="166" fill="#fff" stroke="none">Lampka</text><path d="M156 180v28M140 194h32"/><text x="180" y="198" fill="#fff" stroke="none" opacity=".75">2 s/X20</text><path d="M156 208v14H96V34h36" opacity=".6"/><path d="M125 30l8 4-8 4" opacity=".6"/></g><g opacity=".35"><path d="M20 250h60l14-14h40l14 14h120"/><circle cx="20" cy="250" r="4"/><circle cx="268" cy="250" r="4"/><path d="M40 280h90l10-10h50"/><circle cx="190" cy="270" r="3"/></g></svg>';
+/* ================== GRAFIKI (rysowane w SVG) ================== */
+function gearPath(cx,cy,r,n,d){
+  var pts=[],step=Math.PI*2/(n*4);
+  for(var i=0;i<n*4;i++){var rr=(i%4<2)?r:r-d;var a=i*step-Math.PI/2;pts.push((cx+rr*Math.cos(a)).toFixed(1)+","+(cy+rr*Math.sin(a)).toFixed(1))}
+  return '<path d="M'+pts.join("L")+'Z"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.38).toFixed(1)+'"/>';
+}
+function svgWrap(vb,inner,cls){return '<svg class="'+(cls||"")+'" viewBox="'+vb+'" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" font-family="IBM Plex Mono,monospace" aria-hidden="true">'+inner+'</svg>'}
+var SOFT='fill="currentColor" fill-opacity=".1"';
+function artCyber(){
+  return svgWrap("0 0 360 150",
+    /* laptop z terminalem */
+    '<rect x="22" y="34" width="92" height="60" rx="5" '+SOFT+'/><path d="M10 102h116l-8 10H18z"/>'+
+    '<path d="M32 50l8 6-8 6M46 62h14M32 74h40M32 84h26" stroke-width="1.8"/>'+
+    /* tarcza z kłódką */
+    '<path d="M180 16l40 14v30c0 28-18 47-40 58-22-11-40-30-40-58V30z" '+SOFT+'/>'+
+    '<path d="M180 30l28 10v21c0 19-12 33-28 41-16-8-28-22-28-41V40z" stroke-opacity=".45"/>'+
+    '<rect x="166" y="60" width="28" height="22" rx="3"/><path d="M172 60v-7a8 8 0 0116 0v7"/><circle cx="180" cy="69" r="2.5" fill="currentColor"/><path d="M180 72v4"/>'+
+    /* serwer */
+    '<rect x="262" y="26" width="72" height="96" rx="5" '+SOFT+'/><path d="M262 58h72M262 90h72"/>'+
+    '<circle cx="276" cy="42" r="2.5" fill="currentColor"/><circle cx="276" cy="74" r="2.5" fill="currentColor"/><circle cx="276" cy="106" r="2.5" fill="currentColor"/>'+
+    '<path d="M300 42h22M300 74h22M300 106h22" stroke-opacity=".5"/>'+
+    /* sieć */
+    '<path d="M114 64h24M222 64h38" stroke-dasharray="4 5"/>'+
+    '<g stroke-opacity=".45" stroke-width="1.5"><path d="M148 26l-26-12M212 26l28-12M156 112l-18 22M206 112l20 22"/></g>'+
+    '<g fill="currentColor"><circle cx="120" cy="13" r="4"/><circle cx="242" cy="13" r="4"/><circle cx="136" cy="136" r="4"/><circle cx="228" cy="136" r="4"/></g>'+
+    '<text x="22" y="138" font-size="11" fill="currentColor" stroke="none" opacity=".4">01101 1001</text><text x="262" y="142" font-size="11" fill="currentColor" stroke="none" opacity=".4">TLS 1.3</text>');
+}
+function artMech(){
+  return svgWrap("0 0 360 150",
+    /* robot */
+    '<rect x="26" y="124" width="76" height="12" rx="3" '+SOFT+'/><path d="M40 124a24 18 0 0148 0"/>'+
+    '<path d="M58 106L92 52" stroke-width="12" stroke-opacity=".16"/><path d="M58 106L92 52"/>'+
+    '<path d="M92 52l52 18" stroke-width="10" stroke-opacity=".16"/><path d="M92 52l52 18"/>'+
+    '<circle cx="64" cy="106" r="8" '+SOFT+'/><circle cx="92" cy="52" r="7" '+SOFT+'/><circle cx="144" cy="70" r="5"/>'+
+    '<path d="M148 66l10-6M148 74l10 6M158 60v-2M158 80v2"/>'+
+    /* koła zębate */
+    '<g stroke-width="1.8" '+SOFT+'>'+gearPath(196,40,22,10,5)+'</g><g stroke-width="1.8" stroke-opacity=".6">'+gearPath(230,64,14,8,4)+'</g>'+
+    /* PLC */
+    '<rect x="262" y="18" width="78" height="56" rx="4" '+SOFT+'/><path d="M262 32h78"/>'+
+    '<text x="270" y="29" font-size="9" fill="currentColor" stroke="none">PLC</text>'+
+    '<g fill="currentColor"><circle cx="274" cy="44" r="2.5"/><circle cx="284" cy="44" r="2.5" opacity=".4"/><circle cx="294" cy="44" r="2.5"/><circle cx="304" cy="44" r="2.5" opacity=".4"/></g>'+
+    '<path d="M272 58h8M286 58h8M300 58h8M314 58h18" stroke-opacity=".6"/>'+
+    /* przenośnik */
+    '<rect x="166" y="114" width="176" height="16" rx="8"/><g stroke-opacity=".6"><circle cx="176" cy="122" r="4"/><circle cx="332" cy="122" r="4"/></g>'+
+    '<rect x="196" y="92" width="22" height="22" rx="2" '+SOFT+'/><rect x="250" y="96" width="18" height="18" rx="2" '+SOFT+'/><rect x="296" y="90" width="24" height="24" rx="2" '+SOFT+'/>'+
+    '<path d="M300 74v12" stroke-dasharray="3 4"/>');
+}
+function artElek(){
+  return svgWrap("0 0 360 150",
+    /* układ scalony */
+    '<rect x="132" y="38" width="76" height="74" rx="5" '+SOFT+'/><circle cx="144" cy="50" r="3" fill="currentColor"/>'+
+    '<text x="152" y="82" font-size="11" fill="currentColor" stroke="none">µC</text>'+
+    '<path d="M144 38v-10M160 38v-10M176 38v-10M192 38v-10M144 112v10M160 112v10M176 112v10M192 112v10M132 56h-10M132 76h-10M132 96h-10M208 56h10M208 76h10M208 96h10"/>'+
+    /* ścieżki */
+    '<g stroke-opacity=".5" stroke-width="1.6"><path d="M122 56H86l-10-10H40M122 96H90l-12 12H30M144 28V14h-40M192 28V14h44l10 10M218 76h40"/></g>'+
+    '<g fill="currentColor"><circle cx="40" cy="46" r="3.5"/><circle cx="30" cy="108" r="3.5"/><circle cx="104" cy="14" r="3.5"/><circle cx="246" cy="24" r="3.5"/></g>'+
+    /* rezystor i kondensator */
+    '<path d="M24 76h14l5-9 8 18 8-18 8 18 8-18 5 9h18"/><path d="M160 132v10M176 132v10M150 142h20M166 142h20" stroke-opacity=".7"/>'+
+    /* oscyloskop */
+    '<rect x="258" y="34" width="84" height="74" rx="5" '+SOFT+'/><path d="M268 48h64M268 94h64M300 44v54" stroke-opacity=".25" stroke-width="1.2"/>'+
+    '<path d="M268 71c8-20 14-20 16 0s8 20 16 0 8-20 16 0 8 20 16 0"/><circle cx="270" cy="118" r="3"/><circle cx="284" cy="118" r="3"/>');
+}
+function artSzer(){
+  return svgWrap("0 0 360 150",
+    /* maszt */
+    '<path d="M58 136l18-104 18 104M64 102h24M68 76h16M71 56h10M62 116l26-14M64 102l20-26"/>'+
+    '<circle cx="76" cy="28" r="5" '+SOFT+'/><path d="M58 14a24 24 0 000 28M94 14a24 24 0 010 28M48 6a36 36 0 000 44M104 6a36 36 0 010 44" stroke-opacity=".55"/>'+
+    /* antena satelitarna */
+    '<path d="M150 70a34 34 0 0048 -30z" '+SOFT+'/><path d="M174 55l18-18M188 32l6 6M172 64l-6 34M156 98h22"/>'+
+    /* światłowód */
+    '<path d="M24 140c40-14 80 14 120 0s80-14 120 0 60 8 80 0"/><path d="M24 130c40-14 80 14 120 0s80-14 120 0 60 8 80 0" stroke-opacity=".45"/>'+
+    '<g fill="currentColor"><circle cx="84" cy="133" r="3"/><circle cx="204" cy="133" r="3"/><circle cx="290" cy="137" r="3" opacity=".6"/></g>'+
+    /* router */
+    '<rect x="252" y="62" width="88" height="30" rx="6" '+SOFT+'/><path d="M272 62V40M320 62V40"/><g fill="currentColor"><circle cx="266" cy="77" r="2.5"/><circle cx="276" cy="77" r="2.5"/><circle cx="286" cy="77" r="2.5" opacity=".4"/></g><path d="M300 77h28" stroke-opacity=".6"/>'+
+    '<path d="M286 36a14 14 0 0120 0M280 28a22 22 0 0132 0" stroke-opacity=".55"/>');
+}
+function artBS(){
+  return svgWrap("0 0 360 150",
+    /* siłownik pneumatyczny */
+    '<rect x="24" y="54" width="120" height="36" rx="4" '+SOFT+'/><path d="M92 54v36M92 72h112M204 62v20"/><path d="M40 90v14M128 90v14" stroke-opacity=".6"/>'+
+    '<path d="M40 104h-12M128 104h12" stroke-opacity=".6"/>'+
+    /* zawór 5/2 (symbol) */
+    '<rect x="30" y="16" width="38" height="24" '+SOFT+'/><rect x="68" y="16" width="38" height="24"/><path d="M40 36l18-16M86 20v16M80 24l6-6 6 6" stroke-width="1.6"/><path d="M106 28h10l4-5 4 10 4-5" stroke-width="1.6"/>'+
+    /* koła zębate */
+    '<g stroke-width="1.8" '+SOFT+'>'+gearPath(250,52,30,12,6)+'</g><g stroke-width="1.8" stroke-opacity=".6">'+gearPath(300,98,20,9,5)+'</g>'+
+    /* klucz */
+    '<path d="M180 132l52-30M232 102a10 10 0 1014-6l-6 6-6-2-2-6 6-6a10 10 0 00-6 14" stroke-width="1.8"/>'+
+    /* suwmiarka */
+    '<path d="M24 126h120M24 118v16M44 126v-6M64 126v-6M84 126v-6M104 126v-6M124 126v-6" stroke-width="1.6" stroke-opacity=".7"/>');
+}
+var ART={cyber:artCyber,elektronik:artElek,szerokopasmowy:artSzer,mechatronik:artMech,mechbs:artBS};
+function artOf(k){var f=k&&(ART[k.id]||{cy:artCyber,el:artElek,sz:artSzer,me:artMech}[k.ikona]);return f?f():""}
+function heroArt(){
+  /* scena: automatyka + cyberbezpieczeństwo */
+  return '<svg viewBox="0 0 380 320" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" font-family="IBM Plex Mono,monospace">'+
+   '<g opacity=".14" stroke-width="1">'+[40,80,120,160,200,240,280].map(function(y){return '<path d="M0 '+y+'h380"/>'}).join("")+[40,100,160,220,280,340].map(function(x){return '<path d="M'+x+' 0v320"/>'}).join("")+'</g>'+
+   /* ścieżki danych */
+   '<path id="hp1" d="M96 210H170V150H236" stroke="#f2a33a" stroke-opacity=".55" stroke-dasharray="5 6"/>'+
+   '<path d="M236 150h40v-40h40" stroke="#f2a33a" stroke-opacity=".55" stroke-dasharray="5 6"/>'+
+   '<circle r="4.5" fill="#f2a33a" stroke="none" class="hp-dot"><animateMotion dur="4s" repeatCount="indefinite" path="M96 210H170V150H236h40v-40h40"/></circle>'+
+   /* robot */
+   '<rect x="20" y="276" width="104" height="16" rx="4" fill="#fff" fill-opacity=".06"/><path d="M38 276a34 26 0 0168 0"/>'+
+   '<path d="M72 250L114 176" stroke-width="16" stroke-opacity=".12"/><path d="M72 250L114 176"/>'+
+   '<path d="M114 176l60 24" stroke-width="12" stroke-opacity=".12"/><path d="M114 176l60 24"/>'+
+   '<circle cx="72" cy="250" r="11" fill="#0d1830"/><circle cx="114" cy="176" r="9" fill="#0d1830"/><circle cx="174" cy="200" r="6" fill="#0d1830" stroke="#f2a33a"/>'+
+   '<path d="M178 196l12-8M178 204l12 8M190 188v-4M190 212v4" stroke="#f2a33a"/>'+
+   /* koła zębate */
+   '<g class="hp-gear" stroke-opacity=".7" stroke-width="1.6">'+gearPath(70,96,30,12,6)+'</g>'+
+   '<g class="hp-gear2" stroke-opacity=".5" stroke-width="1.6">'+gearPath(118,58,20,9,5)+'</g>'+
+   /* PLC */
+   '<rect x="220" y="196" width="138" height="88" rx="6" fill="#fff" fill-opacity=".05"/><path d="M220 216h138"/>'+
+   '<text x="230" y="211" font-size="11" fill="#fff" stroke="none" opacity=".8">PLC · RUN</text>'+
+   '<g stroke="none"><circle cx="234" cy="232" r="4" fill="#3ddc84" class="hp-led"/><circle cx="248" cy="232" r="4" fill="#fff" opacity=".3"/><circle cx="262" cy="232" r="4" fill="#f2a33a" class="hp-led2"/><circle cx="276" cy="232" r="4" fill="#fff" opacity=".3"/></g>'+
+   '<path d="M232 250h22M262 250h22M292 250h22M322 250h22M232 266h40M282 266h30" stroke-opacity=".55"/>'+
+   '<path d="M236 284v12M260 284v12M284 284v12M308 284v12M332 284v12" stroke-opacity=".55"/>'+
+   /* tarcza */
+   '<path d="M316 20l44 16v34c0 32-20 52-44 64-24-12-44-32-44-64V36z" fill="#f2a33a" fill-opacity=".1" stroke="#f2a33a"/>'+
+   '<rect x="301" y="64" width="30" height="24" rx="3" stroke="#f2a33a"/><path d="M307 64v-8a9 9 0 0118 0v8" stroke="#f2a33a"/><circle cx="316" cy="74" r="3" fill="#f2a33a" stroke="none"/>'+
+   /* sieć */
+   '<g stroke-opacity=".45" stroke-width="1.4"><path d="M272 60l-52-26M220 34l-30 30M220 34l2 40M190 64l32 10M222 74l50 6"/></g>'+
+   '<g fill="#fff" stroke="none"><circle cx="220" cy="34" r="5"/><circle cx="190" cy="64" r="4" opacity=".7"/><circle cx="222" cy="74" r="4" opacity=".7"/></g>'+
+   '<text x="174" y="118" font-size="11" fill="#fff" stroke="none" opacity=".45">01001101 10110</text>'+
+   '</svg>';
+}
+var ICON_TABLICA='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22l4-4 4 4M7 9h6M7 13h10"/><circle cx="17" cy="9" r="1.5" fill="currentColor"/></svg>';
+var RODZAJE={info:"Informacja",konkurs:"Konkurs",sprawdzian:"Sprawdzian",wydarzenie:"Wydarzenie",termin:"Termin oddania"};
+var RODZ_IKO={
+  info:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>',
+  konkurs:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 01-8 0zM8 6H4v1a4 4 0 004 4M16 6h4v1a4 4 0 01-4 4M12 13v4M8 21h8M9 17h6v4H9z"/></svg>',
+  sprawdzian:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M9 11l2 2 4-4M9 17h6"/></svg>',
+  wydarzenie:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><circle cx="12" cy="15" r="2" fill="currentColor"/></svg>',
+  termin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>'
+};
+
 var TYPY={prezentacja:"Prezentacja",test:"Test",zadanie:"Zadanie praktyczne"};
 var TYPY_MN={prezentacja:"Prezentacje",test:"Testy",zadanie:"Zadania praktyczne"};
 var DZIALY={teoria:"Teoria",cwiczenia:"Ćwiczenia"};
@@ -382,7 +559,7 @@ function hero(on){
   var c=S.config;
   if(!$("#q")) el.innerHTML='<div><div class="tag">● '+esc(c.heroTag)+'</div><h1>'+esc(c.heroTytul)+'</h1><p>'+esc(c.heroOpis)+'</p><label class="search"><input id="q" type="search" placeholder="Szukaj przedmiotu lub materiału…"><span>⌕</span></label>'+
     '<div class="stats"><div><b>'+c.kierunki.length+'</b>kierunków</div><div><b>'+S.przedmioty.length+'</b>przedmiotów</div><div><b>'+S.materialy.length+'</b>materiałów</div></div></div>'+
-    '<div class="deco" aria-hidden="true">'+HERO_SVG+'</div>';
+    '<div class="deco" aria-hidden="true">'+heroArt()+'</div>';
   $("#q").oninput=function(){homeBody()};
 }
 function app(){return $("#app")}
@@ -423,16 +600,33 @@ function homeBody(){
   var q=($("#q")&&$("#q").value.trim())||"";
   if(q.length>=2) return searchView(q);
   var c=S.config, wyn=LS.get("pz-wyniki",[]);
-  var from=todayStr(-7);
-  var ogl=c.ogloszenia.filter(function(o){return (o.data||"")>=from}).sort(function(a,b){return (a.data||"").localeCompare(b.data||"")}).slice(0,8);
   app().innerHTML='<p class="sec-label">Wybierz kierunek</p><div class="grid4">'+c.kierunki.map(function(k){
       var np=subjectsOf(k.id).length,nm=matsOfKier(k.id).length;
-      return '<a class="tile" href="#k-'+k.id+'" style="'+cvar(k)+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div class="ico">'+(ICONS[k.ikona]||ICONS.el)+'</div><span class="pill">'+esc(k.szkola||"Technikum")+'</span></div><h3>'+esc(k.nazwa)+'</h3><p>'+esc(k.opis)+'</p><div class="go"><span><b>'+np+'</b> '+odm(np,"przedmiot","przedmioty","przedmiotów")+' · <b>'+nm+'</b> '+odm(nm,"materiał","materiały","materiałów")+'</span><span class="arr">→</span></div></a>';
+      return '<a class="tile" href="#k-'+k.id+'" style="'+cvar(k)+'"><div class="tart">'+artOf(k)+'<span class="pill">'+esc(k.szkola||"Technikum")+'</span></div><h3>'+esc(k.nazwa)+'</h3><p>'+esc(k.opis)+'</p><div class="go"><span><b>'+np+'</b> '+odm(np,"przedmiot","przedmioty","przedmiotów")+' · <b>'+nm+'</b> '+odm(nm,"materiał","materiały","materiałów")+'</span><span class="arr">→</span></div></a>';
     }).join("")+'</div>'+
-    '<div class="cols'+(wyn.length?'':' one')+'"><div class="panel"><h2>Ogłoszenia i terminy</h2>'+(ogl.length?'<ul class="news">'+ogl.map(function(o){var d=fmtDate(o.data),k=kier(o.kierunek);
-      return '<li><div class="date"><b>'+d.d+'</b>'+d.m+'</div><div><h4>'+esc(o.tytul)+'</h4><p>'+esc(o.tekst)+'</p>'+(k?'<span class="pill" style="'+cvar(k)+'">'+esc(k.skrot)+'</span>':'<span class="pill">Wszystkie kierunki</span>')+'</div></li>'}).join("")+'</ul>':'<p class="note">Brak nadchodzących terminów.</p>')+'</div>'+
+    '<div class="cols'+(wyn.length?'':' one')+'">'+board("Tablica ogłoszeń",oglFor(null,null),{where:true,limit:10,add:true,sub:"Najnowsze ogłoszenia ze wszystkich kierunków i klas"})+
     (wyn.length?'<div class="panel"><h2>Twoje wyniki</h2><ul class="res-list">'+wyn.slice(-6).reverse().map(function(r){return '<li><span>'+esc(r.tytul)+'</span><span class="mono">'+r.pkt+'/'+r.max+' · '+esc(r.ocena)+'</span></li>'}).join("")+'</ul><p class="note">Wyniki zapisują się tylko w tej przeglądarce.</p></div>':'')+'</div>';
+  wireAdd({});
 }
+/* --- tablica ogłoszeń --- */
+function oglVisible(o){return !!o.wazne||(o.data||"")>=todayStr(-7)}
+function oglSort(a,b){var pa=a.wazne?1:0,pb=b.wazne?1:0;if(pa!==pb)return pb-pa;var t=todayStr(),fa=(a.data||"")>=t,fb=(b.data||"")>=t;if(fa!==fb)return fa?-1:1;return fa?(a.data||"").localeCompare(b.data||""):(b.data||"").localeCompare(a.data||"")}
+function oglFor(kid,kl){return (S.config.ogloszenia||[]).filter(function(o){if(kid&&o.kierunek&&o.kierunek!==kid)return false;if(kl!=null&&o.klasa&&+o.klasa!==+kl)return false;return true})}
+function oglWhere(o){var k=kier(o.kierunek);return '<span class="pill" style="'+cvar(k)+'">'+esc(k?k.skrot:"Wszystkie kierunki")+(o.klasa?' · klasa '+esc(o.klasa):(k?' · wszystkie klasy':''))+'</span>'}
+function oglItem(o,where){
+  var d=fmtDate(o.data),r=RODZAJE[o.rodzaj]?o.rodzaj:"info",past=(o.data||"")<todayStr();
+  return '<li class="ogl r-'+r+(o.wazne?' pin':'')+(past?' past':'')+'"><div class="date"><b>'+d.d+'</b>'+d.m+'</div><div class="ob">'+
+    '<div class="otop"><span class="otype">'+RODZ_IKO[r]+esc(RODZAJE[r])+'</span>'+(o.wazne?'<span class="opin">★ Ważne</span>':'')+(past?'<span class="opast">minęło</span>':'')+'</div>'+
+    '<h4>'+esc(o.tytul)+'</h4>'+(o.tekst?'<p>'+esc(o.tekst).replace(/\n/g,"<br>")+'</p>':'')+
+    ((o.link||where)?'<div class="ofoot">'+(where?oglWhere(o):'')+(o.link?'<a class="olink" href="'+esc(o.link)+'" target="_blank" rel="noopener">Szczegóły ↗</a>':'')+'</div>':'')+
+  '</div></li>';
+}
+function board(title,list,opt){
+  opt=opt||{};list=list.filter(oglVisible).sort(oglSort);if(opt.limit)list=list.slice(0,opt.limit);
+  return '<section class="board" style="'+(opt.k?cvar(opt.k):'')+'"><div class="bhead"><div class="bico">'+ICON_TABLICA+'</div><div class="grow"><h2>'+esc(title)+'</h2><p>'+esc(opt.sub||"Konkursy, sprawdziany, terminy i najważniejsze informacje")+'</p></div>'+(S.admin&&opt.add?'<button class="btn sm" id="ogl-add">+ Dodaj ogłoszenie</button>':'')+'</div>'+
+    (list.length?'<ul class="news ogls">'+list.map(function(o){return oglItem(o,opt.where)}).join("")+'</ul>':'<p class="bempty">Na razie brak ogłoszeń'+esc(opt.empty||"")+'.</p>')+'</section>';
+}
+function wireAdd(pre){var b=$("#ogl-add");if(b)b.onclick=function(){ui.adm.tab="ogloszenia";ui.adm.ogl=Object.assign({data:todayStr(),rodzaj:"info"},pre);location.hash="admin"}}
 function searchView(q){
   var t=q.toLowerCase();
   var ps=S.przedmioty.filter(function(p){return (p.nazwa+" "+(p.opis||"")).toLowerCase().indexOf(t)>=0});
@@ -446,17 +640,23 @@ function searchView(q){
 function crumb(parts){return '<div class="crumb"><a href="#start">Start</a>'+parts.map(function(p){return ' / '+(p[1]?'<a href="#'+p[1]+'">'+esc(p[0])+'</a>':esc(p[0]))}).join("")+'</div>'}
 function kierunekView(k){
   hero(false);
-  app().innerHTML=crumb([[k.nazwa]])+'<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><span class="pill">'+esc(k.szkola||"Technikum")+'</span><h1>'+esc(k.nazwa)+'</h1><p>'+esc(k.opis)+'</p></div></div>'+
+  app().innerHTML=crumb([[k.nazwa]])+'<div class="subhead banner" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div class="grow"><span class="pill">'+esc(k.szkola||"Technikum")+'</span><h1>'+esc(k.nazwa)+'</h1><p>'+esc(k.opis)+'</p></div><div class="subart">'+artOf(k)+'</div></div>'+
    '<p class="sec-label">Wybierz klasę</p><div class="klasy" style="'+cvar(k)+';--n:'+klasyOf(k).length+'">'+klasyOf(k).map(function(n){var c=subjectsOf(k.id,n).length;
-     return '<a class="klasa '+(c?"":"zero")+'" href="#k-'+k.id+'-'+n+'"><div class="num">'+n+'</div><div class="lbl">Klasa '+n+'</div><div class="cnt">'+(c?c+" "+odm(c,"przedmiot","przedmioty","przedmiotów"):"brak przedmiotów")+'</div></a>'}).join("")+'</div>';
+     var no=oglFor(k.id,n).filter(function(o){return o.klasa&&oglVisible(o)}).length;
+     return '<a class="klasa '+(c||no?"":"zero")+'" href="#k-'+k.id+'-'+n+'">'+(no?'<span class="kbadge" title="Ogłoszenia dla klasy">'+no+'</span>':'')+'<div class="num">'+n+'</div><div class="lbl">Klasa '+n+'</div><div class="cnt">'+(c?c+" "+odm(c,"przedmiot","przedmioty","przedmiotów"):"brak przedmiotów")+'</div>'+(no?'<div class="cnt ogn">'+no+' '+odm(no,"ogłoszenie","ogłoszenia","ogłoszeń")+'</div>':'')+'</a>'}).join("")+'</div>'+
+   '<div style="margin-top:26px">'+board("Tablica ogłoszeń — "+k.skrot,oglFor(k.id,null),{k:k,where:true,add:true,sub:"Ogłoszenia dla całego kierunku i poszczególnych klas"})+'</div>';
+  wireAdd({kierunek:k.id});
 }
 function odm(n,a,b,c){if(n===1)return a;var d=n%10,dd=n%100;if(d>=2&&d<=4&&(dd<12||dd>14))return b;return c}
 function klasaView(k,n){
   hero(false);
   var ps=subjectsOf(k.id,n);
-  app().innerHTML=crumb([[k.nazwa,"k-"+k.id],["Klasa "+n]])+'<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><h1>Klasa '+n+'</h1><p>'+esc(k.nazwa)+'</p></div></div>'+
+  app().innerHTML=crumb([[k.nazwa,"k-"+k.id],["Klasa "+n]])+'<div class="subhead banner" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div class="grow"><h1>Klasa '+n+'</h1><p>'+esc(k.nazwa)+'</p></div><div class="subart">'+artOf(k)+'</div></div>'+
    '<div class="chips">Klasa: '+klasyOf(k).map(function(x){return '<a class="chip '+(x===n?"on":"")+'" style="text-decoration:none" href="#k-'+k.id+'-'+x+'">'+x+'</a>'}).join("")+'</div>'+
+   board("Tablica ogłoszeń — klasa "+n,oglFor(k.id,n),{k:k,add:true,empty:" dla tej klasy",sub:"Konkursy, sprawdziany, terminy i najważniejsze informacje dla klasy "+n})+
+   '<p class="sec-label" style="margin-top:26px">Przedmioty</p>'+
    (ps.length?'<div class="items">'+ps.map(subjCard).join("")+'</div>':'<div class="empty">Przedmioty dla tej klasy pojawią się wkrótce.'+(S.admin?'<br><br><button class="btn" id="goadd">+ Dodaj przedmiot w panelu</button>':'')+'</div>');
+  wireAdd({kierunek:k.id,klasa:n});
   var b=$("#goadd"); if(b) b.onclick=function(){ui.adm.tab="przedmioty";ui.adm.kier=k.id;ui.adm.klasa=n;ui.adm.subj=null;ui.adm.mat=null;location.hash="admin"};
 }
 function subjCard(p){
@@ -486,6 +686,7 @@ function przedmiotView(p){
   var list=matsOfD(p.id,ui.tab);
   app().innerHTML=crumb([[k.nazwa,"k-"+k.id],["Klasa "+p.klasa,"k-"+k.id+"-"+p.klasa],[p.nazwa]])+
    '<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><h1>'+esc(p.nazwa)+'</h1><p>'+esc(k.nazwa)+' · klasa '+esc(p.klasa)+(p.opis?' — '+esc(p.opis):'')+'</p></div>'+(S.admin?'<button class="btn ghost sm" id="editsubj" style="margin-left:auto">⚙ Edytuj w panelu</button>':'')+'</div>'+
+   (function(){var no=oglFor(k.id,p.klasa).filter(oglVisible).length;return no?'<a class="oglnote" style="'+cvar(k)+'" href="#k-'+k.id+'-'+p.klasa+'">'+ICON_TABLICA+'<span>Tablica ogłoszeń klasy '+esc(p.klasa)+': <b>'+no+' '+odm(no,"ogłoszenie","ogłoszenia","ogłoszeń")+'</b></span><span class="arr">→</span></a>':''})()+
    '<div class="tabs" style="'+cvar(k)+'">'+tabs.map(function(t){return '<button data-tab="'+t+'" class="'+(ui.tab===t?"on":"")+'">'+DZIALY[t]+' ('+matsOfD(p.id,t).length+')</button>'}).join("")+'</div>'+
    (list.length?'<div class="items">'+list.map(function(m){return matCard(m)}).join("")+'</div>':'<div class="empty">Brak materiałów w tej zakładce.</div>');
   $$("[data-tab]").forEach(function(b){b.onclick=function(){ui.tab=b.dataset.tab;przedmiotView(p)}});
@@ -635,7 +836,7 @@ function taskView(m,p,k,cr,adm){
 }
 
 /* ================== PANEL ADMINISTRACYJNY ================== */
-var ADM_TABS=[["przedmioty","Przedmioty i materiały"],["ogloszenia","Ogłoszenia"],["kierunki","Kierunki"],["ustawienia","Ustawienia strony"],["eksport","Publikacja i kopia"]];
+var ADM_TABS=[["przedmioty","Przedmioty i materiały"],["ogloszenia","Tablice ogłoszeń"],["kierunki","Kierunki"],["ustawienia","Ustawienia strony"],["eksport","Publikacja i kopia"]];
 function adminView(){
   hero(false); ui.lock=true;
   app().innerHTML=crumb([["Panel administracyjny"]])+'<h1 style="margin:0 0 16px;font-size:28px">Panel administracyjny</h1><div class="adm"><div class="adm-side">'+
@@ -847,21 +1048,34 @@ function readImage(file){
 
 /* --- ogłoszenia --- */
 function oglAdmin(){
-  var a=ui.adm,c=S.config,list=c.ogloszenia.slice().sort(function(x,y){return (y.data||"").localeCompare(x.data||"")});
-  var d=a.ogl;
-  M().innerHTML='<h2>Ogłoszenia i terminy</h2><p class="note" style="margin-top:-8px">Na stronie głównej widać nadchodzące terminy i te z ostatnich 7 dni.</p>'+
-   '<div class="panel" style="margin-bottom:16px"><h3 style="margin:0 0 10px">'+(d&&d.id&&c.ogloszenia.some(function(o){return o.id===d.id})?"Edytuj ogłoszenie":"Nowe ogłoszenie")+'</h3><div class="form"><div class="row2"><div class="field"><label>Data</label><input type="date" id="o-d" value="'+esc(d?d.data:todayStr())+'"></div><div class="field"><label>Kierunek</label><select id="o-k"><option value="">Wszystkie kierunki</option>'+c.kierunki.map(function(k){return '<option value="'+k.id+'" '+(d&&d.kierunek===k.id?"selected":"")+'>'+esc(k.nazwa)+'</option>'}).join("")+'</select></div></div>'+
-   '<div class="field"><label>Tytuł</label><input type="text" id="o-t" value="'+esc(d?d.tytul:"")+'" placeholder="np. Sprawdzian z pneumatyki — 2TM"></div><div class="field"><label>Treść</label><textarea id="o-x">'+esc(d?d.tekst:"")+'</textarea></div>'+
+  var a=ui.adm,c=S.config,list=c.ogloszenia.slice().sort(function(x,y){return (y.wazne?1:0)-(x.wazne?1:0)||(y.data||"").localeCompare(x.data||"")});
+  var d=a.ogl,isEdit=d&&d.id&&c.ogloszenia.some(function(o){return o.id===d.id});
+  function klasyOpts(kid,sel){var k=kier(kid);if(!k)return '<option value="">Wszystkie klasy</option>';return '<option value="">Wszystkie klasy</option>'+klasyOf(k).map(function(n){return '<option value="'+n+'" '+(+sel===n?"selected":"")+'>Klasa '+n+'</option>'}).join("")}
+  var fk=a.oglFilter||"";
+  M().innerHTML='<h2>Tablice ogłoszeń</h2><p class="note" style="margin-top:-8px">Każda klasa ma własną tablicę. Ogłoszenie „dla wszystkich klas” widzą wszystkie klasy kierunku. Na tablicy widać terminy nadchodzące i z ostatnich 7 dni; ogłoszenia oznaczone jako <b>ważne</b> są przypięte na górze i nie znikają, dopóki ich nie usuniesz.</p>'+
+   '<div class="panel" style="margin-bottom:16px"><h3 style="margin:0 0 10px">'+(isEdit?"Edytuj ogłoszenie":"Nowe ogłoszenie")+'</h3><div class="form">'+
+   '<div class="row2"><div class="field"><label>Kierunek</label><select id="o-k"><option value="">Wszystkie kierunki</option>'+c.kierunki.map(function(k){return '<option value="'+k.id+'" '+(d&&d.kierunek===k.id?"selected":"")+'>'+esc(k.nazwa)+'</option>'}).join("")+'</select></div>'+
+   '<div class="field"><label>Klasa (tablica)</label><select id="o-kl">'+klasyOpts(d&&d.kierunek,d&&d.klasa)+'</select></div></div>'+
+   '<div class="row2"><div class="field"><label>Rodzaj</label><select id="o-r">'+Object.keys(RODZAJE).map(function(r){return '<option value="'+r+'" '+(((d&&d.rodzaj)||"info")===r?"selected":"")+'>'+RODZAJE[r]+'</option>'}).join("")+'</select></div>'+
+   '<div class="field"><label>Data (termin, dzień konkursu lub publikacji)</label><input type="date" id="o-d" value="'+esc(d&&d.data?d.data:todayStr())+'"></div></div>'+
+   '<div class="field"><label>Tytuł</label><input type="text" id="o-t" value="'+esc(d&&d.tytul||"")+'" placeholder="np. Konkurs „Mechatronik Roku” — zgłoszenia do piątku"></div>'+
+   '<div class="field"><label>Treść</label><textarea id="o-x" placeholder="Szczegóły, miejsce, czego potrzeba…">'+esc(d&&d.tekst||"")+'</textarea></div>'+
+   '<div class="field"><label>Link (opcjonalnie — regulamin, formularz zgłoszeniowy)</label><input type="url" id="o-l" value="'+esc(d&&d.link||"")+'" placeholder="https://…"></div>'+
+   '<label class="chk"><input type="checkbox" id="o-w" '+(d&&d.wazne?"checked":"")+'> Ważne — przypnij na górze tablicy</label>'+
    '<div class="toolbar" style="margin:0"><button class="btn" id="o-save">Zapisz ogłoszenie</button>'+(d?'<button class="btn ghost" id="o-new">Wyczyść</button>':'')+'<span class="status" id="o-st"></span></div></div></div>'+
-   (list.length?list.map(function(o){var k=kier(o.kierunek);return '<div class="lrow"><span class="mono" style="width:96px">'+esc(o.data)+'</span><div class="grow"><b>'+esc(o.tytul)+'</b><span>'+esc(k?k.skrot:"Wszystkie kierunki")+' · '+esc(o.tekst)+'</span></div><button class="btn ghost sm" data-oe="'+o.id+'">Edytuj</button><button class="btn danger sm" data-od="'+o.id+'">Usuń</button></div>'}).join(""):'<div class="empty">Brak ogłoszeń.</div>');
+   '<div class="chips" style="margin-bottom:10px">Pokaż: <button class="chip '+(!fk?"on":"")+'" data-of="">Wszystkie ('+list.length+')</button>'+c.kierunki.map(function(k){var n=list.filter(function(o){return o.kierunek===k.id}).length;return n?'<button class="chip '+(fk===k.id?"on":"")+'" data-of="'+k.id+'">'+esc(k.skrot)+' ('+n+')</button>':''}).join("")+'</div>'+
+   (function(){var l=fk?list.filter(function(o){return o.kierunek===fk}):list;return l.length?l.map(function(o){return '<div class="lrow"><span class="mono" style="width:96px">'+esc(o.data)+'</span><div class="grow"><b>'+(o.wazne?'★ ':'')+esc(o.tytul)+'</b><span>'+esc(RODZAJE[o.rodzaj]||"Informacja")+' · '+oglWhere(o).replace(/<[^>]+>/g,"")+(oglVisible(o)?'':' · <i>nie wyświetla się (minęło ponad 7 dni)</i>')+'</span></div><button class="btn ghost sm" data-oe="'+o.id+'">Edytuj</button><button class="btn danger sm" data-od="'+o.id+'">Usuń</button></div>'}).join(""):'<div class="empty">Brak ogłoszeń.</div>'})();
+  $("#o-k").onchange=function(){$("#o-kl").innerHTML=klasyOpts(this.value,"")};
+  $$("[data-of]",M()).forEach(function(b){b.onclick=function(){a.oglFilter=b.dataset.of;oglAdmin()}});
   $$("[data-oe]",M()).forEach(function(b){b.onclick=function(){a.ogl=clone(c.ogloszenia.filter(function(o){return o.id===b.dataset.oe})[0]);oglAdmin();window.scrollTo(0,0)}});
   $$("[data-od]",M()).forEach(function(b){confirmBtn(b,async function(){var nc=clone(S.config);nc.ogloszenia=nc.ogloszenia.filter(function(o){return o.id!==b.dataset.od});try{await Store.saveConfig(nc)}catch(e){alertBox(errMsg(e))}oglAdmin()})});
   var nw=$("#o-new"); if(nw) nw.onclick=function(){a.ogl=null;oglAdmin()};
   $("#o-save").onclick=async function(){
-    var o={id:(d&&d.id)||uid("o"),data:$("#o-d").value,kierunek:$("#o-k").value,tytul:$("#o-t").value.trim(),tekst:$("#o-x").value.trim()};
+    var kl=$("#o-kl").value,o={id:(d&&d.id)||uid("o"),data:$("#o-d").value,kierunek:$("#o-k").value,klasa:kl?+kl:"",rodzaj:$("#o-r").value,wazne:$("#o-w").checked,tytul:$("#o-t").value.trim(),tekst:$("#o-x").value.trim(),link:$("#o-l").value.trim()};
     if(!o.tytul||!o.data) return setStatus($("#o-st"),"Podaj datę i tytuł.",false);
+    if(o.link&&!/^https?:\/\//i.test(o.link)) o.link="https://"+o.link;
     var nc=clone(S.config);upsert(nc.ogloszenia,o);
-    if(await run($("#o-st"),function(){return Store.saveConfig(nc)})){a.ogl=null;oglAdmin()}
+    if(await run($("#o-st"),function(){return Store.saveConfig(nc)},"Zapisano. Ogłoszenie jest na tablicy.")){a.ogl=null;oglAdmin();setStatus($("#o-st"),"Zapisano. Ogłoszenie jest na tablicy.",true)}
   };
 }
 /* --- kierunki --- */

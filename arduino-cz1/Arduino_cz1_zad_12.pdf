@@ -1,0 +1,226 @@
+%PDF-1.5
+%‚„œ”
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Count 1 /Kids [86 0 R] >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding << /Type /Encoding /BaseEncoding /WinAnsiEncoding /Differences [128 /aogonek /cacute /eogonek /lslash /nacute /oacute /sacute /zacute /zdotaccent /Aogonek /Cacute /Eogonek /Lslash /Nacute /Oacute /Sacute /Zacute /Zdotaccent /endash /bullet /periodcentered /Omega /multiply /degree /minus /mu /lessequal /greaterequal] >> /ToUnicode 5 0 R /FirstChar 32 /LastChar 155 /Widths [275 275 356 556 556 888 669 194 331 331 388 581 275 331 275 275 556 556 556 556 556 556 556 556 556 556 275 275 581 581 581 556 1012 669 669 725 725 669 612 775 725 275 500 669 556 831 725 775 669 775 725 669 612 725 669 944 669 669 612 275 275 275 469 556 331 556 556 500 556 556 275 556 556 225 225 500 225 831 556 556 556 556 331 500 275 556 500 725 500 500 500 331 262 331 581 275 556 500 556 225 556 556 500 500 500 669 725 669 556 725 775 669 612 612 556 350 331 750 581 400 581 575 550 550] >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding << /Type /Encoding /BaseEncoding /WinAnsiEncoding /Differences [128 /aogonek /cacute /eogonek /lslash /nacute /oacute /sacute /zacute /zdotaccent /Aogonek /Cacute /Eogonek /Lslash /Nacute /Oacute /Sacute /Zacute /Zdotaccent /endash /bullet /periodcentered /Omega /multiply /degree /minus /mu /lessequal /greaterequal] >> /ToUnicode 5 0 R /FirstChar 32 /LastChar 155 /Widths [275 331 475 556 556 888 725 238 331 331 388 581 275 331 275 275 556 556 556 556 556 556 556 556 556 556 331 331 581 581 581 612 975 725 725 725 725 669 612 775 725 275 556 725 612 831 725 775 669 775 725 669 612 725 669 944 669 669 612 331 275 331 581 556 331 556 612 556 612 556 331 612 612 275 275 556 275 888 612 612 612 612 388 556 331 612 556 775 556 556 500 388 281 388 581 275 556 556 556 275 612 612 556 500 500 725 725 669 612 725 775 669 612 612 556 350 331 800 581 400 581 575 550 550] >>
+endobj
+5 0 obj
+<< /Length 693 >>
+stream
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def
+/CMapName /PolishLatin def
+/CMapType 2 def
+1 begincodespacerange
+<00> <FF>
+endcodespacerange
+1 beginbfrange
+<20> <7E> <0020>
+endbfrange
+28 beginbfchar
+<80> <0105>
+<81> <0107>
+<82> <0119>
+<83> <0142>
+<84> <0144>
+<85> <00F3>
+<86> <015B>
+<87> <017A>
+<88> <017C>
+<89> <0104>
+<8A> <0106>
+<8B> <0118>
+<8C> <0141>
+<8D> <0143>
+<8E> <00D3>
+<8F> <015A>
+<90> <0179>
+<91> <017B>
+<92> <2013>
+<93> <2022>
+<94> <00B7>
+<95> <03A9>
+<96> <00D7>
+<97> <00B0>
+<98> <2212>
+<99> <00B5>
+<9A> <2264>
+<9B> <2265>
+endbfchar
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end
+
+endstream
+endobj
+6 0 obj
+<< /Title <FEFF00410072006400750069006E006F00200063007A00310020007A00610064002000310032002000B70020004F00640063007A0079007400200070006F0142006F017C0065006E0069006100200070006F00740065006E0063006A006F006D0065007400720075> >>
+endobj
+86 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.276 841.89] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 87 0 R /Annots [88 0 R 89 0 R] >>
+endobj
+87 0 obj
+<< /Length 3771 >>
+stream
+0.06 0.27 0.37 rg 43.00 807.89 29.00 3.00 re f
+BT /F2 9.4 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 789.89 Tm (PROGRAMOWANIE URZ\211DZE\215 MECHATRONICZNYCH  \224  KLASA 4) Tj ET
+BT /F2 13.5 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 763.89 Tm (Arduino cz1 zad 12) Tj ET
+BT /F2 10.5 Tf 0.06 0.27 0.37 rg 1 0 0 1 518.75 763.89 Tm (20 min) Tj ET
+BT /F2 24 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 730.89 Tm (Odczyt po\203o\210enia potencjometru) Tj ET
+BT /F1 9.2 Tf 0.27 0.33 0.39 rg 1 0 0 1 43.00 700.89 Tm (Imi\202 i nazwisko) Tj ET
+0.73 0.80 0.83 RG 0.55 w 115.00 698.89 m 293.00 698.89 l S
+BT /F1 9.2 Tf 0.27 0.33 0.39 rg 1 0 0 1 315.00 700.89 Tm (Klasa) Tj ET
+0.73 0.80 0.83 RG 0.55 w 344.00 698.89 m 406.00 698.89 l S
+BT /F1 9.2 Tf 0.27 0.33 0.39 rg 1 0 0 1 427.00 700.89 Tm (Data) Tj ET
+0.73 0.80 0.83 RG 0.55 w 453.00 698.89 m 552.00 698.89 l S
+BT /F2 11.4 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 675.89 Tm (Arduino ma pokazywa\201 w monitorze surowy wynik przetwornika ADC dla trzech po\203o\210e\204) Tj ET
+BT /F2 11.4 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 660.69 Tm (potencjometru.) Tj ET
+0.95 0.97 0.98 rg 43.00 568.69 509.00 75.80 re f
+BT /F2 10.1 Tf 0.06 0.27 0.37 rg 1 0 0 1 56.00 626.49 Tm (Potrzebne elementy) Tj ET
+BT /F1 10.2 Tf 0.10 0.17 0.22 rg 1 0 0 1 56.00 611.49 Tm (Potencjometr 10 k\225, przewody, kabel USB.) Tj ET
+BT /F2 10.1 Tf 0.06 0.27 0.37 rg 1 0 0 1 56.00 596.09 Tm (Po\203\200czenia na Uno R3) Tj ET
+BT /F1 10.2 Tf 0.10 0.17 0.22 rg 1 0 0 1 56.00 581.09 Tm (Skrajne wyprowadzenia potencjometru do 5 V i GND, suwak do A0.) Tj ET
+BT /F2 12.5 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 546.69 Tm (Co wykona\201) Tj ET
+BT /F2 10.7 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 529.69 Tm (1.) Tj ET
+BT /F1 10.7 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 529.69 Tm (Odczytuj A0 co 200 ms i wypisuj liczby w kolejnych wierszach.) Tj ET
+BT /F2 10.7 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 510.49 Tm (2.) Tj ET
+BT /F1 10.7 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 510.49 Tm (Zapisz wyniki dla obu skrajnych po\203o\210e\204 i \206rodka zakresu.) Tj ET
+BT /F2 10.7 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 491.29 Tm (3.) Tj ET
+BT /F1 10.7 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 491.29 Tm (Zamie\204 po\203o\210enia przewod\205w skrajnych przy od\203\200czonym zasilaniu i przewid\207 zmian\202 kierunku) Tj ET
+BT /F1 10.7 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 477.09 Tm (wskaza\204.) Tj ET
+BT /F2 12.5 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 449.89 Tm (Pr\205by do wykonania) Tj ET
+0.73 0.80 0.83 RG 0.65 w 44.00 433.89 7.00 7.00 re S
+BT /F1 10.6 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 432.89 Tm (Sprawd\207, czy wyniki mie\206ci\203y si\202 w przedziale 0\2221023.) Tj ET
+0.73 0.80 0.83 RG 0.65 w 44.00 414.89 7.00 7.00 re S
+BT /F1 10.6 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 413.89 Tm (Por\205wnaj wyniki dla po\203o\210enia \206rodkowego przed i po zmianie przewod\205w.) Tj ET
+BT /F2 11 Tf 0.06 0.27 0.37 rg 1 0 0 1 43.00 226.89 Tm (Wyniki i obserwacje) Tj ET
+0.73 0.80 0.83 RG 0.55 w 43.00 206.89 m 552.00 206.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 185.89 m 552.00 185.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 164.89 m 552.00 164.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 143.89 m 552.00 143.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 122.89 m 552.00 122.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 101.89 m 552.00 101.89 l S
+0.73 0.80 0.83 RG 0.55 w 43.00 86.89 m 552.00 86.89 l S
+BT /F2 9.6 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 69.89 Tm (Oddaj szkic .ino i kr\205tki zapis wynik\205w pr\205b.) Tj ET
+BT /F1 8.7 Tf 0.27 0.33 0.39 rg 1 0 0 1 43.00 43.89 Tm (FORBOT \224 Kurs Arduino, poziom I \224 lekcje) Tj ET
+BT /F2 9.2 Tf 0.06 0.27 0.37 rg 1 0 0 1 218.62 43.89 Tm (#3) Tj ET
+0.06 0.27 0.37 RG 0.5 w 218.62 41.89 m 228.87 41.89 l S
+BT /F2 9.2 Tf 0.06 0.27 0.37 rg 1 0 0 1 240.87 43.89 Tm (#4) Tj ET
+0.06 0.27 0.37 RG 0.5 w 240.87 41.89 m 251.12 41.89 l S
+
+endstream
+endobj
+88 0 obj
+<< /Type /Annot /Subtype /Link /Rect [215.62 37.89 231.87 55.89] /Border [0 0 0] /A << /S /URI /URI (https://forbot.pl/blog/kurs-arduino-uart-komunikacja-z-komputerem-pc-zmienne-id3836) >> >>
+endobj
+89 0 obj
+<< /Type /Annot /Subtype /Link /Rect [237.87 37.89 254.12 55.89] /Border [0 0 0] /A << /S /URI /URI (https://forbot.pl/blog/kurs-arduino-pomiar-napiecia-przetwornik-adc-id3819) >> >>
+endobj
+xref
+0 90
+0000000007 65535 f 
+0000000015 00000 n 
+0000000064 00000 n 
+0000000122 00000 n 
+0000001075 00000 n 
+0000002032 00000 n 
+0000002776 00000 n 
+0000000008 00000 f 
+0000000009 00000 f 
+0000000010 00000 f 
+0000000011 00000 f 
+0000000012 00000 f 
+0000000013 00000 f 
+0000000014 00000 f 
+0000000015 00000 f 
+0000000016 00000 f 
+0000000017 00000 f 
+0000000018 00000 f 
+0000000019 00000 f 
+0000000020 00000 f 
+0000000021 00000 f 
+0000000022 00000 f 
+0000000023 00000 f 
+0000000024 00000 f 
+0000000025 00000 f 
+0000000026 00000 f 
+0000000027 00000 f 
+0000000028 00000 f 
+0000000029 00000 f 
+0000000030 00000 f 
+0000000031 00000 f 
+0000000032 00000 f 
+0000000033 00000 f 
+0000000034 00000 f 
+0000000035 00000 f 
+0000000036 00000 f 
+0000000037 00000 f 
+0000000038 00000 f 
+0000000039 00000 f 
+0000000040 00000 f 
+0000000041 00000 f 
+0000000042 00000 f 
+0000000043 00000 f 
+0000000044 00000 f 
+0000000045 00000 f 
+0000000046 00000 f 
+0000000047 00000 f 
+0000000048 00000 f 
+0000000049 00000 f 
+0000000050 00000 f 
+0000000051 00000 f 
+0000000052 00000 f 
+0000000053 00000 f 
+0000000054 00000 f 
+0000000055 00000 f 
+0000000056 00000 f 
+0000000057 00000 f 
+0000000058 00000 f 
+0000000059 00000 f 
+0000000060 00000 f 
+0000000061 00000 f 
+0000000062 00000 f 
+0000000063 00000 f 
+0000000064 00000 f 
+0000000065 00000 f 
+0000000066 00000 f 
+0000000067 00000 f 
+0000000068 00000 f 
+0000000069 00000 f 
+0000000070 00000 f 
+0000000071 00000 f 
+0000000072 00000 f 
+0000000073 00000 f 
+0000000074 00000 f 
+0000000075 00000 f 
+0000000076 00000 f 
+0000000077 00000 f 
+0000000078 00000 f 
+0000000079 00000 f 
+0000000080 00000 f 
+0000000081 00000 f 
+0000000082 00000 f 
+0000000083 00000 f 
+0000000084 00000 f 
+0000000085 00000 f 
+0000000000 00000 f 
+0000003015 00000 n 
+0000003184 00000 n 
+0000007008 00000 n 
+0000007216 00000 n 
+trailer
+<< /Size 90 /Root 1 0 R /Info 6 0 R >>
+startxref
+7415
+%%EOF

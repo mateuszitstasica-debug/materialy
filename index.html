@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mateusz Stasica</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style id="css">
+:root{
+  --paper:#f4f5f8; --card:#ffffff; --ink:#111a2e; --muted:#5d6679; --line:#e2e5ec; --line2:#eef0f4;
+  --navy:#0d1830; --navy2:#1a2b52; --accent:#f2a33a; --c:#1a2b52;
+  --ok:#2e7d4f; --bad:#b3362a; --r:14px; --sh:0 1px 2px rgba(17,26,46,.04),0 4px 16px rgba(17,26,46,.06);
+  --mono:'IBM Plex Mono',ui-monospace,monospace; --sans:'IBM Plex Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+/* HEADER */
+header.top{background:radial-gradient(1200px 400px at 85% -10%,rgba(242,163,58,.18),transparent 60%),linear-gradient(160deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;position:relative;overflow:hidden}
+header.top:before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(180deg,#000 30%,transparent);pointer-events:none}
+header.top .wrap{position:relative}
+.bar{display:flex;align-items:center;gap:16px;padding:16px 0;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:700;font-size:17px;letter-spacing:.1px}
+.logo .mark{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-family:var(--mono);font-size:14px;font-weight:600;background:linear-gradient(135deg,var(--accent),#e0732b);color:#1a1200;box-shadow:0 4px 14px rgba(242,163,58,.35)}
+.logo small{display:block;font-weight:400;font-family:var(--mono);font-size:11.5px;opacity:.7;letter-spacing:.3px}
+nav.main{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap;background:rgba(255,255,255,.06);padding:4px;border-radius:12px;border:1px solid rgba(255,255,255,.08)}
+nav.main a{text-decoration:none;font-size:14px;padding:7px 12px;border-radius:9px;opacity:.82;transition:background .15s,opacity .15s}
+nav.main a:hover{opacity:1;background:rgba(255,255,255,.08)}
+nav.main a.on{opacity:1;background:#fff;color:var(--navy);font-weight:600}
+nav.main a.adm-link{color:var(--accent);opacity:1}
+nav.main a.adm-link.on{background:var(--accent);color:#1a1200}
+.hero{padding:34px 0 52px;display:grid;grid-template-columns:1.25fr .75fr;gap:30px;align-items:center}
+.hero:empty{display:none}
+.hero .tag{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12.5px;letter-spacing:.5px;color:var(--accent);background:rgba(242,163,58,.1);border:1px solid rgba(242,163,58,.25);padding:5px 11px;border-radius:99px}
+.hero h1{font-size:clamp(30px,4.4vw,48px);line-height:1.08;margin:16px 0 14px;letter-spacing:-.5px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:600px;opacity:.82;margin:0 0 24px;font-size:17px}
+.hero .stats{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
+.hero .stats div{font-family:var(--mono);font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.6px}
+.hero .stats b{display:block;font-family:var(--sans);font-size:26px;opacity:1;color:#fff;letter-spacing:0}
+.hero .deco{opacity:.9}
+.hero .deco svg{width:100%;height:auto;max-height:300px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.hero .deco{display:none}}
+@media(max-width:640px){nav.main{width:100%;overflow-x:auto;flex-wrap:nowrap}nav.main a{white-space:nowrap;padding:7px 10px}.hero{padding:18px 0 34px}}
+.search{display:flex;max-width:560px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.search input{flex:1;border:0;padding:14px 16px;font:inherit;color:var(--ink);outline:none;font-size:15.5px}
+.search span{padding:14px 16px;color:var(--muted);font-size:18px}
+main{padding:34px 0 70px;min-height:60vh}
+h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
+.sec-label{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin:0 0 14px;display:flex;align-items:center;gap:10px}
+.sec-label:after{content:"";flex:1;height:1px;background:var(--line)}
+/* KIERUNKI */
+.grid4{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;margin-bottom:40px}
+.tile{position:relative;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;text-decoration:none;display:flex;flex-direction:column;gap:10px;transition:transform .18s,box-shadow .18s,border-color .18s;box-shadow:var(--sh);overflow:hidden}
+.tile:before{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--c)}
+.tile:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(17,26,46,.12);border-color:color-mix(in srgb,var(--c) 35%,var(--line))}
+.tile .ico{flex:none;width:52px;height:52px;border-radius:13px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 11%,white)}
+.tile .ico svg{width:30px;height:30px}
+.tile h3{margin:2px 0 0;font-size:19px;line-height:1.25;letter-spacing:-.2px}
+.tile p{margin:0;color:var(--muted);font-size:14.5px;flex:1}
+.tile .go{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--line2);padding-top:12px;margin-top:4px;font-size:13px;color:var(--muted)}
+.tile .go b{color:var(--ink)}
+.tile .go .arr{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 11%,white);color:var(--c);font-weight:700;transition:transform .18s}
+.tile:hover .go .arr{transform:translateX(3px)}
+.counts{display:flex;gap:14px;font-family:var(--mono);font-size:12px;color:var(--muted);border-top:1px solid var(--line2);padding-top:12px;flex-wrap:wrap}
+.counts b{color:var(--ink)}
+/* KLASY */
+.klasy{display:grid;grid-template-columns:repeat(var(--n,5),1fr);gap:16px}
+.klasa{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:26px 16px;text-decoration:none;text-align:center;transition:transform .18s,box-shadow .18s;box-shadow:var(--sh);position:relative;overflow:hidden}
+.klasa:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(17,26,46,.12)}
+.klasa .num{font-family:var(--mono);font-size:52px;font-weight:600;color:var(--c);line-height:1}
+.klasa .lbl{font-weight:600;margin-top:8px}
+.klasa .cnt{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:4px}
+.klasa.zero{opacity:.55;box-shadow:none}
+@media(max-width:820px){.klasy{grid-template-columns:repeat(2,1fr)}}
+.cols{display:grid;grid-template-columns:2fr 1fr;gap:22px}
+.cols.one{grid-template-columns:1fr}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--sh)}
+.news{list-style:none;margin:0;padding:0}
+.news li{display:grid;grid-template-columns:64px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line2)}
+.news li:last-child{border:0}
+.date{font-family:var(--mono);font-size:12px;text-align:center;border-radius:10px;padding:8px 2px;line-height:1.2;height:fit-content;background:var(--paper)}
+.date b{display:block;font-size:21px}
+.news h4{margin:0 0 2px;font-size:15.5px}
+.news p{margin:0 0 6px;font-size:14px;color:var(--muted)}
+.pill{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:99px;background:color-mix(in srgb,var(--c) 12%,white);color:var(--c);font-weight:600;white-space:nowrap;width:fit-content}
+.crumb{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.crumb a{text-decoration:none;color:var(--ink);opacity:.75}
+.crumb a:hover{opacity:1;text-decoration:underline}
+.subhead{display:flex;align-items:center;gap:18px;margin-bottom:24px;flex-wrap:wrap}
+.subhead .ico{width:62px;height:62px;flex:none;border-radius:16px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb,var(--c) 11%,white)}
+.subhead .ico svg{width:36px;height:36px}
+.subhead h1{margin:2px 0 0;font-size:30px;line-height:1.15;letter-spacing:-.4px}
+.subhead p{margin:4px 0 0;color:var(--muted)}
+.tabs{display:inline-flex;gap:4px;background:#fff;border:1px solid var(--line);padding:5px;border-radius:12px;margin-bottom:20px;box-shadow:var(--sh)}
+.tabs button{background:none;border:0;padding:9px 20px;font-weight:600;color:var(--muted);border-radius:9px;transition:background .15s,color .15s}
+.tabs button:hover{color:var(--ink)}
+.tabs button.on{background:var(--c);color:#fff}
+.chips{display:flex;gap:6px;align-items:center;margin-bottom:16px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 13px;font-size:13px;color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.items{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--sh);transition:box-shadow .18s,transform .18s}
+.item:hover{box-shadow:0 12px 30px rgba(17,26,46,.1)}
+.item h3{margin:0;font-size:17.5px;line-height:1.3}
+.item p{margin:0;font-size:14px;color:var(--muted);flex:1}
+.meta{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px;color:var(--muted);align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px;text-decoration:none;width:fit-content;line-height:1.2;transition:filter .15s,transform .15s}
+.btn:hover{filter:brightness(1.12)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+.btn.ghost:hover{border-color:#c9ceda;filter:none}
+.btn.accent{background:var(--c);border-color:var(--c)}
+.btn.sm{padding:6px 11px;font-size:13px;border-radius:8px}
+.btn.danger{background:#fff;color:var(--bad);border-color:#ecc3bd}
+.btn.danger.arm{background:var(--bad);color:#fff;border-color:var(--bad)}
+.btn:disabled{opacity:.45;cursor:default}
+.empty{color:var(--muted);padding:30px;border:1.5px dashed var(--line);border-radius:var(--r);text-align:center;background:rgba(255,255,255,.6)}
+.viewer{background:var(--navy);border-radius:var(--r);padding:14px}
+.slide{aspect-ratio:16/9;background:#fff;border-radius:8px;padding:4.5% 6% 6%;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr;gap:3% 4%;align-items:center;position:relative;overflow:hidden}
+.slide.solo{grid-template-columns:1fr}
+.slide h2{grid-column:1/-1;font-size:clamp(18px,2.6vw,30px);margin:0;align-self:start;border-bottom:3px solid var(--c);padding-bottom:8px}
+.slide ul{margin:0;padding-left:1.2em;font-size:clamp(13px,1.6vw,19px)}
+.slide li{margin:.35em 0}
+.slide .fig{display:flex;justify-content:center;align-items:center;height:100%;min-height:0}
+.slide .fig img{max-width:100%;max-height:100%;object-fit:contain}
+.slide .no{position:absolute;right:14px;bottom:10px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.slide .school{position:absolute;left:6%;bottom:10px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.ctrl{display:flex;justify-content:space-between;align-items:center;color:#fff;padding-top:12px;font-family:var(--mono);font-size:13px;gap:8px}
+.ctrl button{background:rgba(255,255,255,.12);color:#fff;border:0;border-radius:8px;padding:8px 14px}
+.ctrl button:disabled{opacity:.3}
+.test-box{max-width:780px}
+.studinfo{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.studinfo input{flex:1;min-width:200px;border:1px solid var(--line);border-radius:10px;padding:11px;font:inherit}
+.q{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin-bottom:12px;box-shadow:var(--sh)}
+.q .n{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.q h4{margin:4px 0 10px;font-size:16px;white-space:pre-line}
+.q img{max-width:100%;max-height:260px;margin:0 0 10px;border:1px solid var(--line);border-radius:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;cursor:pointer}
+.opt:hover{background:#fafbfc}
+.opt input{margin-top:4px}
+.opt.good{border-color:var(--ok);background:#eaf5ee}
+.opt.wrong{border-color:var(--bad);background:#fbecea}
+.expl{display:none;margin-top:8px;font-size:14px;background:#f6f7f9;border-left:3px solid var(--c);padding:8px 12px;font-family:var(--mono);white-space:pre-line;border-radius:0 8px 8px 0}
+.done .expl{display:block}
+.result{background:var(--navy);color:#fff;border-radius:var(--r);padding:22px;margin:16px 0}
+.result .big{font-size:40px;font-weight:700;font-family:var(--mono)}
+.timer{font-family:var(--mono);font-size:18px;background:var(--navy);color:#fff;border-radius:10px;padding:8px 14px;position:fixed;right:20px;bottom:20px;z-index:5;box-shadow:0 4px 14px rgba(0,0,0,.2)}
+.task{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;max-width:900px;box-shadow:var(--sh)}
+.task .head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:16px}
+.task .head h1{margin:6px 0 0;font-size:24px}
+.task h3{font-size:13px;text-transform:uppercase;letter-spacing:.8px;font-family:var(--mono);margin:22px 0 8px;color:var(--c)}
+.task ol,.task ul{margin:0;padding-left:1.3em}
+.task li{margin:.3em 0}
+.task p{white-space:pre-line}
+.schem{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fafbfc;display:flex;justify-content:center}
+.schem img{max-width:100%;max-height:520px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:#f4f5f8;font-family:var(--mono);font-size:12px;text-transform:uppercase}
+td.pts{width:90px;text-align:center;font-family:var(--mono)}
+.warn{background:#fff6e0;border:1px solid #edd394;border-radius:10px;padding:11px 13px;font-size:14px}
+.note{font-size:13px;color:var(--muted);margin-top:8px}
+.toolbar{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap;align-items:center}
+.mono{font-family:var(--mono)}
+footer{border-top:1px solid var(--line);padding:26px 0;font-size:13px;color:var(--muted);background:#fff}
+footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.res-list{font-size:14px;margin:0;padding:0;list-style:none}
+.res-list li{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.banner{background:#fff6e0;border:1px solid #edd394;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:18px}
+.banner:empty{display:none}
+.fileview{max-width:940px}
+.fileview iframe{box-shadow:var(--sh)}
+.officebox{position:relative;width:100%;aspect-ratio:16/10.4;min-height:320px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:var(--sh)}
+.officebox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.pdfpage{display:block;max-width:100%;height:auto;margin:0 0 16px;background:#fff;box-shadow:0 2px 14px rgba(17,26,46,.14);border-radius:4px}
+.fileicon{width:44px;height:52px;flex:none;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#fff;background:var(--c);position:relative}
+.fileicon:after{content:"";position:absolute;right:0;top:0;border-style:solid;border-width:0 12px 12px 0;border-color:transparent var(--paper) rgba(255,255,255,.35) transparent;border-radius:0 8px 0 4px}
+.item .ftop{display:flex;gap:14px;align-items:flex-start}
+/* ADMIN */
+.adm{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start}
+.adm-side{display:flex;flex-direction:column;gap:4px;position:sticky;top:12px;background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:8px;box-shadow:var(--sh)}
+.adm-side button{text-align:left;background:none;border:0;padding:10px 12px;border-radius:9px;font-weight:600;color:var(--muted)}
+.adm-side button:hover{color:var(--ink);background:var(--paper)}
+.adm-side button.on{background:var(--ink);color:#fff}
+@media(max-width:820px){.adm{grid-template-columns:1fr}.adm-side{flex-direction:row;flex-wrap:wrap;position:static}}
+.form{display:grid;gap:14px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px}
+.field input[type=text],.field input[type=number],.field input[type=date],.field input[type=url],.field textarea,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
+.field input:focus,.field textarea:focus,.field select:focus{outline:2px solid color-mix(in srgb,var(--navy2) 30%,transparent);border-color:var(--navy2)}
+.field textarea{min-height:84px;resize:vertical}
+.field input[type=color]{width:60px;height:38px;border:1px solid var(--line);border-radius:8px;padding:2px;background:#fff}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.row2,.row3{grid-template-columns:1fr}}
+.rep{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fafbfc;display:grid;gap:10px}
+.rep-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--muted)}
+.rep-head .acts{display:flex;gap:4px}
+.lrow{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);background:#fff;border-radius:12px;margin-bottom:8px;flex-wrap:wrap}
+.lrow .grow{flex:1;min-width:180px}
+.lrow .grow b{display:block}
+.lrow .grow span{font-size:13px;color:var(--muted)}
+.optrow{display:flex;gap:8px;align-items:center}
+.optrow input[type=text]{flex:1;border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}
+.imgprev{max-width:260px;max-height:170px;border:1px solid var(--line);border-radius:8px;background:#fff;display:block;margin-bottom:6px}
+.status{font-size:13px;font-family:var(--mono)}
+.status.ok{color:var(--ok)} .status.err{color:var(--bad)}
+.stickybar{position:sticky;bottom:0;background:var(--paper);padding:12px 0;border-top:1px solid var(--line);display:flex;gap:8px;align-items:center;flex-wrap:wrap;z-index:3}
+.h3{font-size:18px;margin:22px 0 10px}
+@media print{
+  header.top,footer,.toolbar,.crumb,.banner{display:none!important}
+  body{background:#fff}
+  .task{border:0;padding:0;box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>window.EMBEDDED={"config":{"tytul":"Mateusz Stasica","podtytul":"materiały dydaktyczne","heroTag":"Mateusz Stasica","heroTytul":"Materiały do zajęć — teoria i ćwiczenia","heroOpis":"Mechatronika, elektronika, cyberbezpieczeństwo i telekomunikacja. Wybierz kierunek i klasę, a znajdziesz materiały z lekcji do przeglądania i pobrania.","adresStrony":"https://mateuszitstasica-debug.github.io/materialy/","stopka":"© mgr inż. Mateusz Stasica","progi":[91,75,50,30],"kierunki":[{"id":"cyber","nazwa":"Technik cyberbezpieczeństwa","skrot":"Cyberbezpieczeństwo","opis":"Sieci komputerowe, systemy operacyjne, ochrona systemów i laboratoria bezpieczeństwa.","kolor":"#c2462f","ikona":"cy","szkola":"Technikum","klasy":5},{"id":"elektronik","nazwa":"Technik elektronik","skrot":"Elektronik","opis":"Elektrotechnika, układy analogowe i cyfrowe, mikrokontrolery, miernictwo.","kolor":"#d9900f","ikona":"el","szkola":"Technikum","klasy":5},{"id":"szerokopasmowy","nazwa":"Technik szerokopasmowej komunikacji elektronicznej","skrot":"Szerokopasmowiec","opis":"Sieci światłowodowe i miedziane, systemy radiowe i telewizyjne, transmisja danych.","kolor":"#6d4bb0","ikona":"sz","szkola":"Technikum","klasy":5},{"id":"mechatronik","nazwa":"Technik mechatronik","skrot":"Mechatronik","opis":"Pneumatyka, elektropneumatyka, sterowniki PLC, napędy i systemy mechatroniczne.","kolor":"#33689e","ikona":"me","szkola":"Technikum","klasy":5},{"id":"mechbs","nazwa":"Mechatronik — branżowa szkoła I stopnia","skrot":"Mechatronik BS I","opis":"Pracownia mechaniczna, pneumatyka i hydraulika, komputerowe wspomaganie projektowania.","kolor":"#2a8a7c","ikona":"me","szkola":"Branżowa szkoła I stopnia","klasy":3}],"ogloszenia":[]},"przedmioty":[{"id":"ptm1pih","nazwa":"Pneumatyka i hydraulika","opis":"","kierunek":"mechatronik","klasa":1,"kolejnosc":1},{"id":"ptm2ppih","nazwa":"Pracownia pneumatyki i hydrauliki","opis":"","kierunek":"mechatronik","klasa":2,"kolejnosc":1},{"id":"ptm3ppih","nazwa":"Pracownia pneumatyki i hydrauliki","opis":"","kierunek":"mechatronik","klasa":3,"kolejnosc":1},{"id":"ptm4usm","nazwa":"Urządzenia i systemy mechatroniczne","opis":"","kierunek":"mechatronik","klasa":4,"kolejnosc":1},{"id":"ptm4pusm","nazwa":"Pracownia urządzeń i systemów mechatronicznych","opis":"","kierunek":"mechatronik","klasa":4,"kolejnosc":2},{"id":"ptm4pum","nazwa":"Programowanie urządzeń mechatronicznych","opis":"","kierunek":"mechatronik","klasa":4,"kolejnosc":3},{"id":"ptm4eum","nazwa":"Eksploatacja urządzeń mechatronicznych","opis":"","kierunek":"mechatronik","klasa":4,"kolejnosc":4},{"id":"ptm5pum","nazwa":"Programowanie urządzeń mechatronicznych","opis":"","kierunek":"mechatronik","klasa":5,"kolejnosc":1},{"id":"ptm5eum","nazwa":"Eksploatacja urządzeń mechatronicznych","opis":"","kierunek":"mechatronik","klasa":5,"kolejnosc":2},{"id":"ptm5spec","nazwa":"Specjalizacja","opis":"","kierunek":"mechatronik","klasa":5,"kolejnosc":3},{"id":"pbs2ppih","nazwa":"Pracownia pneumatyki i hydrauliki","opis":"","kierunek":"mechbs","klasa":2,"kolejnosc":1},{"id":"pbs2pmech","nazwa":"Pracownia mechaniczna","opis":"","kierunek":"mechbs","klasa":2,"kolejnosc":2},{"id":"pbs2kwp","nazwa":"Komputerowe wspomaganie projektowania","opis":"","kierunek":"mechbs","klasa":2,"kolejnosc":3},{"id":"ptm3usm","nazwa":"Urządzenia i systemy mechatroniczne","opis":"","kierunek":"mechatronik","klasa":3,"kolejnosc":2}],"materialy":[{"id":"mgrafpdf","dzial":"teoria","przedmiot":"ptm5pum","typ":"prezentacja","kolejnosc":1,"zmieniono":"2026-11-22T14:00:00.000Z","tytul":"GRAFCET — wprowadzenie teoretyczne + ćwiczenia","opis":"Instrukcja do lekcji: GRAFCET i LAD w TIA Portal (S7-1200, S7-PLCSIM).","link":"","plik":{"nazwa":"GRAFCET_i_LAD_w_TIA_Portal.pdf","sciezka":"GRAFCET_i_LAD_w_TIA_Portal.pdf","rozmiar":209297}},{"id":"musm01","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":1,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Języki programowania PLC","opis":"Prezentacja · 18 slajdów","link":"","plik":{"nazwa":"01_Jezyki_programowania_PLC.pptx","sciezka":"01_Jezyki_programowania_PLC.pptx","rozmiar":10765584,"podglad":"01_Jezyki_programowania_PLC_podglad.pdf"}},{"id":"musm02","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":2,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Cykl pracy sterownika PLC i wykonywanie programu","opis":"Prezentacja · 24 slajdów","link":"","plik":{"nazwa":"Cykl_pracy_sterownika_PLC.pptx","sciezka":"Cykl_pracy_sterownika_PLC.pptx","rozmiar":8118649,"podglad":"Cykl_pracy_sterownika_PLC_podglad.pdf"}},{"id":"musm03","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":3,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Układ automatyki – schemat blokowy","opis":"Prezentacja · 20 slajdów","link":"","plik":{"nazwa":"02_Uklad_automatyki_schemat_blokowy.pptx","sciezka":"02_Uklad_automatyki_schemat_blokowy.pptx","rozmiar":11449364,"podglad":"02_Uklad_automatyki_schemat_blokowy_podglad.pdf"}},{"id":"musm04","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":4,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Wartość zadana, wielkość regulowana, uchyb i sygnał sterujący","opis":"Prezentacja · 30 slajdów","link":"","plik":{"nazwa":"03_Wartosc_zadana_uchyb.pptx","sciezka":"03_Wartosc_zadana_uchyb.pptx","rozmiar":20474766,"podglad":"03_Wartosc_zadana_uchyb_podglad.pdf"}},{"id":"musm05","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":5,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Podstawowe człony układów regulacji (P, I, D)","opis":"Prezentacja · 26 slajdów","link":"","plik":{"nazwa":"04_Podstawowe_czlony_ukladow_regulacji.pptx","sciezka":"04_Podstawowe_czlony_ukladow_regulacji.pptx","rozmiar":19175772,"podglad":"04_Podstawowe_czlony_ukladow_regulacji_podglad.pdf"}},{"id":"musm06","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":6,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator D","opis":"Prezentacja · 16 slajdów","link":"","plik":{"nazwa":"05_Regulator_D.pptx","sciezka":"05_Regulator_D.pptx","rozmiar":10799548,"podglad":"05_Regulator_D_podglad.pdf"}},{"id":"musm07","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":7,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator I","opis":"Prezentacja · 18 slajdów","link":"","plik":{"nazwa":"06_Regulator_I.pptx","sciezka":"06_Regulator_I.pptx","rozmiar":8539736,"podglad":"06_Regulator_I_podglad.pdf"}},{"id":"musm08","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":8,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator P","opis":"Prezentacja · 18 slajdów","link":"","plik":{"nazwa":"07_Regulator_P.pptx","sciezka":"07_Regulator_P.pptx","rozmiar":6718987,"podglad":"07_Regulator_P_podglad.pdf"}},{"id":"musm09","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":9,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator PD","opis":"Prezentacja · 20 slajdów","link":"","plik":{"nazwa":"08_Regulator_PD.pptx","sciezka":"08_Regulator_PD.pptx","rozmiar":17273036,"podglad":"08_Regulator_PD_podglad.pdf"}},{"id":"musm10","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":10,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator PI","opis":"Prezentacja · 20 slajdów","link":"","plik":{"nazwa":"09_Regulator_PI.pptx","sciezka":"09_Regulator_PI.pptx","rozmiar":12393499,"podglad":"09_Regulator_PI_podglad.pdf"}},{"id":"musm11","przedmiot":"ptm4usm","typ":"prezentacja","dzial":"teoria","kolejnosc":11,"zmieniono":"2026-11-22T15:35:00.000Z","tytul":"Regulator PID","opis":"Prezentacja · 20 slajdów","link":"","plik":{"nazwa":"10_Regulator_PID.pptx","sciezka":"10_Regulator_PID.pptx","rozmiar":11455571,"podglad":"10_Regulator_PID_podglad.pdf"}},{"id":"mpih01","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":1,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Wstęp do pneumatyki","opis":"Prezentacja · 29 slajdów","link":"","plik":{"nazwa":"Pneumatyka_wprowadzenie.pptx","sciezka":"Pneumatyka_wprowadzenie.pptx","rozmiar":1828727,"podglad":"Pneumatyka_wprowadzenie_podglad.pdf"}},{"id":"mpih02","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":2,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Kompresory – rodzaje i zasada działania","opis":"Prezentacja · 13 slajdów","link":"","plik":{"nazwa":"Kompresory.pptx","sciezka":"Kompresory.pptx","rozmiar":670368,"podglad":"Kompresory_podglad.pdf"}},{"id":"mpih03","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":3,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Manometry w pneumatyce","opis":"Prezentacja · 15 slajdów","link":"","plik":{"nazwa":"Manometry_w_pneumatyce.pptx","sciezka":"Manometry_w_pneumatyce.pptx","rozmiar":1805916,"podglad":"Manometry_w_pneumatyce_podglad.pdf"}},{"id":"mpih04","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":4,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Siłowniki pneumatyczne","opis":"Prezentacja · 20 slajdów","link":"","plik":{"nazwa":"Silowniki_pneumatyczne.pptx","sciezka":"Silowniki_pneumatyczne.pptx","rozmiar":923365,"podglad":"Silowniki_pneumatyczne_podglad.pdf"}},{"id":"mpih05","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":5,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Narzędzia do montażu i demontażu elementów pneumatycznych i hydraulicznych","opis":"Prezentacja · 24 slajdów","link":"","plik":{"nazwa":"Narzedzia_w_pneumatyce.pptx","sciezka":"Narzedzia_w_pneumatyce.pptx","rozmiar":1606797,"podglad":"Narzedzia_w_pneumatyce_podglad.pdf"}},{"id":"mpih06","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":6,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Ocena stanu technicznego elementów pneumatycznych i hydraulicznych","opis":"Prezentacja · 13 slajdów","link":"","plik":{"nazwa":"Pneumatyka_i_hydraulika.pptx","sciezka":"Pneumatyka_i_hydraulika.pptx","rozmiar":806786,"podglad":"Pneumatyka_i_hydraulika_podglad.pdf"}},{"id":"mpih07","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":7,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Co to jest hydraulika","opis":"Prezentacja · 7 slajdów","link":"","plik":{"nazwa":"Co_to_jest_hydraulika.pptx","sciezka":"Co_to_jest_hydraulika.pptx","rozmiar":214602,"podglad":"Co_to_jest_hydraulika_podglad.pdf"}},{"id":"mpih08","przedmiot":"ptm1pih","typ":"prezentacja","dzial":"teoria","kolejnosc":8,"zmieniono":"2026-11-22T15:25:00.000Z","tytul":"Hydraulika – podstawy","opis":"Prezentacja · 7 slajdów","link":"","plik":{"nazwa":"Hydraulika_podstawy.pptx","sciezka":"Hydraulika_podstawy.pptx","rozmiar":870280,"podglad":"Hydraulika_podstawy_podglad.pdf"}},{"id":"musm3_01","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":1,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Urządzenie i system mechatroniczny","opis":"Prezentacja · 36 slajdów","link":"","plik":{"nazwa":"USiM3_01_Urzadzenie_i_system_mechatroniczny.pptx","sciezka":"USiM3_01_Urzadzenie_i_system_mechatroniczny.pptx","rozmiar":15203311,"podglad":"USiM3_01_Urzadzenie_i_system_mechatroniczny_podglad.pdf"}},{"id":"musm3_02","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":2,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Dokumentacja techniczna urządzeń i systemów mechatronicznych","opis":"Prezentacja · 28 slajdów","link":"","plik":{"nazwa":"USiM3_03_Dokumentacja_techniczna.pptx","sciezka":"USiM3_03_Dokumentacja_techniczna.pptx","rozmiar":4643392,"podglad":"USiM3_03_Dokumentacja_techniczna_podglad.pdf"}},{"id":"musm3_03","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":3,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Zabezpieczenia elektryczne w systemach mechatronicznych","opis":"Prezentacja · 26 slajdów","link":"","plik":{"nazwa":"USiM3_07_Zabezpieczenia_elektryczne.pptx","sciezka":"USiM3_07_Zabezpieczenia_elektryczne.pptx","rozmiar":19259788,"podglad":"USiM3_07_Zabezpieczenia_elektryczne_podglad.pdf"}},{"id":"musm3_04","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":4,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Podział i zastosowanie czujników w systemach mechatronicznych","opis":"Prezentacja · 27 slajdów","link":"","plik":{"nazwa":"USiM3_08_Podzial_i_zastosowanie_czujnikow.pptx","sciezka":"USiM3_08_Podzial_i_zastosowanie_czujnikow.pptx","rozmiar":7165505,"podglad":"USiM3_08_Podzial_i_zastosowanie_czujnikow_podglad.pdf"}},{"id":"musm3_05","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":5,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Wyłączniki krańcowe i czujniki kontaktronowe","opis":"Prezentacja · 23 slajdów","link":"","plik":{"nazwa":"USiM3_09_Wylaczniki_krancowe_i_kontaktrony.pptx","sciezka":"USiM3_09_Wylaczniki_krancowe_i_kontaktrony.pptx","rozmiar":10979500,"podglad":"USiM3_09_Wylaczniki_krancowe_i_kontaktrony_podglad.pdf"}},{"id":"musm3_06","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":6,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Czujniki indukcyjne","opis":"Prezentacja · 26 slajdów","link":"","plik":{"nazwa":"USiM3_10_Czujniki_indukcyjne.pptx","sciezka":"USiM3_10_Czujniki_indukcyjne.pptx","rozmiar":7738199,"podglad":"USiM3_10_Czujniki_indukcyjne_podglad.pdf"}},{"id":"musm3_07","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":7,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Przekaźniki elektromagnetyczne i półprzewodnikowe","opis":"Prezentacja · 36 slajdów","link":"","plik":{"nazwa":"USiM3_Przekazniki.pptx","sciezka":"USiM3_Przekazniki.pptx","rozmiar":2724603,"podglad":"USiM3_Przekazniki_podglad.pdf"}},{"id":"musm3_08","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":8,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Zasilacze","opis":"Prezentacja · 48 slajdów","link":"","plik":{"nazwa":"USiM3_Zasilacze.pptx","sciezka":"USiM3_Zasilacze.pptx","rozmiar":785804,"podglad":"USiM3_Zasilacze_podglad.pdf"}},{"id":"musm3_09","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":9,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Wprowadzenie do napędów elektrycznych","opis":"Prezentacja · 36 slajdów","link":"","plik":{"nazwa":"USiM3_Wprowadzenie_do_napedow_elektrycznych.pptx","sciezka":"USiM3_Wprowadzenie_do_napedow_elektrycznych.pptx","rozmiar":2747457,"podglad":"USiM3_Wprowadzenie_do_napedow_elektrycznych_podglad.pdf"}},{"id":"musm3_10","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":10,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Silniki prądu stałego","opis":"Prezentacja · 33 slajdów","link":"","plik":{"nazwa":"USiM3_Silniki_pradu_stalego.pptx","sciezka":"USiM3_Silniki_pradu_stalego.pptx","rozmiar":12308044,"podglad":"USiM3_Silniki_pradu_stalego_podglad.pdf"}},{"id":"musm3_11","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":11,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Silniki prądu przemiennego","opis":"Prezentacja · 31 slajdów","link":"","plik":{"nazwa":"USiM3_Silniki_pradu_przemiennego.pptx","sciezka":"USiM3_Silniki_pradu_przemiennego.pptx","rozmiar":1682484,"podglad":"USiM3_Silniki_pradu_przemiennego_podglad.pdf"}},{"id":"musm3_12","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":12,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Silnik krokowy","opis":"Prezentacja · 12 slajdów","link":"","plik":{"nazwa":"USiM3_Silnik_krokowy.pptx","sciezka":"USiM3_Silnik_krokowy.pptx","rozmiar":928330,"podglad":"USiM3_Silnik_krokowy_podglad.pdf"}},{"id":"musm3_13","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":13,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Diagnostyka i monitorowanie systemów mechatronicznych","opis":"Prezentacja · 31 slajdów","link":"","plik":{"nazwa":"USiM3_Diagnostyka_i_monitorowanie.pptx","sciezka":"USiM3_Diagnostyka_i_monitorowanie.pptx","rozmiar":141472,"podglad":"USiM3_Diagnostyka_i_monitorowanie_podglad.pdf"}},{"id":"musm3_14","przedmiot":"ptm3usm","typ":"prezentacja","dzial":"teoria","kolejnosc":14,"zmieniono":"2026-11-23T06:35:00.000Z","tytul":"Naprawa urządzeń elektrycznych i elektronicznych","opis":"Prezentacja · 40 slajdów","link":"","plik":{"nazwa":"USiM3_Naprawa_urzadzen_elektrycznych.pptx","sciezka":"USiM3_Naprawa_urzadzen_elektrycznych.pptx","rozmiar":6466868,"podglad":"USiM3_Naprawa_urzadzen_elektrycznych_podglad.pdf"}},{"id":"mpum_c1","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":1,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Wybór trybu pracy — podtrzymanie na stykach","opis":"Zadanie LAD · ok. 30 min · bez SET/RESET, timerów i liczników","link":"","plik":{"nazwa":"PLC_cw_wybor_trybu_pracy.png","sciezka":"PLC_cw_wybor_trybu_pracy.png","rozmiar":209221}},{"id":"mpum_c2","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":2,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Automatyczny cykl siłownika z postojem 3 s","opis":"Zadanie LAD · jeden przycisk, czujniki B0/B1, zawór 5/2","link":"","plik":{"nazwa":"PLC_cw_automatyczny_cykl_silownika.png","sciezka":"PLC_cw_automatyczny_cykl_silownika.png","rozmiar":1745821}},{"id":"mpum_c3","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":3,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Sterowanie przenośnikiem — pamięć pracy i awarii","opis":"Zadanie LAD · 45 min · dwa bloki SR","link":"","plik":{"nazwa":"PLC_cw_przenosnik_bloki_SR.png","sciezka":"PLC_cw_przenosnik_bloki_SR.png","rozmiar":1868902}},{"id":"mpum_c4","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":4,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Sterowanie diodami z MOVE — tryby pracy","opis":"Zadanie LAD · 60–90 min · MOVE, ADD, porównania, zbocze","link":"","plik":{"nazwa":"PLC_cw_diody_MOVE.png","sciezka":"PLC_cw_diody_MOVE.png","rozmiar":1675819}},{"id":"mpum_c5","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":5,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Trzy cykle siłownika — liczenie cykli","opis":"Zadanie LAD · seria 3 cykli po jednym naciśnięciu START","link":"","plik":{"nazwa":"PLC_cw_trzy_cykle_silownika.png","sciezka":"PLC_cw_trzy_cykle_silownika.png","rozmiar":1785347}},{"id":"mpum_c6","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":6,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Trójkąt prostokątny — twierdzenie Pitagorasa","opis":"Zadanie · blok danych db_Math, zmienne Real","link":"","plik":{"nazwa":"PLC_cw_trojkat_prostokatny.png","sciezka":"PLC_cw_trojkat_prostokatny.png","rozmiar":344283}},{"id":"mpum_c7","przedmiot":"ptm5pum","typ":"zadanie","dzial":"cwiczenia","kolejnosc":7,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Wjazd do magazynu — sygnalizacja i limit 3 aut","opis":"Zadanie · czujniki C1/C2, lampy L1/L2","link":"","plik":{"nazwa":"PLC_cw_wjazd_do_magazynu.png","sciezka":"PLC_cw_wjazd_do_magazynu.png","rozmiar":570119}},{"id":"mpum_t2","przedmiot":"ptm5pum","typ":"prezentacja","dzial":"teoria","kolejnosc":2,"zmieniono":"2026-11-23T06:50:00.000Z","tytul":"Rodzaje zmiennych w TIA Portal","opis":"Ściąga · zmienne lokalne, globalne i typy danych","link":"","plik":{"nazwa":"TIA_rodzaje_zmiennych.png","sciezka":"TIA_rodzaje_zmiennych.png","rozmiar":1641858}}]};</script>
+<script id="app-js">
+(function(){
+"use strict";
+/* ================== KONFIGURACJA DOMYŚLNA ================== */
+var FONTS="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap";
+var DEFAULT_CONFIG={
+  tytul:"Mateusz Stasica",
+  podtytul:"materiały dydaktyczne",
+  heroTag:"Mateusz Stasica",
+  heroTytul:"Materiały do zajęć — teoria i ćwiczenia",
+  heroOpis:"Mechatronika, elektronika, cyberbezpieczeństwo i telekomunikacja. Wybierz kierunek i klasę, a znajdziesz materiały z lekcji do przeglądania i pobrania.",
+  adresStrony:"https://mateuszitstasica-debug.github.io/materialy/",
+  stopka:"© mgr inż. Mateusz Stasica",
+  progi:[91,75,50,30],
+  kierunki:[
+    {id:"cyber",nazwa:"Technik cyberbezpieczeństwa",skrot:"Cyberbezpieczeństwo",opis:"Sieci komputerowe, systemy operacyjne, ochrona systemów i laboratoria bezpieczeństwa.",kolor:"#c2462f",ikona:"cy",szkola:"Technikum",klasy:5},
+    {id:"elektronik",nazwa:"Technik elektronik",skrot:"Elektronik",opis:"Elektrotechnika, układy analogowe i cyfrowe, mikrokontrolery, miernictwo.",kolor:"#d9900f",ikona:"el",szkola:"Technikum",klasy:5},
+    {id:"szerokopasmowy",nazwa:"Technik szerokopasmowej komunikacji elektronicznej",skrot:"Szerokopasmowiec",opis:"Sieci światłowodowe i miedziane, systemy radiowe i telewizyjne, transmisja danych.",kolor:"#6d4bb0",ikona:"sz",szkola:"Technikum",klasy:5},
+    {id:"mechatronik",nazwa:"Technik mechatronik",skrot:"Mechatronik",opis:"Pneumatyka, elektropneumatyka, sterowniki PLC, napędy i systemy mechatroniczne.",kolor:"#33689e",ikona:"me",szkola:"Technikum",klasy:5},
+    {id:"mechbs",nazwa:"Mechatronik — branżowa szkoła I stopnia",skrot:"Mechatronik BS I",opis:"Pracownia mechaniczna, pneumatyka i hydraulika, komputerowe wspomaganie projektowania.",kolor:"#2a8a7c",ikona:"me",szkola:"Branżowa szkoła I stopnia",klasy:3}
+  ],
+  ogloszenia:[]
+};
+var ICONS={
+  el:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 24h8l3-7 6 14 6-14 6 14 3-7h8"/></svg>',
+  cy:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M24 4l16 6v12c0 10-7 18-16 22C15 40 8 32 8 22V10z"/><rect x="17" y="21" width="14" height="11" rx="1"/><path d="M20 21v-4a4 4 0 018 0v4"/></svg>',
+  me:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="24" cy="24" r="7"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.5 10.5l4.2 4.2M33.3 33.3l4.2 4.2M10.5 37.5l4.2-4.2M33.3 14.7l4.2-4.2"/></svg>',
+  sz:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M24 44V22M16 44h16"/><circle cx="24" cy="18" r="3"/><path d="M16 10a11 11 0 000 16M32 10a11 11 0 010 16M10 5a18 18 0 000 26M38 5a18 18 0 010 26"/></svg>'
+};
+var HERO_SVG='<svg viewBox="0 0 320 300" fill="none" stroke="#fff" stroke-width="2" font-family="IBM Plex Mono,monospace" font-size="12"><g opacity=".9"><rect x="134" y="14" width="44" height="40" rx="3" stroke="#f2a33a"/><rect x="139" y="19" width="34" height="30" rx="2" stroke="#f2a33a"/><text x="152" y="39" fill="#f2a33a" stroke="none">0</text><path d="M156 54v26M140 67h32"/><text x="180" y="71" fill="#fff" stroke="none" opacity=".75">↑Start</text><rect x="136" y="80" width="40" height="36" rx="3"/><text x="148" y="103" fill="#fff" stroke="none">10</text><path d="M176 98h22"/><rect x="198" y="86" width="82" height="24" rx="5" fill="rgba(242,163,58,.12)" stroke="#f2a33a"/><text x="210" y="102" fill="#f2a33a" stroke="none">Silnik</text><path d="M156 116v28M140 130h32"/><text x="180" y="134" fill="#fff" stroke="none" opacity=".75">Czujnik</text><rect x="136" y="144" width="40" height="36" rx="3"/><text x="148" y="167" fill="#fff" stroke="none">20</text><path d="M176 162h22"/><rect x="198" y="150" width="82" height="24" rx="5" fill="rgba(255,255,255,.06)"/><text x="210" y="166" fill="#fff" stroke="none">Lampka</text><path d="M156 180v28M140 194h32"/><text x="180" y="198" fill="#fff" stroke="none" opacity=".75">2 s/X20</text><path d="M156 208v14H96V34h36" opacity=".6"/><path d="M125 30l8 4-8 4" opacity=".6"/></g><g opacity=".35"><path d="M20 250h60l14-14h40l14 14h120"/><circle cx="20" cy="250" r="4"/><circle cx="268" cy="250" r="4"/><path d="M40 280h90l10-10h50"/><circle cx="190" cy="270" r="3"/></g></svg>';
+var TYPY={prezentacja:"Prezentacja",test:"Test",zadanie:"Zadanie praktyczne"};
+var TYPY_MN={prezentacja:"Prezentacje",test:"Testy",zadanie:"Zadania praktyczne"};
+var DZIALY={teoria:"Teoria",cwiczenia:"Ćwiczenia"};
+function dzialOf(m){return m.dzial==="teoria"||m.dzial==="cwiczenia"?m.dzial:(m.typ==="prezentacja"?"teoria":"cwiczenia")}
+function matsOfD(pid,d){return matsOf(pid).filter(function(m){return dzialOf(m)===d})}
+var MIES=["sty","lut","mar","kwi","maj","cze","lip","sie","wrz","paź","lis","gru"];
+
+/* ================== POMOCNICZE ================== */
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function uid(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function clone(o){return JSON.parse(JSON.stringify(o))}
+var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function getPath(o,p){return p.split(".").reduce(function(a,k){return a==null?a:a[k]},o)}
+function setPath(o,p,v){var ks=p.split(".");var last=ks.pop();var t=ks.reduce(function(a,k){return a[k]},o);t[last]=v}
+function $(sel,root){return (root||document).querySelector(sel)}
+function $$(sel,root){return Array.prototype.slice.call((root||document).querySelectorAll(sel))}
+function byOrder(a,b){return (a.kolejnosc||0)-(b.kolejnosc||0)||String(a.tytul||a.nazwa).localeCompare(String(b.tytul||b.nazwa),"pl")}
+
+/* ================== STAN I MAGAZYN DANYCH ================== */
+var S={mode:null,config:clone(DEFAULT_CONFIG),przedmioty:[],materialy:[],ready:false,admin:false,err:null};
+var DB=null,USER=null;
+var ui={lock:false,slide:0,tab:"teoria",timer:null,
+  adm:{tab:"przedmioty",kier:"mechatronik",klasa:1,subj:null,editSubj:null,mat:null,ogl:null,cfg:null}};
+
+function mergeConfig(c){
+  var d=clone(DEFAULT_CONFIG); if(!c) return d;
+  var out=Object.assign({},d,c);
+  out.kierunki=d.kierunki.map(function(k){var x=(c.kierunki||[]).filter(function(y){return y.id===k.id})[0];return Object.assign({},k,x||{})});
+  out.ogloszenia=Array.isArray(c.ogloszenia)?c.ogloszenia:[];
+  out.progi=Array.isArray(c.progi)&&c.progi.length===4?c.progi:d.progi;
+  return out;
+}
+function strip(o){var c=clone(o);delete c.id;return c}
+function saveLocal(){LS.set("pz-data",{config:S.config,przedmioty:S.przedmioty,materialy:S.materialy})}
+function upsert(arr,o){var i=arr.findIndex(function(x){return x.id===o.id});if(i>=0)arr[i]=o;else arr.push(o)}
+function errMsg(e){
+  if(e&&e.message&&!e.code) return e.message;
+  var c=e&&e.code;
+  if(c==="invalid_argument") return "Zapis odrzucony — brak uprawnień albo dokument jest za duży.";
+  if(c==="quota_exceeded") return "Brak miejsca w bazie. Usuń niepotrzebne materiały lub obrazy.";
+  if(c==="resource_exhausted") return "Za dużo operacji naraz — spróbuj za chwilę.";
+  return "Nie udało się zapisać ("+(c||"błąd")+"). Spróbuj ponownie.";
+}
+var Store={
+  saveConfig:async function(c){S.config=c; if(S.mode==="db") await DB.doc("site/config").set(clone(c)); else saveLocal();},
+  savePrzedmiot:async function(p){upsert(S.przedmioty,p); if(S.mode==="db") await DB.collection("przedmioty").doc(p.id).set(strip(p)); else saveLocal();},
+  delPrzedmiot:async function(id){
+    var mats=S.materialy.filter(function(m){return m.przedmiot===id});
+    for(var i=0;i<mats.length;i++) await Store.delMaterial(mats[i].id);
+    S.przedmioty=S.przedmioty.filter(function(p){return p.id!==id});
+    if(S.mode==="db") await DB.collection("przedmioty").doc(id).delete(); else saveLocal();
+  },
+  saveMaterial:async function(m){
+    m.zmieniono=new Date().toISOString();
+    if(JSON.stringify(m).length>250000) throw new Error("Materiał jest za duży (obrazy). Usuń część obrazów albo wgraj mniejsze pliki.");
+    upsert(S.materialy,m); if(S.mode==="db") await DB.collection("materialy").doc(m.id).set(strip(m)); else saveLocal();
+  },
+  delMaterial:async function(id){S.materialy=S.materialy.filter(function(m){return m.id!==id}); if(S.mode==="db") await DB.collection("materialy").doc(id).delete(); else saveLocal();},
+  replaceAll:async function(data,progress){
+    var oldM=S.materialy.slice(),oldP=S.przedmioty.slice(),i;
+    for(i=0;i<oldM.length;i++){progress("Usuwanie starych materiałów "+(i+1)+"/"+oldM.length);await Store.delMaterial(oldM[i].id)}
+    for(i=0;i<oldP.length;i++){progress("Usuwanie przedmiotów "+(i+1)+"/"+oldP.length);S.przedmioty=S.przedmioty.filter(function(p){return p.id!==oldP[i].id}); if(S.mode==="db") await DB.collection("przedmioty").doc(oldP[i].id).delete();}
+    await Store.saveConfig(mergeConfig(data.config));
+    var ps=data.przedmioty||[],ms=data.materialy||[];
+    for(i=0;i<ps.length;i++){progress("Zapisywanie przedmiotów "+(i+1)+"/"+ps.length);await Store.savePrzedmiot(ps[i])}
+    for(i=0;i<ms.length;i++){progress("Zapisywanie materiałów "+(i+1)+"/"+ms.length);await Store.saveMaterial(ms[i])}
+    if(S.mode!=="db") saveLocal();
+  }
+};
+
+async function init(){
+  renderShell();
+  if(window.EMBEDDED){
+    S.mode="static"; var e=window.EMBEDDED;
+    S.config=mergeConfig(e.config); S.przedmioty=e.przedmioty||[]; S.materialy=e.materialy||[];
+    S.ready=true; route(true); return;
+  }
+  if(!window.claude||typeof window.claude.use!=="function"){
+    S.mode="local"; var d=LS.get("pz-data",null);
+    if(d){S.config=mergeConfig(d.config);S.przedmioty=d.przedmioty||[];S.materialy=d.materialy||[]}
+    S.admin=true; S.ready=true; route(true); return;
+  }
+  S.mode="db"; route(true);
+  DB=await window.claude.use("db");
+  USER=await window.claude.use("user");
+  if(!DB){S.err="nodb";S.ready=true;route(true);return}
+  try{S.admin=!!(USER&&await USER.canEdit())}catch(e){S.admin=false}
+  var got={c:false,p:false,m:false};
+  var timer=setTimeout(function(){if(!S.ready){S.err="timeout";route(true)}},10000);
+  function done(){
+    if(got.c&&got.p&&got.m&&!S.ready){S.ready=true;S.err=null;clearTimeout(timer);route(false);return}
+    if(S.ready) changed();
+  }
+  function onErr(){S.err=S.err||"error";got.c=got.p=got.m=true;done()}
+  DB.doc("site/config").onSnapshot(function(s){S.config=mergeConfig(s.exists?s.data():null);got.c=true;done()},onErr);
+  DB.collection("przedmioty").onSnapshot(function(q){S.przedmioty=q.docs.map(function(d){return Object.assign({id:d.id},d.data())});got.p=true;done()},onErr);
+  DB.collection("materialy").onSnapshot(function(q){S.materialy=q.docs.map(function(d){return Object.assign({id:d.id},d.data())});got.m=true;done()},onErr);
+}
+function changed(){updateNav();if(!ui.lock) route(false)}
+
+/* ================== SZKIELET ================== */
+function renderShell(){
+  $("#root").innerHTML='<header class="top"><div class="wrap"><div class="bar"><a class="logo" href="#start"><span class="mark" id="mark">MS</span><span id="brand"></span></a><nav class="main" id="nav"></nav></div><div class="hero" id="hero"></div></div></header><main><div class="wrap"><div class="banner" id="banner"></div><div id="app"></div></div></main><footer><div class="wrap" id="foot"></div></footer>';
+}
+function curHash(){var h=location.hash.slice(1);try{h=decodeURIComponent(h)}catch(e){}return h||"start"}
+function kierOf(h){
+  if(h.indexOf("k-")===0) return h.slice(2).split("-")[0];
+  var p=null;
+  if(h.indexOf("s-")===0) p=przedmiot(h.slice(2));
+  if(h.indexOf("m-")===0){var m=material(h.slice(2)); if(m) p=przedmiot(m.przedmiot)}
+  return p?p.kierunek:null;
+}
+function updateNav(){
+  var c=S.config,h=curHash(),ak=kierOf(h);
+  document.title=c.tytul+(S.mode==="db"||S.mode==="local"?"":"");
+  $("#brand").innerHTML=esc(c.tytul)+"<small>"+esc(c.podtytul)+"</small>";
+  $("#mark").textContent=c.tytul.split(/\s+/).map(function(w){return w[0]||""}).join("").slice(0,2).toUpperCase()||"MS";
+  $("#nav").innerHTML='<a href="#start" class="'+(h==="start"?"on":"")+'">Start</a>'+c.kierunki.map(function(k){return '<a href="#k-'+k.id+'" class="'+(ak===k.id?"on":"")+'">'+esc(k.skrot)+'</a>'}).join("")+(S.admin?'<a href="#admin" class="adm-link '+(h==="admin"?"on":"")+'">⚙ Panel</a>':"");
+  $("#foot").innerHTML='<span>'+esc(c.stopka)+'</span><span class="mono">materiały dydaktyczne</span>';
+  var b="";
+  if(S.mode==="local") b="Tryb lokalny: strona otwarta poza claude.ai — zmiany zapisują się tylko w tej przeglądarce.";
+  if(S.err==="error"||S.err==="timeout") b="Nie udało się połączyć z bazą materiałów. Dane mogą być nieaktualne — odśwież stronę za chwilę.";
+  $("#banner").textContent=b;
+}
+function hero(on){
+  var el=$("#hero");
+  if(!on){el.innerHTML="";return}
+  var c=S.config;
+  if(!$("#q")) el.innerHTML='<div><div class="tag">● '+esc(c.heroTag)+'</div><h1>'+esc(c.heroTytul)+'</h1><p>'+esc(c.heroOpis)+'</p><label class="search"><input id="q" type="search" placeholder="Szukaj przedmiotu lub materiału…"><span>⌕</span></label>'+
+    '<div class="stats"><div><b>'+c.kierunki.length+'</b>kierunków</div><div><b>'+S.przedmioty.length+'</b>przedmiotów</div><div><b>'+S.materialy.length+'</b>materiałów</div></div></div>'+
+    '<div class="deco" aria-hidden="true">'+HERO_SVG+'</div>';
+  $("#q").oninput=function(){homeBody()};
+}
+function app(){return $("#app")}
+
+/* ================== DANE ================== */
+function kier(id){return S.config.kierunki.filter(function(k){return k.id===id})[0]}
+function przedmiot(id){return S.przedmioty.filter(function(p){return p.id===id})[0]}
+function material(id){return S.materialy.filter(function(m){return m.id===id})[0]}
+function subjectsOf(kid,kl){return S.przedmioty.filter(function(p){return p.kierunek===kid&&(kl==null||+p.klasa===+kl)}).sort(byOrder)}
+function matsOf(pid,typ){return S.materialy.filter(function(m){return m.przedmiot===pid&&(!typ||m.typ===typ)}).sort(byOrder)}
+function matsOfKier(kid){var ids=subjectsOf(kid).map(function(p){return p.id});return S.materialy.filter(function(m){return ids.indexOf(m.przedmiot)>=0})}
+function klasyOf(k){var n=+(k&&k.klasy)||5;var a=[];for(var i=1;i<=n;i++)a.push(i);return a}
+function ocena(pct){var p=S.config.progi;if(pct>=p[0])return["bardzo dobry","5"];if(pct>=p[1])return["dobry","4"];if(pct>=p[2])return["dostateczny","3"];if(pct>=p[3])return["dopuszczający","2"];return["niedostateczny","1"]}
+function cvar(k){return "--c:"+esc(k?k.kolor:"#14213d")}
+function fmtDate(s){var d=new Date(s+"T12:00:00");if(isNaN(d))return{d:"--",m:""};return{d:String(d.getDate()).padStart(2,"0"),m:MIES[d.getMonth()]}}
+function todayStr(off){var d=new Date();d.setDate(d.getDate()+(off||0));return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+
+/* ================== ROUTER ================== */
+function route(scroll){
+  clearInterval(ui.timer); ui.lock=false;
+  if(scroll) window.scrollTo(0,0);
+  updateNav();
+  var h=curHash();
+  if(!S.ready){hero(false);app().innerHTML='<div class="empty">Wczytywanie materiałów…</div>';return}
+  if(S.err==="nodb"){hero(false);app().innerHTML='<div class="empty">Zaloguj się, aby zobaczyć materiały.</div>';return}
+  if(S.err==="timeout"&&!S.przedmioty.length){hero(false);app().innerHTML='<div class="empty">Nie udało się wczytać materiałów. Sprawdź połączenie z internetem i odśwież stronę.</div>';return}
+  if(h==="admin"){ if(S.admin) return adminView(); }
+  if(h.indexOf("k-")===0){var parts=h.slice(2).split("-"),k=kier(parts[0]); if(k){return (parts[1]&&+parts[1]>=1&&+parts[1]<=klasyOf(k).length)?klasaView(k,+parts[1]):kierunekView(k)}}
+  if(h.indexOf("s-")===0){var p=przedmiot(h.slice(2)); if(p) return przedmiotView(p)}
+  if(h.indexOf("m-")===0){var m=material(h.slice(2)); if(m) return materialView(m)}
+  home();
+}
+window.addEventListener("hashchange",function(){ui.slide=0;route(true)});
+
+/* ================== WIDOKI PUBLICZNE ================== */
+function home(){hero(true);homeBody()}
+function homeBody(){
+  var q=($("#q")&&$("#q").value.trim())||"";
+  if(q.length>=2) return searchView(q);
+  var c=S.config, wyn=LS.get("pz-wyniki",[]);
+  var from=todayStr(-7);
+  var ogl=c.ogloszenia.filter(function(o){return (o.data||"")>=from}).sort(function(a,b){return (a.data||"").localeCompare(b.data||"")}).slice(0,8);
+  app().innerHTML='<p class="sec-label">Wybierz kierunek</p><div class="grid4">'+c.kierunki.map(function(k){
+      var np=subjectsOf(k.id).length,nm=matsOfKier(k.id).length;
+      return '<a class="tile" href="#k-'+k.id+'" style="'+cvar(k)+'"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px"><div class="ico">'+(ICONS[k.ikona]||ICONS.el)+'</div><span class="pill">'+esc(k.szkola||"Technikum")+'</span></div><h3>'+esc(k.nazwa)+'</h3><p>'+esc(k.opis)+'</p><div class="go"><span><b>'+np+'</b> '+odm(np,"przedmiot","przedmioty","przedmiotów")+' · <b>'+nm+'</b> '+odm(nm,"materiał","materiały","materiałów")+'</span><span class="arr">→</span></div></a>';
+    }).join("")+'</div>'+
+    '<div class="cols'+(wyn.length?'':' one')+'"><div class="panel"><h2>Ogłoszenia i terminy</h2>'+(ogl.length?'<ul class="news">'+ogl.map(function(o){var d=fmtDate(o.data),k=kier(o.kierunek);
+      return '<li><div class="date"><b>'+d.d+'</b>'+d.m+'</div><div><h4>'+esc(o.tytul)+'</h4><p>'+esc(o.tekst)+'</p>'+(k?'<span class="pill" style="'+cvar(k)+'">'+esc(k.skrot)+'</span>':'<span class="pill">Wszystkie kierunki</span>')+'</div></li>'}).join("")+'</ul>':'<p class="note">Brak nadchodzących terminów.</p>')+'</div>'+
+    (wyn.length?'<div class="panel"><h2>Twoje wyniki</h2><ul class="res-list">'+wyn.slice(-6).reverse().map(function(r){return '<li><span>'+esc(r.tytul)+'</span><span class="mono">'+r.pkt+'/'+r.max+' · '+esc(r.ocena)+'</span></li>'}).join("")+'</ul><p class="note">Wyniki zapisują się tylko w tej przeglądarce.</p></div>':'')+'</div>';
+}
+function searchView(q){
+  var t=q.toLowerCase();
+  var ps=S.przedmioty.filter(function(p){return (p.nazwa+" "+(p.opis||"")).toLowerCase().indexOf(t)>=0});
+  var ms=S.materialy.filter(function(m){return (m.tytul+" "+(m.opis||"")+" "+(m.cel||"")).toLowerCase().indexOf(t)>=0&&przedmiot(m.przedmiot)});
+  var out='<p class="sec-label">Wyniki wyszukiwania: „'+esc(q)+'”</p>';
+  if(!ps.length&&!ms.length) out+='<div class="empty">Nic nie znaleziono.</div>';
+  if(ps.length) out+='<h2>Przedmioty</h2><div class="items" style="margin-bottom:24px">'+ps.map(subjCard).join("")+'</div>';
+  if(ms.length) out+='<h2>Materiały</h2><div class="items">'+ms.map(function(m){return matCard(m,true)}).join("")+'</div>';
+  app().innerHTML=out;
+}
+function crumb(parts){return '<div class="crumb"><a href="#start">Start</a>'+parts.map(function(p){return ' / '+(p[1]?'<a href="#'+p[1]+'">'+esc(p[0])+'</a>':esc(p[0]))}).join("")+'</div>'}
+function kierunekView(k){
+  hero(false);
+  app().innerHTML=crumb([[k.nazwa]])+'<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><span class="pill">'+esc(k.szkola||"Technikum")+'</span><h1>'+esc(k.nazwa)+'</h1><p>'+esc(k.opis)+'</p></div></div>'+
+   '<p class="sec-label">Wybierz klasę</p><div class="klasy" style="'+cvar(k)+';--n:'+klasyOf(k).length+'">'+klasyOf(k).map(function(n){var c=subjectsOf(k.id,n).length;
+     return '<a class="klasa '+(c?"":"zero")+'" href="#k-'+k.id+'-'+n+'"><div class="num">'+n+'</div><div class="lbl">Klasa '+n+'</div><div class="cnt">'+(c?c+" "+odm(c,"przedmiot","przedmioty","przedmiotów"):"brak przedmiotów")+'</div></a>'}).join("")+'</div>';
+}
+function odm(n,a,b,c){if(n===1)return a;var d=n%10,dd=n%100;if(d>=2&&d<=4&&(dd<12||dd>14))return b;return c}
+function klasaView(k,n){
+  hero(false);
+  var ps=subjectsOf(k.id,n);
+  app().innerHTML=crumb([[k.nazwa,"k-"+k.id],["Klasa "+n]])+'<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><h1>Klasa '+n+'</h1><p>'+esc(k.nazwa)+'</p></div></div>'+
+   '<div class="chips">Klasa: '+klasyOf(k).map(function(x){return '<a class="chip '+(x===n?"on":"")+'" style="text-decoration:none" href="#k-'+k.id+'-'+x+'">'+x+'</a>'}).join("")+'</div>'+
+   (ps.length?'<div class="items">'+ps.map(subjCard).join("")+'</div>':'<div class="empty">Przedmioty dla tej klasy pojawią się wkrótce.'+(S.admin?'<br><br><button class="btn" id="goadd">+ Dodaj przedmiot w panelu</button>':'')+'</div>');
+  var b=$("#goadd"); if(b) b.onclick=function(){ui.adm.tab="przedmioty";ui.adm.kier=k.id;ui.adm.klasa=n;ui.adm.subj=null;ui.adm.mat=null;location.hash="admin"};
+}
+function subjCard(p){
+  var k=kier(p.kierunek), c={teoria:0,cwiczenia:0};
+  matsOf(p.id).forEach(function(m){c[dzialOf(m)]++});
+  return '<div class="item" style="'+cvar(k)+'"><div class="meta"><span class="pill" style="'+cvar(k)+'">'+esc(k?k.skrot:"")+'</span><span>klasa '+esc(p.klasa)+'</span></div><h3>'+esc(p.nazwa)+'</h3><p>'+esc(p.opis||"")+'</p>'+
+    '<div class="counts"><span><b>'+c.teoria+'</b> teoria</span><span><b>'+c.cwiczenia+'</b> ćwiczenia</span></div><a class="btn accent" href="#s-'+p.id+'">Otwórz przedmiot →</a></div>';
+}
+function matCard(m,showSubj){
+  var p=przedmiot(m.przedmiot),k=p&&kier(p.kierunek);
+  var meta='<span class="pill" style="'+cvar(k)+'">'+DZIALY[dzialOf(m)]+'</span>'+(m.plik?'':'<span>'+TYPY[m.typ]+'</span>');
+  if(showSubj&&p) meta+='<span>'+esc(p.nazwa)+' · kl. '+esc(p.klasa)+'</span>';
+  if(m.plik){meta+='<span>'+esc(fileExt(m.plik))+' · '+fmtSize(m.plik.rozmiar)+'</span>';
+    return '<div class="item" style="'+cvar(k)+'"><div class="ftop"><div class="fileicon">'+esc(fileExt(m.plik))+'</div><div style="flex:1"><div class="meta">'+meta+'</div><h3 style="margin-top:6px">'+esc(m.tytul)+'</h3></div></div><p>'+esc(m.opis||"")+'</p><div class="toolbar" style="margin:0"><a class="btn accent" href="#m-'+m.id+'">Otwórz →</a><a class="btn ghost" href="'+esc(fileUrl(m.plik))+'" download="'+esc(m.plik.nazwa)+'" target="_blank" rel="noopener">⬇ Pobierz</a></div></div>';}
+  if(m.typ==="prezentacja") meta+='<span>'+((m.slajdy||[]).length)+' slajdów</span>';
+  if(m.typ==="test") meta+='<span>'+((m.pytania||[]).length)+' pytań · '+(m.czas||0)+' min</span>';
+  if(m.typ==="zadanie"&&m.czas) meta+='<span>'+m.czas+' min</span>';
+  var btn=m.typ==="prezentacja"?"Otwórz prezentację":m.typ==="test"?"Rozwiąż test":"Otwórz kartę zadania";
+  return '<div class="item" style="'+cvar(k)+'"><div class="meta">'+meta+'</div><h3>'+esc(m.tytul)+'</h3><p>'+esc(m.opis||m.cel||"")+'</p><a class="btn accent" href="#m-'+m.id+'">'+btn+' →</a></div>';
+}
+function przedmiotView(p){
+  hero(false);
+  var k=kier(p.kierunek);
+  var tabs=["teoria","cwiczenia"];
+  if(tabs.indexOf(ui.tab)<0) ui.tab="teoria";
+  var list=matsOfD(p.id,ui.tab);
+  app().innerHTML=crumb([[k.nazwa,"k-"+k.id],["Klasa "+p.klasa,"k-"+k.id+"-"+p.klasa],[p.nazwa]])+
+   '<div class="subhead" style="'+cvar(k)+'"><div class="ico">'+(ICONS[k.ikona]||"")+'</div><div><h1>'+esc(p.nazwa)+'</h1><p>'+esc(k.nazwa)+' · klasa '+esc(p.klasa)+(p.opis?' — '+esc(p.opis):'')+'</p></div>'+(S.admin?'<button class="btn ghost sm" id="editsubj" style="margin-left:auto">⚙ Edytuj w panelu</button>':'')+'</div>'+
+   '<div class="tabs" style="'+cvar(k)+'">'+tabs.map(function(t){return '<button data-tab="'+t+'" class="'+(ui.tab===t?"on":"")+'">'+DZIALY[t]+' ('+matsOfD(p.id,t).length+')</button>'}).join("")+'</div>'+
+   (list.length?'<div class="items">'+list.map(function(m){return matCard(m)}).join("")+'</div>':'<div class="empty">Brak materiałów w tej zakładce.</div>');
+  $$("[data-tab]").forEach(function(b){b.onclick=function(){ui.tab=b.dataset.tab;przedmiotView(p)}});
+  var e=$("#editsubj"); if(e) e.onclick=function(){ui.adm.tab="przedmioty";ui.adm.kier=p.kierunek;ui.adm.klasa=+p.klasa;ui.adm.subj=p.id;ui.adm.mat=null;location.hash="admin"};
+}
+function materialView(m){
+  hero(false);
+  var p=przedmiot(m.przedmiot); if(!p) return home();
+  var k=kier(p.kierunek);
+  ui.tab=dzialOf(m);
+  var cr=crumb([[k.nazwa,"k-"+k.id],["Klasa "+p.klasa,"k-"+k.id+"-"+p.klasa],[p.nazwa,"s-"+p.id],[m.tytul]]);
+  var adm=S.admin?'<button class="btn ghost sm" id="editmat">⚙ Edytuj</button>':'';
+  if(m.plik) fileView(m,p,k,cr,adm);
+  else if(m.typ==="prezentacja") presView(m,p,k,cr,adm);
+  else if(m.typ==="test") testView(m,p,k,cr,adm);
+  else taskView(m,p,k,cr,adm);
+  var e=$("#editmat"); if(e) e.onclick=function(){ui.adm.tab="przedmioty";ui.adm.kier=p.kierunek;ui.adm.klasa=+p.klasa;ui.adm.subj=p.id;ui.adm.mat=clone(m);location.hash="admin"};
+}
+function fileExt(f){var x=(f.nazwa||"").split(".").pop().toUpperCase();return x||"PLIK"}
+function fmtSize(b){b=+b||0;if(b>=1048576)return (b/1048576).toFixed(1).replace(".",",")+" MB";return Math.max(1,Math.round(b/1024))+" KB"}
+function fileUrl(f){var path=String(f.sciezka||"").split("/").map(encodeURIComponent).join("/");if(S.mode==="static")return path;var base=S.config.adresStrony||"";if(base&&base.slice(-1)!=="/")base+="/";return base+path}
+function absUrl(u){try{return new URL(u,location.href).href}catch(e){return u}}
+var PDFJS="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/";
+function loadPdfJs(){return new Promise(function(res,rej){if(window.pdfjsLib)return res(window.pdfjsLib);var sc=document.createElement("script");sc.src=PDFJS+"pdf.min.js";sc.onload=function(){try{window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+"pdf.worker.min.js"}catch(e){}res(window.pdfjsLib)};sc.onerror=rej;document.head.appendChild(sc)})}
+function fileView(m,p,k,cr,adm){
+  var f=m.plik,dl=fileUrl(f),ext=fileExt(f).toLowerCase();
+  var url=f.podglad?fileUrl({sciezka:f.podglad}):dl;
+  if(f.podglad) ext="pdf";
+  var office=["pptx","ppt","docx","doc","xlsx","xls"].indexOf(ext)>=0,img=["png","jpg","jpeg","gif","webp","svg"].indexOf(ext)>=0;
+  app().innerHTML=cr+'<div class="toolbar"><h2 style="margin:0;flex:1;min-width:240px">'+esc(m.tytul)+'</h2><a class="btn accent" style="'+cvar(k)+'" href="'+esc(dl)+'" download="'+esc(f.nazwa)+'" target="_blank" rel="noopener">⬇ Pobierz '+esc(fileExt(f))+' ('+fmtSize(f.rozmiar)+')</a><a class="btn ghost" href="'+esc(url)+'" target="_blank" rel="noopener">'+(f.podglad?'Slajdy w nowej karcie ↗':'Otwórz w nowej karcie ↗')+'</a>'+adm+'</div>'+
+    (m.opis?'<p class="note" style="margin-top:-6px">'+esc(m.opis)+'</p>':'')+(f.podglad?'<p class="note" style="margin-top:-6px">Poniżej podgląd slajdów. Oryginalną prezentację PowerPoint (z animacjami) pobierzesz przyciskiem „Pobierz”.</p>':'')+'<div id="fv" class="fileview"></div>';
+  wireEdit(m,p);
+  var fv=$("#fv");
+  if(S.mode!=="static"){fv.innerHTML='<div class="empty">Podgląd pliku działa na stronie dla uczniów ('+esc(S.config.adresStrony||"")+'). Tutaj możesz go otworzyć przyciskiem powyżej.</div>';return}
+  if(img){fv.innerHTML='<img src="'+esc(url)+'" alt="" style="max-width:100%;border:1px solid var(--line);border-radius:6px;background:#fff">';return}
+  if(office){
+    fv.innerHTML='<div class="empty">Wczytywanie prezentacji…</div>';
+    fetch(url,{method:"HEAD",cache:"no-store"}).then(function(r){
+      if(!r.ok){fv.innerHTML='<div class="empty">Brak pliku na serwerze ('+esc(decodeURIComponent(String(url).split("/").pop()))+'). Wgraj na Netlify wszystkie pliki z folderu strony — zaznacz je Ctrl+A i przeciągnij razem.</div>';return}
+      fv.innerHTML='<div class="officebox"><iframe title="'+esc(m.tytul)+'" src="https://view.officeapps.live.com/op/embed.aspx?src='+encodeURIComponent(absUrl(url))+'" allowfullscreen></iframe></div><p class="note">Podgląd wyświetla przeglądarka Microsoft Office. Jeśli się nie pojawia, użyj przycisku „Pobierz”.</p>';
+    }).catch(function(){fv.innerHTML='<div class="empty">Nie udało się sprawdzić pliku. Użyj przycisku „Pobierz”.</div>'});
+    return}
+  if(ext!=="pdf"){fv.innerHTML='<div class="empty">Ten plik można pobrać przyciskiem powyżej.</div>';return}
+  fv.innerHTML='<div class="empty" id="fvload">Wczytywanie dokumentu…</div>';
+  var token={};ui.pdfToken=token;
+  function nativeView(){if(ui.pdfToken!==token)return;fv.innerHTML='<iframe title="'+esc(m.tytul)+'" src="'+esc(url)+'#view=FitH" style="width:100%;height:85vh;border:1px solid var(--line);border-radius:6px;background:#fff"></iframe>'}
+  fetch(url,{method:"HEAD",cache:"no-store"}).then(function(r){
+    if(!r.ok){fv.innerHTML='<div class="empty">Brak pliku na serwerze ('+esc(decodeURIComponent(String(url).split("/").pop()))+'). Wgraj na Netlify wszystkie pliki z folderu strony — zaznacz je Ctrl+A i przeciągnij razem.</div>';return}
+    var desktop=window.matchMedia&&window.matchMedia("(min-width: 900px) and (pointer: fine)").matches;
+    if(desktop) return nativeView();
+    pdfJsView();
+  }).catch(function(){pdfJsView()});
+  function pdfJsView(){
+  loadPdfJs().then(function(lib){return lib.getDocument(url).promise}).then(async function(doc){
+    if(ui.pdfToken!==token) return;
+    fv.innerHTML='<p class="note" style="margin:0 0 8px">'+doc.numPages+' '+odm(doc.numPages,"strona","strony","stron")+'</p>';
+    var w=Math.min(fv.clientWidth||900,900),dpr=Math.min(window.devicePixelRatio||1,2);
+    for(var i=1;i<=doc.numPages;i++){
+      if(ui.pdfToken!==token||!fv.isConnected) return;
+      var pg=await doc.getPage(i),vp0=pg.getViewport({scale:1}),sc=w/vp0.width,vp=pg.getViewport({scale:sc*dpr});
+      var c=document.createElement("canvas");c.width=vp.width;c.height=vp.height;c.className="pdfpage";c.style.width=w+"px";
+      fv.appendChild(c);await pg.render({canvasContext:c.getContext("2d"),viewport:vp}).promise;
+    }
+  }).catch(function(){nativeView()});
+  }
+}
+function linkBtn(m,label){return m.link?'<a class="btn ghost" href="'+esc(m.link)+'" target="_blank" rel="noopener">'+label+' ↗</a>':''}
+function presView(m,p,k,cr,adm){
+  var sl=m.slajdy||[],n=sl.length;
+  if(ui.slide>=n) ui.slide=0;
+  var top=cr+'<div class="toolbar"><h2 style="margin:0;flex:1">'+esc(m.tytul)+'</h2>'+linkBtn(m,"Plik prezentacji")+adm+'</div>'+(m.opis?'<p class="note" style="margin-top:-6px">'+esc(m.opis)+'</p>':'');
+  if(!n){app().innerHTML=top+'<div class="empty">'+(m.link?'Prezentacja jest dostępna jako plik — użyj przycisku „Plik prezentacji”.':'Ta prezentacja nie ma jeszcze slajdów.')+'</div>';return}
+  var s=sl[ui.slide];
+  app().innerHTML=top+'<div class="viewer" style="'+cvar(k)+'"><div class="slide '+(s.img?"":"solo")+'"><h2>'+esc(s.t)+'</h2>'+
+    ((s.p||[]).length?'<ul>'+s.p.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'<div></div>')+
+    (s.img?'<div class="fig"><img src="'+esc(s.img)+'" alt=""></div>':'')+
+    '<span class="school">'+esc(p.nazwa)+' · '+esc(S.config.tytul)+'</span><span class="no">'+(ui.slide+1)+' / '+n+'</span></div>'+
+    '<div class="ctrl"><button id="prev" '+(ui.slide===0?"disabled":"")+'>← Poprzedni</button><span>strzałki ← → na klawiaturze</span><button id="next" '+(ui.slide===n-1?"disabled":"")+'>Następny →</button></div></div>';
+  $("#prev").onclick=function(){if(ui.slide>0){ui.slide--;presView(m,p,k,cr,adm);wireEdit(m,p)}};
+  $("#next").onclick=function(){if(ui.slide<n-1){ui.slide++;presView(m,p,k,cr,adm);wireEdit(m,p)}};
+}
+function wireEdit(m,p){var e=$("#editmat"); if(e) e.onclick=function(){ui.adm.tab="przedmioty";ui.adm.kier=p.kierunek;ui.adm.klasa=+p.klasa;ui.adm.subj=p.id;ui.adm.mat=clone(m);location.hash="admin"}}
+document.addEventListener("keydown",function(e){
+  var h=curHash(); if(h.indexOf("m-")!==0) return;
+  if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+  var m=material(h.slice(2)); if(!m||m.typ!=="prezentacja") return;
+  var n=(m.slajdy||[]).length;
+  if(e.key==="ArrowRight"&&ui.slide<n-1){ui.slide++;materialView(m)}
+  if(e.key==="ArrowLeft"&&ui.slide>0){ui.slide--;materialView(m)}
+});
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function testView(m,p,k,cr,adm){
+  ui.lock=true;
+  var pyt=(m.pytania||[]).map(function(q,i){return Object.assign({i:i},q)});
+  if(m.losuj) pyt=shuffle(pyt);
+  var czas=+m.czas||0;
+  app().innerHTML=cr+'<div class="test-box" style="'+cvar(k)+'">'+(czas?'<span class="timer" id="timer">'+czas+':00</span>':'')+
+    '<div class="toolbar"><h2 style="margin:0;flex:1">'+esc(m.tytul)+'</h2>'+adm+'</div><p class="note">'+esc(m.opis||"")+' '+(czas?'Czas: '+czas+' min · ':'')+pyt.length+' pytań · '+esc(p.nazwa)+', kl. '+esc(p.klasa)+'</p>'+
+    '<div class="studinfo"><input id="imie" placeholder="Imię i nazwisko"><input id="kl" placeholder="Klasa (np. 3TM)" style="max-width:180px;min-width:120px"></div>'+
+    '<form id="f">'+pyt.map(function(q,i){return '<div class="q" data-i="'+i+'"><span class="n">Pytanie '+(i+1)+' / '+pyt.length+'</span><h4>'+esc(q.q)+'</h4>'+(q.img?'<img src="'+esc(q.img)+'" alt="">':'')+
+      (q.o||[]).map(function(o,j){return '<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"><span>'+esc(o)+'</span></label>'}).join("")+(q.w?'<div class="expl">'+esc(q.w)+'</div>':'')+'</div>'}).join("")+
+    (pyt.length?'<button class="btn accent" type="submit">Sprawdź odpowiedzi</button>':'<div class="empty">Test nie ma jeszcze pytań.</div>')+'</form><div id="res"></div></div>';
+  wireEdit(m,p);
+  var done=false,form=$("#f");
+  if(czas){var left=czas*60,tEl=$("#timer");
+    ui.timer=setInterval(function(){left--;if(left<0){clearInterval(ui.timer);finish();return}tEl.textContent=Math.floor(left/60)+":"+String(left%60).padStart(2,"0")},1000);}
+  form.addEventListener("submit",function(e){e.preventDefault();finish()});
+  function finish(){
+    if(done)return; done=true; clearInterval(ui.timer);
+    var pkt=0;
+    pyt.forEach(function(q,i){
+      var box=form.querySelector('[data-i="'+i+'"]'); box.classList.add("done");
+      var sel=form.querySelector('input[name="q'+i+'"]:checked');
+      $$(".opt",box).forEach(function(l,j){if(j===+q.ok)l.classList.add("good");else if(sel&&+sel.value===j)l.classList.add("wrong")});
+      $$("input",box).forEach(function(x){x.disabled=true});
+      if(sel&&+sel.value===+q.ok) pkt++;
+    });
+    var max=pyt.length,pct=max?Math.round(pkt/max*100):0,oc=ocena(pct);
+    var imie=$("#imie").value.trim(),kl=$("#kl").value.trim(),d=new Date().toLocaleString("pl-PL");
+    $("#res").innerHTML='<div class="result"><div class="big">'+pkt+' / '+max+' pkt · '+pct+'%</div><div>Ocena: <b>'+oc[0]+' ('+oc[1]+')</b></div><p class="note" style="color:#cfd6e4">'+esc(imie||"—")+(kl?' · '+esc(kl):'')+' · '+esc(m.tytul)+' · '+d+'</p><p style="margin:8px 0 0;font-size:14px">Pod każdym pytaniem widzisz poprawną odpowiedź i wyjaśnienie.</p><div class="toolbar" style="margin-top:12px"><button class="btn ghost" id="again">Rozwiąż ponownie</button></div></div>';
+    var sb=form.querySelector("button[type=submit]"); if(sb) sb.style.display="none";
+    var w=LS.get("pz-wyniki",[]); w.push({tytul:m.tytul,pkt:pkt,max:max,ocena:oc[1],data:d}); LS.set("pz-wyniki",w.slice(-50));
+    $("#again").onclick=function(){materialView(m)};
+    $("#res").scrollIntoView({behavior:"smooth",block:"center"});
+  }
+}
+function progiTxt(max){var p=S.config.progi,l=["bdb","db","dst","dop"];return p.map(function(x,i){return l[i]+" ≥ "+Math.ceil(max*x/100)+" pkt"}).join(" · ")+" · ndst poniżej "+Math.ceil(max*p[3]/100)+" pkt"}
+function taskView(m,p,k,cr,adm){
+  var oc=(m.ocena||[]).filter(function(r){return r[0]}),suma=oc.reduce(function(a,b){return a+(+b[1]||0)},0);
+  function list(arr,tag){return arr&&arr.length?'<'+tag+'>'+arr.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</'+tag+'>':''}
+  app().innerHTML=cr+'<div class="toolbar"><button class="btn" id="print">Drukuj kartę</button>'+linkBtn(m,"Pliki do zadania")+adm+'<span class="note" id="pmsg"></span></div>'+
+   '<article class="task" style="'+cvar(k)+'"><div class="head"><div><span class="pill" style="'+cvar(k)+'">'+esc(p.nazwa)+' · zadanie praktyczne</span><h1>'+esc(m.tytul)+'</h1></div>'+
+   '<div class="meta" style="flex-direction:column;align-items:flex-end"><span>'+esc(k.skrot)+' · kl. '+esc(p.klasa)+'</span>'+(m.czas?'<span>Czas: '+m.czas+' min</span>':'')+(suma?'<span>Max: '+suma+' pkt</span>':'')+'</div></div>'+
+   '<p><b>Imię i nazwisko:</b> ............................................ <b>Klasa:</b> ........ <b>Data:</b> ..........</p>'+
+   (m.cel?'<h3>Cel ćwiczenia</h3><p>'+esc(m.cel)+'</p>':'')+
+   (m.zmienne&&m.zmienne.length?'<h3>Lista zmiennych</h3><table><tr><th>Adres</th><th>Symbol</th><th>Opis</th></tr>'+m.zmienne.map(function(r){return '<tr><td class="mono">'+esc(r[0])+'</td><td class="mono">'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>'}).join("")+'</table>':'')+
+   (m.materialy&&m.materialy.length?'<h3>Materiały i stanowisko</h3>'+list(m.materialy,"ul"):'')+
+   (m.obraz?'<h3>Schemat</h3><div class="schem"><img src="'+esc(m.obraz)+'" alt="Schemat"></div>':'')+
+   (m.polecenie&&m.polecenie.length?'<h3>Polecenie</h3>'+list(m.polecenie,"ol"):'')+
+   (m.warunki&&m.warunki.length?'<h3>Warunki działania</h3>'+list(m.warunki,"ol"):'')+
+   (m.wynik?'<p class="note"><b>Wynik do sprawdzenia:</b> '+esc(m.wynik)+'</p>':'')+
+   (m.bhp?'<h3>Bezpieczeństwo</h3><div class="warn">'+esc(m.bhp)+'</div>':'')+
+   (oc.length?'<h3>Karta oceniania</h3><table><tr><th>Kryterium</th><th>Max</th><th>Uzyskano</th></tr>'+oc.map(function(r){return '<tr><td>'+esc(r[0])+'</td><td class="pts">'+esc(r[1])+'</td><td class="pts"></td></tr>'}).join("")+'<tr><td><b>Razem</b></td><td class="pts"><b>'+suma+'</b></td><td class="pts"></td></tr></table><p class="note">Ocena: '+progiTxt(suma)+'</p>':'')+
+   '</article>';
+  wireEdit(m,p);
+  $("#print").onclick=function(){try{window.print()}catch(e){} $("#pmsg").textContent="Jeśli okno drukowania się nie otworzyło, drukuj ze strony dla uczniów (pobranej z panelu) albo użyj Ctrl+P.";};
+}
+
+/* ================== PANEL ADMINISTRACYJNY ================== */
+var ADM_TABS=[["przedmioty","Przedmioty i materiały"],["ogloszenia","Ogłoszenia"],["kierunki","Kierunki"],["ustawienia","Ustawienia strony"],["eksport","Publikacja i kopia"]];
+function adminView(){
+  hero(false); ui.lock=true;
+  app().innerHTML=crumb([["Panel administracyjny"]])+'<h1 style="margin:0 0 16px;font-size:28px">Panel administracyjny</h1><div class="adm"><div class="adm-side">'+
+    ADM_TABS.map(function(t){return '<button data-at="'+t[0]+'" class="'+(ui.adm.tab===t[0]?"on":"")+'">'+t[1]+'</button>'}).join("")+'</div><div id="adm-main"></div></div>';
+  $$("[data-at]").forEach(function(b){b.onclick=function(){ui.adm.tab=b.dataset.at;ui.adm.mat=null;ui.adm.ogl=null;ui.adm.cfg=null;adminView()}});
+  admMain();
+}
+function admMain(){
+  var t=ui.adm.tab;
+  if(t==="przedmioty"){ if(ui.adm.mat) return matEditor(); if(ui.adm.subj&&przedmiot(ui.adm.subj)) return subjMaterials(); ui.adm.subj=null; return subjList(); }
+  if(t==="ogloszenia") return oglAdmin();
+  if(t==="kierunki") return kierAdmin();
+  if(t==="ustawienia") return cfgAdmin();
+  if(t==="eksport") return exportAdmin();
+}
+function M(){return $("#adm-main")}
+function confirmBtn(btn,fn){
+  btn.onclick=function(){
+    if(!btn.classList.contains("arm")){var old=btn.textContent;btn.classList.add("arm");btn.textContent="Na pewno?";setTimeout(function(){if(btn.isConnected){btn.classList.remove("arm");btn.textContent=old}},3500);return}
+    fn();
+  };
+}
+function setStatus(el,msg,ok){if(!el)return;el.className="status "+(ok===true?"ok":ok===false?"err":"");el.textContent=msg}
+async function run(statusEl,fn,okMsg){
+  setStatus(statusEl,"Zapisywanie…");
+  try{await fn();setStatus(statusEl,okMsg||"Zapisano ✓",true);return true}catch(e){setStatus(statusEl,errMsg(e),false);return false}
+}
+
+/* --- lista przedmiotów --- */
+function subjList(){
+  var a=ui.adm,k=kier(a.kier)||S.config.kierunki[0];a.kier=k.id;
+  var ps=subjectsOf(k.id,a.klasa);
+  M().innerHTML='<p class="sec-label">Kierunek</p><div class="chips">'+S.config.kierunki.map(function(x){return '<button class="chip '+(x.id===k.id?"on":"")+'" data-kier="'+x.id+'">'+esc(x.skrot)+' ('+subjectsOf(x.id).length+')</button>'}).join("")+'</div>'+
+   '<p class="sec-label">Klasa</p><div class="chips">'+klasyOf(k).map(function(n){return '<button class="chip '+(n===a.klasa?"on":"")+'" data-kl="'+n+'">'+n+' ('+subjectsOf(k.id,n).length+')</button>'}).join("")+'</div>'+
+   '<h3 class="h3">Przedmioty — '+esc(k.nazwa)+', klasa '+a.klasa+'</h3>'+
+   (ps.length?ps.map(function(p,i){
+     if(a.editSubj===p.id) return '<div class="lrow" style="'+cvar(k)+'"><div class="form" style="flex:1"><div class="row2"><div class="field"><label>Nazwa przedmiotu</label><input type="text" id="es-n" value="'+esc(p.nazwa)+'"></div><div class="field"><label>Klasa</label><select id="es-k">'+klasyOf(k).map(function(n){return '<option '+(+p.klasa===n?"selected":"")+'>'+n+'</option>'}).join("")+'</select></div></div><div class="field"><label>Krótki opis</label><input type="text" id="es-o" value="'+esc(p.opis||"")+'"></div><div class="toolbar" style="margin:0"><button class="btn" id="es-save">Zapisz</button><button class="btn ghost" id="es-cancel">Anuluj</button><span id="es-st" class="status"></span></div></div></div>';
+     var c=matsOf(p.id).length;
+     return '<div class="lrow"><div class="grow"><b>'+esc(p.nazwa)+'</b><span>'+c+' '+odm(c,"materiał","materiały","materiałów")+(p.opis?' · '+esc(p.opis):'')+'</span></div>'+
+      '<button class="btn ghost sm" data-up="'+i+'" '+(i===0?"disabled":"")+' title="W górę">↑</button><button class="btn ghost sm" data-down="'+i+'" '+(i===ps.length-1?"disabled":"")+' title="W dół">↓</button>'+
+      '<button class="btn sm" data-open="'+p.id+'">Materiały →</button><button class="btn ghost sm" data-edit="'+p.id+'">Edytuj</button><button class="btn danger sm" data-del="'+p.id+'">Usuń</button></div>';
+   }).join(""):'<div class="empty">Brak przedmiotów w tej klasie. Dodaj pierwszy poniżej.</div>')+
+   '<div class="panel" style="margin-top:16px"><h3 style="margin:0 0 10px">Dodaj przedmiot do klasy '+a.klasa+'</h3><div class="form"><div class="field"><label>Nazwa przedmiotu</label><input type="text" id="np-n" placeholder="np. Sterowniki PLC"></div><div class="field"><label>Krótki opis (opcjonalnie)</label><input type="text" id="np-o" placeholder="np. Programowanie w LAD, układy sekwencyjne"></div><div class="toolbar" style="margin:0"><button class="btn" id="np-add">+ Dodaj przedmiot</button><span class="status" id="np-st"></span></div></div></div>'+
+   '<p class="note">Usunięcie przedmiotu usuwa też wszystkie jego materiały.</p>';
+  $$("[data-kier]",M()).forEach(function(b){b.onclick=function(){a.kier=b.dataset.kier;a.editSubj=null;var mx=klasyOf(kier(a.kier)).length;if(a.klasa>mx)a.klasa=1;subjList()}});
+  $$("[data-kl]",M()).forEach(function(b){b.onclick=function(){a.klasa=+b.dataset.kl;a.editSubj=null;subjList()}});
+  $$("[data-open]",M()).forEach(function(b){b.onclick=function(){a.subj=b.dataset.open;admMain()}});
+  $$("[data-edit]",M()).forEach(function(b){b.onclick=function(){a.editSubj=b.dataset.edit;subjList()}});
+  $$("[data-del]",M()).forEach(function(b){confirmBtn(b,async function(){b.disabled=true;b.textContent="Usuwanie…";try{await Store.delPrzedmiot(b.dataset.del)}catch(e){alertBox(errMsg(e))}subjList()})});
+  $$("[data-up]",M()).forEach(function(b){b.onclick=function(){moveItem(ps,+b.dataset.up,-1,Store.savePrzedmiot,subjList)}});
+  $$("[data-down]",M()).forEach(function(b){b.onclick=function(){moveItem(ps,+b.dataset.down,1,Store.savePrzedmiot,subjList)}});
+  var es=$("#es-save");
+  if(es){
+    $("#es-cancel").onclick=function(){a.editSubj=null;subjList()};
+    es.onclick=async function(){var p=clone(przedmiot(a.editSubj));p.nazwa=$("#es-n").value.trim();p.opis=$("#es-o").value.trim();p.klasa=+$("#es-k").value;
+      if(!p.nazwa)return setStatus($("#es-st"),"Podaj nazwę.",false);
+      if(await run($("#es-st"),function(){return Store.savePrzedmiot(p)})){a.editSubj=null;subjList()}};
+  }
+  $("#np-add").onclick=async function(){
+    var n=$("#np-n").value.trim(); if(!n) return setStatus($("#np-st"),"Podaj nazwę przedmiotu.",false);
+    var max=ps.reduce(function(m,x){return Math.max(m,x.kolejnosc||0)},0);
+    var p={id:uid("p"),nazwa:n,opis:$("#np-o").value.trim(),kierunek:k.id,klasa:a.klasa,kolejnosc:max+1};
+    if(await run($("#np-st"),function(){return Store.savePrzedmiot(p)},"Dodano ✓")) subjList();
+  };
+}
+function alertBox(msg){var el=M();if(el){var d=document.createElement("div");d.className="banner";d.textContent=msg;el.prepend(d)}}
+async function moveItem(list,i,dir,saveFn,after){
+  var j=i+dir; if(j<0||j>=list.length) return;
+  var arr=list.map(function(x){return clone(x)});
+  var t=arr[i];arr[i]=arr[j];arr[j]=t;
+  try{for(var n=0;n<arr.length;n++){if(arr[n].kolejnosc!==n+1){arr[n].kolejnosc=n+1;await saveFn(arr[n])}}}catch(e){alertBox(errMsg(e))}
+  after();
+}
+
+/* --- materiały przedmiotu --- */
+function subjMaterials(){
+  var a=ui.adm,p=przedmiot(a.subj),k=kier(p.kierunek);
+  M().innerHTML='<div class="toolbar"><button class="btn ghost sm" id="back">← Lista przedmiotów</button><a class="btn ghost sm" href="#s-'+p.id+'">Podgląd przedmiotu ↗</a></div>'+
+   '<div class="subhead" style="'+cvar(k)+';margin-bottom:10px"><div><span class="pill" style="'+cvar(k)+'">'+esc(k.skrot)+' · klasa '+esc(p.klasa)+'</span><h1 style="font-size:24px;margin-top:4px">'+esc(p.nazwa)+'</h1></div></div>'+
+   '<div class="toolbar"><button class="btn" data-new="prezentacja">+ Prezentacja</button><button class="btn" data-new="test">+ Test</button><button class="btn" data-new="zadanie">+ Zadanie praktyczne</button></div>'+
+   ["teoria","cwiczenia"].map(function(t){var ms=matsOfD(p.id,t);
+     return '<h3 class="h3">'+DZIALY[t]+' ('+ms.length+')</h3>'+(ms.length?ms.map(function(m,i){
+       var info=m.plik?"plik "+fileExt(m.plik)+" · "+fmtSize(m.plik.rozmiar):(TYPY[m.typ]+" · "+(m.typ==="prezentacja"?(m.slajdy||[]).length+" slajdów":m.typ==="test"?(m.pytania||[]).length+" pytań · "+(m.czas||0)+" min":(m.czas?m.czas+" min":"")));
+       return '<div class="lrow"><div class="grow"><b>'+esc(m.tytul)+'</b><span>'+info+'</span></div>'+
+        '<button class="btn ghost sm" data-mu="'+t+':'+i+'" '+(i===0?"disabled":"")+'>↑</button><button class="btn ghost sm" data-md="'+t+':'+i+'" '+(i===ms.length-1?"disabled":"")+'>↓</button>'+
+        '<a class="btn ghost sm" href="#m-'+m.id+'">Podgląd</a><button class="btn ghost sm" data-dup="'+m.id+'">Duplikuj</button><button class="btn sm" data-me="'+m.id+'">Edytuj</button><button class="btn danger sm" data-mdel="'+m.id+'">Usuń</button></div>'}).join(""):'<p class="note">Brak.</p>')}).join("");
+  $("#back").onclick=function(){a.subj=null;admMain()};
+  $$("[data-new]",M()).forEach(function(b){b.onclick=function(){a.mat=newMaterial(p,b.dataset.new);admMain();window.scrollTo(0,0)}});
+  $$("[data-me]",M()).forEach(function(b){b.onclick=function(){a.mat=clone(material(b.dataset.me));admMain();window.scrollTo(0,0)}});
+  $$("[data-dup]",M()).forEach(function(b){b.onclick=async function(){var m=clone(material(b.dataset.dup));m.id=uid("m");m.tytul+=" (kopia)";m.kolejnosc=(m.kolejnosc||0)+0.5;try{await Store.saveMaterial(m)}catch(e){alertBox(errMsg(e))}subjMaterials()}});
+  $$("[data-mdel]",M()).forEach(function(b){confirmBtn(b,async function(){try{await Store.delMaterial(b.dataset.mdel)}catch(e){alertBox(errMsg(e))}subjMaterials()})});
+  function mv(b,dir){var x=b.split(":"),ms=matsOfD(p.id,x[0]);moveItem(ms,+x[1],dir,Store.saveMaterial,subjMaterials)}
+  $$("[data-mu]",M()).forEach(function(b){b.onclick=function(){mv(b.dataset.mu,-1)}});
+  $$("[data-md]",M()).forEach(function(b){b.onclick=function(){mv(b.dataset.md,1)}});
+}
+function newMaterial(p,typ){
+  var dz=typ==="prezentacja"?"teoria":"cwiczenia";
+  var max=matsOfD(p.id,dz).reduce(function(m,x){return Math.max(m,x.kolejnosc||0)},0);
+  var m={id:uid("m"),przedmiot:p.id,typ:typ,dzial:dz,tytul:"",opis:"",link:"",kolejnosc:max+1};
+  if(typ==="prezentacja") m.slajdy=[{t:"",p:[],img:""}];
+  if(typ==="test"){m.czas=15;m.losuj=false;m.pytania=[{q:"",o:["","","",""],ok:0,w:"",img:""}]}
+  if(typ==="zadanie"){m.czas=45;m.cel="";m.materialy=[];m.zmienne=[];m.polecenie=[];m.warunki=[];m.wynik="";m.bhp="";m.obraz="";m.ocena=[["",1]]}
+  return m;
+}
+
+/* --- edytor materiału --- */
+var F={
+  text:function(l,p,v,h,t){return '<div class="field"><label>'+l+'</label><input type="'+(t||"text")+'" data-f="'+p+'" value="'+esc(v)+'">'+(h?'<div class="hint">'+h+'</div>':'')+'</div>'},
+  area:function(l,p,v,h){return '<div class="field"><label>'+l+'</label><textarea data-f="'+p+'">'+esc(v)+'</textarea>'+(h?'<div class="hint">'+h+'</div>':'')+'</div>'},
+  lines:function(l,p,arr,h){return '<div class="field"><label>'+l+'</label><textarea data-lines="'+p+'">'+esc((arr||[]).join("\n"))+'</textarea><div class="hint">'+(h||"Każdy punkt w osobnej linii.")+'</div></div>'},
+  img:function(l,p,v){return '<div class="field"><label>'+l+'</label>'+(v?'<img class="imgprev" src="'+esc(v)+'" alt=""><button type="button" class="btn danger sm" data-imgdel="'+p+'">Usuń obraz</button> ':'')+'<input type="file" accept="image/*" data-img="'+p+'"><div class="hint">PNG, JPG lub SVG — duże zdjęcia zostaną automatycznie zmniejszone.</div></div>'}
+};
+function repHead(label,arr,i){return '<div class="rep-head"><span>'+label+' '+(i+1)+'</span><span class="acts"><button type="button" class="btn ghost sm" data-rup="'+arr+'.'+i+'" '+(i===0?"disabled":"")+'>↑</button><button type="button" class="btn ghost sm" data-rdown="'+arr+'.'+i+'">↓</button><button type="button" class="btn danger sm" data-rdel="'+arr+'.'+i+'">Usuń</button></span></div>'}
+function matEditor(){
+  var a=ui.adm,m=a.mat,p=przedmiot(m.przedmiot);
+  var isNew=!material(m.id);
+  var h='<div class="toolbar"><button class="btn ghost sm" id="mback">← Wróć do materiałów</button></div><h2>'+(isNew?"Nowy materiał":"Edycja")+': '+(m.plik?"plik "+fileExt(m.plik):TYPY[m.typ])+' <span class="note">· '+esc(p?p.nazwa:"")+'</span></h2><div class="form" id="mform">'+
+    F.text("Tytuł *","tytul",m.tytul)+F.area("Krótki opis","opis",m.opis,"Widoczny na liście materiałów.")+
+    '<div class="field"><label>Zakładka w przedmiocie</label><select data-f="dzial">'+["teoria","cwiczenia"].map(function(t){return '<option value="'+t+'" '+(dzialOf(m)===t?"selected":"")+'>'+DZIALY[t]+'</option>'}).join("")+'</select></div>';
+  if(m.plik){
+    h+='<div class="panel"><b>Plik:</b> '+esc(m.plik.nazwa)+' ('+esc(fileExt(m.plik))+', '+fmtSize(m.plik.rozmiar)+')<p class="note">Plik pokazuje się uczniom dokładnie tak, jak go wysłałeś. Aby podmienić plik, wyślij nową wersję Claude\'owi w rozmowie.</p></div>';
+  }
+  else{
+  if(m.typ==="prezentacja"){
+    h+=F.text("Link do pliku prezentacji (opcjonalnie)","link",m.link,"Np. link do PowerPointa na OneDrive / Google Drive. Uczniowie zobaczą przycisk „Plik prezentacji”. Możesz dać sam link bez slajdów.","url");
+    h+='<h3 class="h3" style="margin-bottom:0">Slajdy</h3>'+(m.slajdy||[]).map(function(s,i){return '<div class="rep">'+repHead("Slajd","slajdy",i)+F.text("Tytuł slajdu","slajdy."+i+".t",s.t)+F.lines("Punkty","slajdy."+i+".p",s.p)+F.img("Obraz / schemat (opcjonalnie)","slajdy."+i+".img",s.img)+'</div>'}).join("")+
+      '<button type="button" class="btn ghost" data-radd="slajdy">+ Dodaj slajd</button>';
+  }
+  if(m.typ==="test"){
+    h+='<div class="row2">'+F.text("Czas (min, 0 = bez limitu)","czas",m.czas,"","number")+'<div class="field"><label>Kolejność pytań</label><label style="font-weight:400"><input type="checkbox" data-f="losuj" '+(m.losuj?"checked":"")+'> Losuj kolejność pytań dla każdego ucznia</label></div></div>';
+    h+='<h3 class="h3" style="margin-bottom:0">Pytania</h3>'+(m.pytania||[]).map(function(q,i){
+      return '<div class="rep">'+repHead("Pytanie","pytania",i)+F.area("Treść pytania","pytania."+i+".q",q.q)+
+        '<div class="field"><label>Odpowiedzi — zaznacz poprawną</label>'+(q.o||[]).map(function(o,j){return '<div class="optrow" style="margin-bottom:6px"><input type="radio" name="ok'+i+'" data-f="pytania.'+i+'.ok" value="'+j+'" '+(+q.ok===j?"checked":"")+' title="Poprawna"><input type="text" data-f="pytania.'+i+'.o.'+j+'" value="'+esc(o)+'" placeholder="Odpowiedź '+String.fromCharCode(65+j)+'"><button type="button" class="btn ghost sm" data-odel="'+i+'.'+j+'" '+(q.o.length<=2?"disabled":"")+'>✕</button></div>'}).join("")+
+        (q.o.length<6?'<button type="button" class="btn ghost sm" data-oadd="'+i+'">+ odpowiedź</button>':'')+'</div>'+
+        F.area("Wyjaśnienie (pokazywane po sprawdzeniu)","pytania."+i+".w",q.w,"Przy obliczeniach rozpisz kroki z jednostkami.")+F.img("Obraz do pytania (opcjonalnie)","pytania."+i+".img",q.img)+'</div>'}).join("")+
+      '<button type="button" class="btn ghost" data-radd="pytania">+ Dodaj pytanie</button>';
+  }
+  if(m.typ==="zadanie"){
+    h+='<div class="row2">'+F.text("Czas (min)","czas",m.czas,"","number")+F.text("Link do plików (opcjonalnie)","link",m.link,"Np. projekt TIA Portal, PDF, karta katalogowa.","url")+'</div>'+
+      F.area("Cel ćwiczenia","cel",m.cel)+
+      F.lines("Materiały i stanowisko","materialy",m.materialy)+
+      '<div class="field"><label>Lista zmiennych (opcjonalnie — PLC)</label><textarea data-table="zmienne" placeholder="I0.0 | S1 | Przycisk START (NO)">'+esc((m.zmienne||[]).map(function(r){return r.join(" | ")}).join("\n"))+'</textarea><div class="hint">Każda zmienna w osobnej linii: adres | symbol | opis</div></div>'+
+      F.img("Schemat / grafika układu","obraz",m.obraz)+
+      F.lines("Polecenie (kroki)","polecenie",m.polecenie)+
+      F.lines("Warunki działania (opcjonalnie)","warunki",m.warunki)+
+      F.area("Wynik do sprawdzenia (opcjonalnie)","wynik",m.wynik)+
+      F.area("Bezpieczeństwo / BHP (opcjonalnie)","bhp",m.bhp)+
+      '<h3 class="h3" style="margin-bottom:0">Karta oceniania</h3><div class="rep">'+(m.ocena||[]).map(function(r,i){return '<div class="optrow"><input type="text" data-f="ocena.'+i+'.0" value="'+esc(r[0])+'" placeholder="Kryterium"><input type="number" data-f="ocena.'+i+'.1" value="'+esc(r[1])+'" style="width:80px;border:1px solid var(--line);border-radius:5px;padding:7px" min="0"> pkt<button type="button" class="btn ghost sm" data-rdel="ocena.'+i+'">✕</button></div>'}).join("")+
+      '<button type="button" class="btn ghost sm" data-radd="ocena">+ kryterium</button></div>';
+  }
+  }
+  h+='</div><div class="stickybar"><button class="btn accent" id="msave" style="--c:var(--ok)">Zapisz materiał</button><button class="btn ghost" id="mcancel">Anuluj</button><span class="status" id="mst"></span></div>';
+  M().innerHTML=h;
+  var form=$("#mform");
+  form.addEventListener("input",bind);form.addEventListener("change",bind);
+  function bind(e){
+    var el=e.target;
+    if(el.dataset.f){var v=el.type==="checkbox"?el.checked:(el.type==="number"||el.type==="radio")?Number(el.value):el.value;if(el.type==="radio"&&!el.checked)return;setPath(m,el.dataset.f,v)}
+    else if(el.dataset.lines){setPath(m,el.dataset.lines,el.value.split("\n").map(function(s){return s.trim()}).filter(Boolean))}
+    else if(el.dataset.table){m[el.dataset.table]=el.value.split("\n").map(function(s){return s.trim()}).filter(Boolean).map(function(l){var x=l.split(/\s*[|;]\s*/);return [x[0]||"",x[1]||"",x.slice(2).join(" ")||""]})}
+    else if(el.dataset.img&&e.type==="change"&&el.files&&el.files[0]){
+      setStatus($("#mst"),"Wczytywanie obrazu…");
+      readImage(el.files[0]).then(function(url){setPath(m,el.dataset.img,url);matEditor();setStatus($("#mst"),"Obraz dodany — pamiętaj o zapisie.",true)}).catch(function(){setStatus($("#mst"),"Nie udało się wczytać obrazu.",false)});
+    }
+  }
+  form.addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    var d=b.dataset,arr,x;
+    if(d.imgdel){setPath(m,d.imgdel,"");return matEditor()}
+    if(d.radd){arr=m[d.radd];arr.push(d.radd==="slajdy"?{t:"",p:[],img:""}:d.radd==="pytania"?{q:"",o:["","","",""],ok:0,w:"",img:""}:["",1]);return matEditor()}
+    if(d.rdel){x=d.rdel.split(".");m[x[0]].splice(+x[1],1);return matEditor()}
+    if(d.rup||d.rdown){x=(d.rup||d.rdown).split(".");arr=m[x[0]];var i=+x[1],j=i+(d.rup?-1:1);if(j<0||j>=arr.length)return;var t=arr[i];arr[i]=arr[j];arr[j]=t;return matEditor()}
+    if(d.oadd){m.pytania[+d.oadd].o.push("");return matEditor()}
+    if(d.odel){x=d.odel.split(".");var q=m.pytania[+x[0]],jj=+x[1];q.o.splice(jj,1);if(+q.ok===jj)q.ok=0;else if(+q.ok>jj)q.ok--;return matEditor()}
+  });
+  $("#mback").onclick=$("#mcancel").onclick=function(){a.mat=null;admMain()};
+  $("#msave").onclick=async function(){
+    if(!m.tytul.trim()) return setStatus($("#mst"),"Podaj tytuł.",false);
+    if(m.typ==="test"){var bad=(m.pytania||[]).findIndex(function(q){return !q.q.trim()||q.o.filter(function(o){return o.trim()}).length<2});if(bad>=0)return setStatus($("#mst"),"Pytanie "+(bad+1)+": wpisz treść i co najmniej 2 odpowiedzi.",false)}
+    if(m.typ==="test") (m.pytania||[]).forEach(function(q){var okTxt=q.o[+q.ok];if(!String(okTxt||"").trim())return;var no=[];q.o.forEach(function(o,j){if(String(o).trim())no.push(o)});q.ok=no.indexOf(okTxt);q.o=no});
+    if(m.typ==="test"){var bad2=(m.pytania||[]).findIndex(function(q){return !String(q.o[+q.ok]||"").trim()});if(bad2>=0)return setStatus($("#mst"),"Pytanie "+(bad2+1)+": zaznaczona poprawna odpowiedź jest pusta.",false)}
+    if(m.typ==="zadanie") m.ocena=(m.ocena||[]).filter(function(r){return String(r[0]).trim()}).map(function(r){return [r[0],+r[1]||0]});
+    var btn=this;btn.disabled=true;
+    var ok=await run($("#mst"),function(){return Store.saveMaterial(clone(m))});
+    btn.disabled=false;
+    if(ok){a.mat=null;admMain();window.scrollTo(0,0)}
+  };
+}
+function readImage(file){
+  return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onerror=rej;
+    if(file.type==="image/svg+xml"){r.onload=function(){res(r.result)};r.readAsDataURL(file);return}
+    r.onload=function(){
+      var im=new Image();
+      im.onload=function(){
+        var max=1400,w=im.width,h=im.height,sc=Math.min(1,max/Math.max(w,h));w=Math.round(w*sc);h=Math.round(h*sc);
+        var c=document.createElement("canvas");c.width=w;c.height=h;var x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,w,h);x.drawImage(im,0,0,w,h);
+        var q=0.85,out=c.toDataURL("image/jpeg",q);
+        if(file.type==="image/png"){var png=c.toDataURL("image/png");if(png.length<170000)out=png}
+        while(out.length>170000&&q>0.35){q-=0.1;out=c.toDataURL("image/jpeg",q)}
+        res(out);
+      };
+      im.onerror=rej; im.src=r.result;
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+/* --- ogłoszenia --- */
+function oglAdmin(){
+  var a=ui.adm,c=S.config,list=c.ogloszenia.slice().sort(function(x,y){return (y.data||"").localeCompare(x.data||"")});
+  var d=a.ogl;
+  M().innerHTML='<h2>Ogłoszenia i terminy</h2><p class="note" style="margin-top:-8px">Na stronie głównej widać nadchodzące terminy i te z ostatnich 7 dni.</p>'+
+   '<div class="panel" style="margin-bottom:16px"><h3 style="margin:0 0 10px">'+(d&&d.id&&c.ogloszenia.some(function(o){return o.id===d.id})?"Edytuj ogłoszenie":"Nowe ogłoszenie")+'</h3><div class="form"><div class="row2"><div class="field"><label>Data</label><input type="date" id="o-d" value="'+esc(d?d.data:todayStr())+'"></div><div class="field"><label>Kierunek</label><select id="o-k"><option value="">Wszystkie kierunki</option>'+c.kierunki.map(function(k){return '<option value="'+k.id+'" '+(d&&d.kierunek===k.id?"selected":"")+'>'+esc(k.nazwa)+'</option>'}).join("")+'</select></div></div>'+
+   '<div class="field"><label>Tytuł</label><input type="text" id="o-t" value="'+esc(d?d.tytul:"")+'" placeholder="np. Sprawdzian z pneumatyki — 2TM"></div><div class="field"><label>Treść</label><textarea id="o-x">'+esc(d?d.tekst:"")+'</textarea></div>'+
+   '<div class="toolbar" style="margin:0"><button class="btn" id="o-save">Zapisz ogłoszenie</button>'+(d?'<button class="btn ghost" id="o-new">Wyczyść</button>':'')+'<span class="status" id="o-st"></span></div></div></div>'+
+   (list.length?list.map(function(o){var k=kier(o.kierunek);return '<div class="lrow"><span class="mono" style="width:96px">'+esc(o.data)+'</span><div class="grow"><b>'+esc(o.tytul)+'</b><span>'+esc(k?k.skrot:"Wszystkie kierunki")+' · '+esc(o.tekst)+'</span></div><button class="btn ghost sm" data-oe="'+o.id+'">Edytuj</button><button class="btn danger sm" data-od="'+o.id+'">Usuń</button></div>'}).join(""):'<div class="empty">Brak ogłoszeń.</div>');
+  $$("[data-oe]",M()).forEach(function(b){b.onclick=function(){a.ogl=clone(c.ogloszenia.filter(function(o){return o.id===b.dataset.oe})[0]);oglAdmin();window.scrollTo(0,0)}});
+  $$("[data-od]",M()).forEach(function(b){confirmBtn(b,async function(){var nc=clone(S.config);nc.ogloszenia=nc.ogloszenia.filter(function(o){return o.id!==b.dataset.od});try{await Store.saveConfig(nc)}catch(e){alertBox(errMsg(e))}oglAdmin()})});
+  var nw=$("#o-new"); if(nw) nw.onclick=function(){a.ogl=null;oglAdmin()};
+  $("#o-save").onclick=async function(){
+    var o={id:(d&&d.id)||uid("o"),data:$("#o-d").value,kierunek:$("#o-k").value,tytul:$("#o-t").value.trim(),tekst:$("#o-x").value.trim()};
+    if(!o.tytul||!o.data) return setStatus($("#o-st"),"Podaj datę i tytuł.",false);
+    var nc=clone(S.config);upsert(nc.ogloszenia,o);
+    if(await run($("#o-st"),function(){return Store.saveConfig(nc)})){a.ogl=null;oglAdmin()}
+  };
+}
+/* --- kierunki --- */
+function kierAdmin(){
+  var a=ui.adm; if(!a.cfg) a.cfg=clone(S.config);
+  var c=a.cfg;
+  M().innerHTML='<h2>Kierunki</h2><p class="note" style="margin-top:-8px">Lista kierunków jest stała — możesz zmienić ich nazwy, opisy i kolory.</p>'+c.kierunki.map(function(k,i){
+    return '<div class="rep" style="margin-bottom:12px;border-left:5px solid '+esc(k.kolor)+'"><div class="row3"><div class="field"><label>Pełna nazwa</label><input type="text" data-k="'+i+'.nazwa" value="'+esc(k.nazwa)+'"></div><div class="field"><label>Skrót w menu</label><input type="text" data-k="'+i+'.skrot" value="'+esc(k.skrot)+'"></div><div class="field"><label>Kolor</label><input type="color" data-k="'+i+'.kolor" value="'+esc(k.kolor)+'"></div></div><div class="field"><label>Opis</label><input type="text" data-k="'+i+'.opis" value="'+esc(k.opis)+'"></div></div>'}).join("")+
+   '<div class="stickybar"><button class="btn" id="k-save">Zapisz kierunki</button><span class="status" id="k-st"></span></div>';
+  $$("[data-k]",M()).forEach(function(el){el.oninput=function(){var x=el.dataset.k.split(".");c.kierunki[+x[0]][x[1]]=el.value}});
+  $("#k-save").onclick=async function(){var nc=clone(S.config);nc.kierunki=clone(c.kierunki);if(await run($("#k-st"),function(){return Store.saveConfig(nc)})){a.cfg=null;updateNav()}};
+}
+/* --- ustawienia --- */
+function cfgAdmin(){
+  var c=S.config;
+  M().innerHTML='<h2>Ustawienia strony</h2><div class="form">'+
+   '<div class="row2"><div class="field"><label>Nazwa platformy</label><input type="text" id="c-t" value="'+esc(c.tytul)+'"></div><div class="field"><label>Podpis pod nazwą</label><input type="text" id="c-p" value="'+esc(c.podtytul)+'"></div></div>'+
+   '<div class="field"><label>Mały napis nad nagłówkiem</label><input type="text" id="c-g" value="'+esc(c.heroTag)+'"></div>'+
+   '<div class="field"><label>Nagłówek strony głównej</label><input type="text" id="c-h" value="'+esc(c.heroTytul)+'"></div>'+
+   '<div class="field"><label>Tekst powitalny</label><textarea id="c-o">'+esc(c.heroOpis)+'</textarea></div>'+
+   '<div class="field"><label>Adres strony dla uczniów</label><input type="text" id="c-a" value="'+esc(c.adresStrony)+'"><div class="hint">Używany do otwierania plików z panelu na claude.ai.</div></div>'+
+   '<div class="field"><label>Stopka</label><input type="text" id="c-s" value="'+esc(c.stopka)+'"></div>'+
+   '<div class="field"><label>Progi ocen w testach i kartach oceniania (% punktów)</label><div class="optrow">'+["bdb","db","dst","dop"].map(function(l,i){return '<span class="mono">'+l+' ≥</span><input type="number" id="c-pr'+i+'" value="'+c.progi[i]+'" style="width:70px;border:1px solid var(--line);border-radius:5px;padding:7px">'}).join("")+'</div><div class="hint">Poniżej progu „dop” — niedostateczny.</div></div>'+
+   '</div><div class="stickybar"><button class="btn" id="c-save">Zapisz ustawienia</button><span class="status" id="c-st"></span></div>';
+  $("#c-save").onclick=async function(){
+    var nc=clone(S.config);nc.tytul=$("#c-t").value.trim()||DEFAULT_CONFIG.tytul;nc.podtytul=$("#c-p").value.trim();nc.heroTag=$("#c-g").value.trim();nc.heroTytul=$("#c-h").value.trim();nc.heroOpis=$("#c-o").value.trim();nc.stopka=$("#c-s").value.trim();nc.adresStrony=$("#c-a").value.trim();
+    nc.progi=[0,1,2,3].map(function(i){return +$("#c-pr"+i).value||0});
+    if(await run($("#c-st"),function(){return Store.saveConfig(nc)})) updateNav();
+  };
+}
+/* --- publikacja i kopia --- */
+function buildStudentSite(){
+  var css=$("#css").textContent,js=$("#app-js").textContent;
+  var data={config:S.config,przedmioty:S.przedmioty,materialy:S.materialy};
+  var json=JSON.stringify(data).replace(/</g,"\\u003c");
+  return '<!DOCTYPE html>\n<html lang="pl">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>'+esc(S.config.tytul)+'</title>\n<link href="'+FONTS+'" rel="stylesheet">\n<style id="css">'+css+'</style>\n</head>\n<body>\n<div id="root"></div>\n<script>window.EMBEDDED='+json+';<\/script>\n<script id="app-js">'+js+'<\/script>\n</body>\n</html>\n';
+}
+async function offerFile(name,data){
+  if(window.claude&&typeof window.claude.use==="function"){
+    try{var d=await window.claude.use("downloads");if(d){await d.save({filename:name,data:data});return "ok"}}
+    catch(e){if(e&&e.code==="declined")return "declined"}
+  }
+  try{var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"application/octet-stream"}));a.download=name;document.body.appendChild(a);a.click();a.remove();return "ok"}catch(e){return "fail"}
+}
+function exportAdmin(){
+  var np=S.przedmioty.length,nm=S.materialy.length;
+  M().innerHTML='<h2>Publikacja i kopia zapasowa</h2>'+
+   '<div class="panel" style="margin-bottom:16px"><h3 style="margin:0 0 6px">Strona dla uczniów</h3><p style="margin:0 0 10px;font-size:14px">Pobierz gotową stronę — jeden plik <span class="mono">index.html</span> z wszystkimi materiałami ('+np+' przedmiotów, '+nm+' materiałów), bez panelu administracyjnego. Wgraj go na hosting (GitHub Pages, Netlify, serwer szkolny) — uczniowie nie muszą mieć konta. Po zmianach w panelu pobierz plik ponownie i podmień w folderze strony <b>tylko index.html</b> — pozostałe pliki (Twoje dokumenty) zostaw obok niego i przeciągaj na Netlify wszystkie razem.</p>'+
+   '<div class="toolbar" style="margin:0"><button class="btn" id="x-site">⬇ Pobierz stronę dla uczniów</button><span class="status" id="x-st"></span></div></div>'+
+   '<div class="panel" style="margin-bottom:16px"><h3 style="margin:0 0 6px">Kopia zapasowa</h3><p style="margin:0 0 10px;font-size:14px">Plik JSON ze wszystkimi danymi. Zrób kopię przed większymi zmianami.</p><div class="toolbar" style="margin:0"><button class="btn ghost" id="x-json">⬇ Pobierz kopię JSON</button><span class="status" id="x-st2"></span></div></div>'+
+   '<div class="panel"><h3 style="margin:0 0 6px">Przywróć z kopii</h3><p style="margin:0 0 10px;font-size:14px">Wczytanie kopii <b>zastępuje</b> wszystkie obecne przedmioty, materiały i ustawienia.</p><div class="form"><input type="file" accept=".json,application/json" id="x-file"><div class="toolbar" style="margin:0"><button class="btn danger" id="x-imp" disabled>Przywróć dane z kopii</button><span class="status" id="x-st3"></span></div></div></div>';
+  $("#x-site").onclick=async function(){setStatus($("#x-st"),"Przygotowywanie…");var r=await offerFile("index.html",buildStudentSite());setStatus($("#x-st"),r==="ok"?"Gotowe ✓":r==="declined"?"Anulowano.":"Pobieranie nie powiodło się.",r==="ok")};
+  $("#x-json").onclick=async function(){var r=await offerFile("platforma-kopia-"+todayStr()+".json",JSON.stringify({config:S.config,przedmioty:S.przedmioty,materialy:S.materialy},null,1));setStatus($("#x-st2"),r==="ok"?"Gotowe ✓":r==="declined"?"Anulowano.":"Pobieranie nie powiodło się.",r==="ok")};
+  var parsed=null;
+  $("#x-file").onchange=function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{parsed=JSON.parse(r.result);if(!parsed.przedmioty||!parsed.materialy)throw 0;$("#x-imp").disabled=false;setStatus($("#x-st3"),"Plik OK: "+parsed.przedmioty.length+" przedmiotów, "+parsed.materialy.length+" materiałów.",true)}catch(e){parsed=null;$("#x-imp").disabled=true;setStatus($("#x-st3"),"To nie jest poprawna kopia platformy.",false)}};r.readAsText(f)};
+  confirmBtn($("#x-imp"),async function(){if(!parsed)return;var b=$("#x-imp");b.disabled=true;try{await Store.replaceAll(parsed,function(t){setStatus($("#x-st3"),t)});setStatus($("#x-st3"),"Przywrócono ✓",true)}catch(e){setStatus($("#x-st3"),errMsg(e),false)}updateNav()});
+}
+
+init();
+})();
+</script>
+</body>
+</html>

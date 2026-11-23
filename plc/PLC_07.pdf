@@ -1,0 +1,176 @@
+%PDF-1.5
+%‚„œ”
+1 0 obj
+<<
+/Producer (pypdf)
+>>
+endobj
+2 0 obj
+<<
+/Type /Pages
+/Count 1
+/Kids [ 4 0 R ]
+>>
+endobj
+3 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+4 0 obj
+<<
+/Type /Page
+/MediaBox [ 0 0 595.276 841.89 ]
+/Resources <<
+/Font <<
+/F1 5 0 R
+/F2 7 0 R
+>>
+/XObject <<
+>>
+>>
+/Contents 8 0 R
+/Parent 2 0 R
+>>
+endobj
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+/Encoding <<
+/Type /Encoding
+/BaseEncoding /WinAnsiEncoding
+/Differences [ 128 /aogonek /cacute /eogonek /lslash /nacute /oacute /sacute /zacute /zdotaccent /Aogonek /Cacute /Eogonek /Lslash /Nacute /Oacute /Sacute /Zacute /Zdotaccent /endash /bullet /arrowright /periodcentered ]
+>>
+/ToUnicode 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 621
+>>
+stream
+/CIDInit /ProcSet findresource begin
+12 dict begin
+begincmap
+/CIDSystemInfo << /Registry (Adobe) /Ordering (UCS) /Supplement 0 >> def
+/CMapName /PolishLatin def
+/CMapType 2 def
+1 begincodespacerange
+<00> <FF>
+endcodespacerange
+1 beginbfrange
+<20> <7E> <0020>
+endbfrange
+22 beginbfchar
+<80> <0105>
+<81> <0107>
+<82> <0119>
+<83> <0142>
+<84> <0144>
+<85> <00F3>
+<86> <015B>
+<87> <017A>
+<88> <017C>
+<89> <0104>
+<8A> <0106>
+<8B> <0118>
+<8C> <0141>
+<8D> <0143>
+<8E> <00D3>
+<8F> <015A>
+<90> <0179>
+<91> <017B>
+<92> <2013>
+<93> <2022>
+<94> <2192>
+<95> <00B7>
+endbfchar
+endcmap
+CMapName currentdict /CMap defineresource pop
+end
+end
+
+endstream
+endobj
+7 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica-Bold
+/Encoding <<
+/Type /Encoding
+/BaseEncoding /WinAnsiEncoding
+/Differences [ 128 /aogonek /cacute /eogonek /lslash /nacute /oacute /sacute /zacute /zdotaccent /Aogonek /Cacute /Eogonek /Lslash /Nacute /Oacute /Sacute /Zacute /Zdotaccent /endash /bullet /arrowright /periodcentered ]
+>>
+/ToUnicode 6 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 3363
+>>
+stream
+0.04 0.32 0.34 rg 43.00 801.89 26.00 3.00 re f
+BT /F2 9.2 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 786.89 Tm (PROGRAMOWANIE PLC) Tj ET
+BT /F2 9.2 Tf 0.04 0.32 0.34 rg 1 0 0 1 422.75 786.89 Tm (ZADANIE 07  \225  25 min  \225  LAD) Tj ET
+BT /F2 25 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 750.89 Tm (Potwierdzenie po przytrzymaniu przycisku) Tj ET
+BT /F1 9.2 Tf 0.28 0.34 0.39 rg 1 0 0 1 43.00 720.89 Tm (Imi\202 i nazwisko) Tj ET
+0.74 0.80 0.82 RG 0.6 w 113.00 719.89 m 292.00 719.89 l S
+BT /F1 9.2 Tf 0.28 0.34 0.39 rg 1 0 0 1 313.00 720.89 Tm (Klasa) Tj ET
+0.74 0.80 0.82 RG 0.6 w 343.00 719.89 m 406.00 719.89 l S
+BT /F1 9.2 Tf 0.28 0.34 0.39 rg 1 0 0 1 428.00 720.89 Tm (Data) Tj ET
+0.74 0.80 0.82 RG 0.6 w 453.00 719.89 m 552.00 719.89 l S
+BT /F1 11.2 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 689.89 Tm (Operator musi trzyma\201 S1 przez 5 s bez przerwy, aby zapali\201 lampk\202. Zwolnienie przycisku zeruje) Tj ET
+BT /F1 11.2 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 674.89 Tm (odmierzanie i gasi H1.) Tj ET
+0.94 0.97 0.97 rg 43.00 606.39 509.00 49.50 re f
+BT /F2 9 Tf 0.04 0.32 0.34 rg 1 0 0 1 59.00 637.89 Tm (WEJ\217CIA) Tj ET
+BT /F1 10.4 Tf 0.10 0.17 0.22 rg 1 0 0 1 59.00 619.89 Tm (S1 \222 przycisk chwilowy NO) Tj ET
+BT /F2 9 Tf 0.04 0.32 0.34 rg 1 0 0 1 302.50 637.89 Tm (WYJ\217CIA) Tj ET
+BT /F1 10.4 Tf 0.10 0.17 0.22 rg 1 0 0 1 302.50 619.89 Tm (H1 \222 lampka) Tj ET
+BT /F2 12.5 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 582.39 Tm (Co wykona\201) Tj ET
+BT /F2 10.8 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 564.39 Tm (1.) Tj ET
+BT /F1 10.8 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 564.39 Tm (Zaprogramuj odmierzanie czasu i podgl\200d czasu, kt\205ry ju\210 up\203yn\200\203.) Tj ET
+BT /F2 10.8 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 545.19 Tm (2.) Tj ET
+BT /F1 10.8 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 545.19 Tm (Narysuj przebieg S1 i H1 dla naci\206ni\202cia kr\205tszego oraz d\203u\210szego ni\210 5 s.) Tj ET
+BT /F2 10.8 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 525.99 Tm (3.) Tj ET
+BT /F1 10.8 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 525.99 Tm (Por\205wnaj czasy obserwowane w symulatorze z nastaw\200.) Tj ET
+BT /F2 12.5 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 500.79 Tm (Pr\205by do udokumentowania) Tj ET
+0.74 0.80 0.82 RG 0.55 w 44.00 483.79 7.00 7.00 re S
+BT /F1 10.5 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 482.79 Tm (Przytrzymaj S1 przez oko\203o 2 s, a nast\202pnie przez oko\203o 6 s.) Tj ET
+0.74 0.80 0.82 RG 0.55 w 44.00 465.19 7.00 7.00 re S
+BT /F1 10.5 Tf 0.10 0.17 0.22 rg 1 0 0 1 63.00 464.19 Tm (Zwolnij przycisk podczas odmierzania. Pon\205w pr\205b\202 po kr\205tkiej przerwie.) Tj ET
+BT /F2 11.4 Tf 0.04 0.32 0.34 rg 1 0 0 1 43.00 246.89 Tm (Wyniki lub wnioski) Tj ET
+0.74 0.80 0.82 RG 0.6 w 43.00 228.89 m 552.00 228.89 l S
+0.74 0.80 0.82 RG 0.6 w 43.00 209.89 m 552.00 209.89 l S
+0.74 0.80 0.82 RG 0.6 w 43.00 190.89 m 552.00 190.89 l S
+0.74 0.80 0.82 RG 0.6 w 43.00 171.89 m 552.00 171.89 l S
+0.74 0.80 0.82 RG 0.6 w 43.00 87.89 m 552.00 87.89 l S
+BT /F2 9.4 Tf 0.10 0.17 0.22 rg 1 0 0 1 43.00 71.89 Tm (Oddaj projekt PLC lub zrzut programu oraz zapis wynik\205w pr\205b.) Tj ET
+BT /F1 9.1 Tf 0.28 0.34 0.39 rg 1 0 0 1 43.00 57.89 Tm (Pr\205by wykonuj w symulatorze. Dobierz i zapisz adresy u\210ytych sygna\203\205w.) Tj ET
+BT /F1 8.0 Tf 0.28 0.34 0.39 rg 1 0 0 1 43.00 36.89 Tm (W. Krieser, Sterowanie programowalne. Od mikrokontrolera do sterownika PLC, rozdz. 7, s. 80\22281.) Tj ET
+
+endstream
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000015 00000 n 
+0000000054 00000 n 
+0000000113 00000 n 
+0000000162 00000 n 
+0000000322 00000 n 
+0000000693 00000 n 
+0000001365 00000 n 
+0000001741 00000 n 
+trailer
+<<
+/Size 9
+/Root 3 0 R
+/Info 1 0 R
+>>
+startxref
+5156
+%%EOF

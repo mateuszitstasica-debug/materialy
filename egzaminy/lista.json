@@ -1,0 +1,24 @@
+[
+ {
+  "id": "cy1-podstawy",
+  "nazwa": "Podstawy cyberbezpieczeństwa — test sprawdzający",
+  "przedmiot": "pcy1pc",
+  "kierunek": "cyber",
+  "klasa": 1,
+  "liczba": 40,
+  "czas": 60,
+  "opis": "40 losowych pytań z tematów 1–12 (prezentacje z przedmiotu). Jedna poprawna odpowiedź.",
+  "pytan": 60
+ },
+ {
+  "id": "usm3-elektro",
+  "nazwa": "Urządzenia i systemy mechatroniczne — test sprawdzający",
+  "przedmiot": "ptm3usm",
+  "kierunek": "mechatronik",
+  "klasa": 3,
+  "liczba": 40,
+  "czas": 60,
+  "opis": "40 losowych pytań: podstawy elektrotechniki, zasilacze, styki, zabezpieczenia, czujniki, przekaźniki, napędy, diagnostyka.",
+  "pytan": 60
+ }
+]

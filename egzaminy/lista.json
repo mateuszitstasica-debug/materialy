@@ -1,1 +1,13 @@
-[]
+[
+ {
+  "id": "cke-elm-przyklad",
+  "nazwa": "Przykładowy egzamin CKE — technik elektronik (ELM.02, ELM.05)",
+  "przedmiot": "",
+  "kierunek": "elektronik",
+  "klasa": null,
+  "liczba": 16,
+  "czas": 20,
+  "opis": "Próbny test z przykładowych zadań z informatora CKE (część pisemna). 16 pytań, 20 minut.",
+  "pytan": 16
+ }
+]

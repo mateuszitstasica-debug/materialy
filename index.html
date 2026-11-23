@@ -324,6 +324,16 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wans li.no{color:#7a2516}.wans .wq{font-weight:600;color:var(--ink);margin-bottom:2px}
 .wtool input,.wtool select{border:1px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit;background:#fff;color:var(--ink)}
 .flink{color:inherit;opacity:.75;text-decoration:none}.flink:hover{opacity:1;text-decoration:underline}
+.wopts{display:grid;gap:5px;margin-top:6px}
+.wopt{display:flex;gap:10px;align-items:center;padding:7px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--ink)}
+.wopt .el{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;background:var(--paper);color:var(--muted)}
+.wopt em{margin-left:auto;font-style:normal;font-family:var(--mono);font-size:11px;white-space:nowrap}
+.wopt.good{background:#e3f4ea;border-color:#7cc597;color:#14532d;font-weight:600}.wopt.good .el{background:#2f9e5b;color:#fff}
+.wopt.bad em{color:#a3301f;font-weight:700}
+.wnone{font-size:13px;color:#7a2516;margin-top:2px}
+.wans li.no{color:inherit}.wmark{font-family:var(--mono)}.wans li.ok .wmark{color:#1d6b3c}.wans li.no .wmark{color:#a3301f}
+.wdel{display:flex;gap:10px;align-items:center;padding:0 18px 16px 40px}
+.btn.danger-ghost{background:#fff;color:#a3301f;border:1px solid #f2b8ae}.btn.danger-ghost.danger{background:#c2462f;color:#fff;border-color:#c2462f}
 </style>
 </head>
 <body>
@@ -818,7 +828,21 @@ function wynikiView(){
   function render(){
     var f=$("#w-f").value,l=data.filter(function(p){return !f||p.egzamin===f});
     $("#w-out").innerHTML=l.length?'<div class="wtab">'+l.map(function(p,i){var d=new Date(p.data);return '<details class="wrow"><summary><span class="mono">'+(isNaN(d)?esc(p.data):d.toLocaleString("pl-PL",{dateStyle:"short",timeStyle:"short"}))+'</span><b>'+esc(p.uczen)+'</b><span>'+esc(p.klasa)+'</span><span class="wex">'+esc(p.egzamin)+'</span><span class="wsc '+(p.procent>=50?"ok":"no")+'">'+esc(p.punkty)+'/'+esc(p.max)+' · '+esc(p.procent)+'%</span><span>'+esc(p.ocena)+'</span></summary>'+
-      '<ol class="wans">'+p.odpowiedzi.map(function(a){return '<li class="'+(a.ok?"ok":"no")+'"><div class="wq">'+esc(a.pytanie)+'</div><div>Odpowiedź ucznia: <b>'+esc(a.odp)+'</b>'+(a.ok?' ✓':'<br>Poprawna: <b>'+esc(a.poprawna)+'</b> ✗')+'</div></li>'}).join("")+'</ol></details>'}).join("")+'</div>':'<div class="empty">Brak prac.</div>';
+      '<ol class="wans">'+p.odpowiedzi.map(function(a){
+        var op=a.opcje&&a.opcje.length?a.opcje:null;
+        return '<li class="'+(a.ok?"ok":"no")+'"><div class="wq">'+esc(a.pytanie)+' <span class="wmark">'+(a.ok?'✓':'✗')+'</span></div>'+
+          (op?'<div class="wopts">'+op.map(function(o,j){var c=o===a.poprawna,u=o===a.odp;return '<div class="wopt'+(c?' good':'')+(u&&!c?' bad':'')+'"><span class="el">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span>'+(u?'<em>'+(c?'odpowiedź ucznia — poprawna':'odpowiedź ucznia')+'</em>':(c?'<em>poprawna</em>':''))+'</div>'}).join("")+(a.odp==="(brak odpowiedzi)"?'<div class="wnone">Uczeń nie zaznaczył odpowiedzi.</div>':'')+'</div>'
+          :'<div>Odpowiedź ucznia: <b>'+esc(a.odp)+'</b>'+(a.ok?'':'<br>Poprawna: <b>'+esc(a.poprawna)+'</b>')+'</div>')+'</li>'}).join("")+'</ol>'+
+      '<div class="wdel"><button class="btn danger-ghost sm" data-del="'+esc(p.id)+'">Usuń tę pracę</button><span class="status"></span></div></details>'}).join("")+'</div>':'<div class="empty">Brak prac.</div>';
+    $$("[data-del]").forEach(function(b){b.onclick=function(){
+      var st=b.nextElementSibling;
+      if(!b.dataset.ok){b.dataset.ok="1";b.textContent="Na pewno usunąć? Kliknij ponownie";b.classList.add("danger");setTimeout(function(){if(b.isConnected&&!b.disabled){delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger")}},5000);return}
+      b.disabled=true;setStatus(st,"Usuwanie…");
+      fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usun",haslo:$("#w-h").value,id:b.dataset.del})}).then(function(r){return r.json()}).then(function(r){
+        if(!r.ok) throw new Error(r.blad||"Nie udało się usunąć.");
+        data=data.filter(function(x){return x.id!==b.dataset.del});setStatus($("#w-st"),"Usunięto pracę. Zostało: "+data.length,true);render();
+      }).catch(function(err){b.disabled=false;delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger");setStatus(st,(err.message||"Błąd")+(/akcj|egzamin/i.test(err.message||"")?" — zaktualizuj skrypt Google":""),false)});
+    }});
   }
   $("#w-f").onchange=render;
   go.onclick=function(){

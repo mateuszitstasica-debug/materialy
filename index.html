@@ -822,7 +822,7 @@ function wynikiView(){
   hero(false);
   var has=LS.get("pz-haslo","");
   app().innerHTML=crumb([["Wyniki egzaminów"]])+'<h1 style="margin:0 0 6px">Wyniki egzaminów</h1><p class="note" style="margin:0 0 16px">Ostatnie 40 prac zapisanych w arkuszu Google. Strona tylko dla nauczyciela.</p>'+
-   (S.config.egzaminUrl?'<div class="toolbar wtool"><input type="password" id="w-h" placeholder="Hasło do wyników" value="'+esc(has)+'" style="max-width:260px"><button class="btn" id="w-go">Pokaż wyniki</button><select id="w-f" style="max-width:320px"><option value="">Wszystkie egzaminy</option></select><span class="status" id="w-st"></span></div><div id="w-out"></div>':'<div class="empty">Moduł egzaminów nie jest jeszcze połączony z arkuszem.</div>');
+   (S.config.egzaminUrl?'<div class="toolbar wtool"><input type="password" id="w-h" placeholder="Hasło do wyników" value="'+esc(has)+'" style="max-width:260px"><button class="btn" id="w-go">Pokaż wyniki</button><select id="w-f" style="max-width:320px"><option value="">Wszystkie egzaminy</option></select><span class="status" id="w-st"></span></div><div id="w-old"></div><div id="w-out"></div>':'<div class="empty">Moduł egzaminów nie jest jeszcze połączony z arkuszem.</div>');
   var go=$("#w-go");if(!go)return;
   var data=[];
   function render(){
@@ -841,7 +841,7 @@ function wynikiView(){
       fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usun",haslo:$("#w-h").value,id:b.dataset.del})}).then(function(r){return r.json()}).then(function(r){
         if(!r.ok) throw new Error(r.blad||"Nie udało się usunąć.");
         data=data.filter(function(x){return x.id!==b.dataset.del});setStatus($("#w-st"),"Usunięto pracę. Zostało: "+data.length,true);render();
-      }).catch(function(err){b.disabled=false;delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger");setStatus(st,(err.message||"Błąd")+(/akcj|egzamin/i.test(err.message||"")?" — zaktualizuj skrypt Google":""),false)});
+      }).catch(function(err){b.disabled=false;delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger");setStatus(st,/egzamin|imienia/i.test(err.message||"")?"Skrypt Google jest w starej wersji — zaktualizuj go (instrukcja wyżej na tej stronie).":(err.message||"Błąd"),false);if(/egzamin|imienia/i.test(err.message||""))$("#w-old").innerHTML='<div class="banner" style="display:block;margin-bottom:14px"><b>Skrypt Google działa jeszcze w starej wersji</b>, dlatego usuwanie nie działa. W arkuszu wejdź w Rozszerzenia → Apps Script, wklej nowy kod (plik Kod_egzaminy.gs), wpisz swoje hasło w linii HASLO, zapisz, a potem Wdróż → Zarządzaj wdrożeniami → ołówek → Wersja: <b>Nowa wersja</b> → Wdróż.</div>'});
     }});
   }
   $("#w-f").onchange=render;
@@ -850,6 +850,8 @@ function wynikiView(){
     fetch(S.config.egzaminUrl+"?akcja=wyniki&haslo="+encodeURIComponent(h)).then(function(r){return r.json()}).then(function(r){
       if(!r.ok) throw new Error(r.blad||"Błąd");
       data=r.prace||[];setStatus($("#w-st"),data.length+" prac",true);
+      var stary=data.some(function(p){return p.odpowiedzi&&p.odpowiedzi.length&&!("opcje" in p.odpowiedzi[0])});
+      $("#w-old").innerHTML=stary?'<div class="banner" style="display:block;margin-bottom:14px"><b>Skrypt Google działa jeszcze w starej wersji</b>, dlatego usuwanie prac i podgląd wszystkich odpowiedzi nie działają. W arkuszu wejdź w Rozszerzenia → Apps Script, wklej nowy kod (plik Kod_egzaminy.gs), wpisz swoje hasło w linii HASLO, zapisz, a potem Wdróż → Zarządzaj wdrożeniami → ołówek → Wersja: <b>Nowa wersja</b> → Wdróż.</div>':'';
       var ex=[];data.forEach(function(p){if(ex.indexOf(p.egzamin)<0)ex.push(p.egzamin)});
       $("#w-f").innerHTML='<option value="">Wszystkie egzaminy ('+data.length+')</option>'+ex.map(function(x){return '<option>'+esc(x)+'</option>'}).join("");
       render();

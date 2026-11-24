@@ -787,6 +787,10 @@ function egzRun(e,st){
   app().innerHTML='<div class="erun" style="'+cvar(k)+'"><div class="ebar"><div><b>'+esc(e.nazwa)+'</b><span>'+esc(st.imie+" "+st.nazwisko)+(st.klasa?" · "+esc(st.klasa):"")+'</span></div><div class="etime" id="e-time">--:--</div><div class="eans">Odpowiedzi: <b id="e-ans"></b></div><button class="btn sm" id="e-end">Zakończ i wyślij</button></div>'+
     '<div class="ebody"><div class="panel" id="eq"></div><aside class="panel egridw"><p class="sec-label" style="margin:0 0 10px">Pytania</p><div class="egrid" id="egrid"></div><p class="note" style="margin:12px 0 0">Zielone — z odpowiedzią.</p></aside></div></div>';
   draw();
+  if(st.pytania.some(function(q){return q.parts===undefined})) egzBank(e.id).then(function(b){
+    var m={};b.pytania.forEach(function(x){m[x.id]=x.parts||null});
+    st.pytania.forEach(function(q){if(q.parts===undefined)q.parts=m[q.id]||null});egzSave(e.id,st);if($("#eq"))draw();
+  }).catch(function(){});
   function tick(){var left=Math.max(0,st.koniec-Date.now()),m=Math.floor(left/60000),s=Math.floor(left%60000/1000),t=$("#e-time");if(!t){clearInterval(ui.timer);return}
     t.textContent=String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");t.classList.toggle("warn",left<5*60000);
     if(left<=0){clearInterval(ui.timer);egzSend(e,st,true)}}

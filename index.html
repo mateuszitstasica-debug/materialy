@@ -334,6 +334,8 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wans li.no{color:inherit}.wmark{font-family:var(--mono)}.wans li.ok .wmark{color:#1d6b3c}.wans li.no .wmark{color:#a3301f}
 .wdel{display:flex;gap:10px;align-items:center;padding:0 18px 16px 40px}
 .btn.danger-ghost{background:#fff;color:#a3301f;border:1px solid #f2b8ae}.btn.danger-ghost.danger{background:#c2462f;color:#fff;border-color:#c2462f}
+.eparts h2{font-size:20px;line-height:1.35;margin:8px 0 14px}
+.eimg{display:block;margin:4px 0 18px;text-align:center}.eimg img{height:auto;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:zoom-in}
 </style>
 </head>
 <body>
@@ -762,7 +764,7 @@ function egzStart(e){
     go.disabled=true;setStatus($("#e-st"),"Losuję pytania…");
     egzBank(e.id).then(function(b){
       var qs=shuffle(b.pytania).slice(0,Math.min(b.liczba||40,b.pytania.length)).map(function(q){
-        var ord=shuffle(q.o.map(function(_,i){return i}));return {id:q.id,q:q.q,o:ord.map(function(i){return q.o[i]}),map:ord,w:-1}});
+        var ord=shuffle(q.o.map(function(_,i){return i}));return {id:q.id,q:q.q,parts:q.parts||null,o:ord.map(function(i){return q.o[i]}),map:ord,w:-1}});
       var st={imie:im,nazwisko:na,klasa:kl,start:Date.now(),koniec:Date.now()+(+e.czas||60)*60000,pytania:qs,cur:0};
       egzSave(e.id,st);egzRun(e,st);window.scrollTo(0,0);
     }).catch(function(err){go.disabled=false;setStatus($("#e-st"),err.message||"Błąd pobierania pytań.",false)});
@@ -773,7 +775,7 @@ function egzRun(e,st){
   function answered(){return st.pytania.filter(function(q){return q.w>=0}).length}
   function draw(){
     var q=st.pytania[st.cur];
-    $("#eq").innerHTML='<div class="eqnum">Pytanie '+(st.cur+1)+' z '+n+'</div><h2>'+esc(q.q)+'</h2><div class="eopts">'+q.o.map(function(o,i){return '<button class="eopt '+(q.w===i?"on":"")+'" data-o="'+i+'"><span class="el">'+"ABCD"[i]+'</span><span>'+esc(o)+'</span></button>'}).join("")+'</div>'+
+    $("#eq").innerHTML='<div class="eqnum">Pytanie '+(st.cur+1)+' z '+n+'</div>'+(q.parts&&q.parts.length?'<div class="eparts">'+q.parts.map(function(pt){return pt.img?'<a class="eimg" href="'+esc(egzUrl(pt.img))+'" target="_blank" rel="noopener" title="Kliknij, aby powiększyć"><img src="'+esc(egzUrl(pt.img))+'" alt="Ilustracja do pytania" style="max-width:min(100%,'+Math.round((pt.w||400)*1.6)+'px)"></a>':'<h2>'+esc(pt.t)+'</h2>'}).join("")+'</div>':'<h2>'+esc(q.q)+'</h2>')+'<div class="eopts">'+q.o.map(function(o,i){return '<button class="eopt '+(q.w===i?"on":"")+'" data-o="'+i+'"><span class="el">'+"ABCD"[i]+'</span><span>'+esc(o)+'</span></button>'}).join("")+'</div>'+
       '<div class="enav"><button class="btn ghost" id="e-prev" '+(st.cur===0?"disabled":"")+'>← Poprzednie</button><button class="btn" id="e-next">'+(st.cur===n-1?"Podsumowanie":"Następne →")+'</button></div>';
     $("#egrid").innerHTML=st.pytania.map(function(x,i){return '<button class="'+(x.w>=0?"done ":"")+(i===st.cur?"cur":"")+'" data-g="'+i+'">'+(i+1)+'</button>'}).join("");
     $("#e-ans").textContent=answered()+" / "+n;

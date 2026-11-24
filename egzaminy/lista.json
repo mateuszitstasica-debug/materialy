@@ -9,5 +9,16 @@
   "czas": 20,
   "opis": "Próbny test z przykładowych zadań z informatora CKE (część pisemna). 16 pytań, 20 minut.",
   "pytan": 16
+ },
+ {
+  "id": "elm03",
+  "nazwa": "ELM.03 — Montaż, uruchamianie i konserwacja urządzeń i systemów mechatronicznych",
+  "przedmiot": "",
+  "kierunek": "mechatronik",
+  "klasa": null,
+  "liczba": 40,
+  "czas": 60,
+  "opis": "Egzamin próbny w formule egzaminu zawodowego: 40 pytań losowanych z bazy, 60 minut, próg zaliczenia 50%.",
+  "pytan": 591
  }
 ]

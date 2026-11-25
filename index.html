@@ -382,6 +382,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wysg{display:grid;grid-template-columns:130px 1fr;gap:3px 12px;font-size:13.5px;margin-top:5px}.wysg span{color:var(--muted);font-size:12px;padding-top:2px}.wysg em{font-style:normal}.wysg code,.wytips code{font-family:var(--mono);font-size:12.5px;background:#f1f4f8;border-radius:5px;padding:1px 6px;word-break:break-all;justify-self:start}.wytips code{white-space:nowrap;word-break:normal}
 .wytips{background:#f4f8fc;border:1px solid #dbe6f2;border-radius:10px;padding:10px 14px;font-size:13.5px}.wytips ul{margin:6px 0 0;padding-left:18px}.wytips li{margin:4px 0}
 @media(max-width:560px){.wysg{grid-template-columns:1fr}}
+.secbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#eef7f0;border:1px solid #cfe8d5;color:#145c2a;border-radius:10px;padding:8px 12px;font-size:13.5px;margin:4px 0 6px}
 </style>
 </head>
 <body>
@@ -882,9 +883,9 @@ function egzResult(e,st){
 /* --- podgląd wyników dla nauczyciela (#wyniki) --- */
 function wynikiView(){
   hero(false);
-  var has=LS.get("pz-haslo","");
+  secClear();var has="";
   app().innerHTML=crumb([["Wyniki egzaminów"]])+'<h1 style="margin:0 0 6px">Wyniki egzaminów</h1><p class="note" style="margin:0 0 16px">Ostatnie 40 prac zapisanych w arkuszu Google. Strona tylko dla nauczyciela.</p>'+
-   (S.config.egzaminUrl?'<div class="toolbar wtool"><input type="password" id="w-h" placeholder="Hasło do wyników" value="'+esc(has)+'" style="max-width:260px"><button class="btn" id="w-go">Pokaż wyniki</button><select id="w-f" style="max-width:320px"><option value="">Wszystkie egzaminy</option></select><button class="btn danger-ghost" id="w-all" style="display:none">Usuń wszystkie</button><span class="status" id="w-st"></span></div><div id="w-old"></div><div id="w-out"></div>':'<div class="empty">Moduł egzaminów nie jest jeszcze połączony z arkuszem.</div>');
+   (S.config.egzaminUrl?'<div class="toolbar wtool"><input type="password" id="w-h" placeholder="Hasło do wyników" autocomplete="off" value="" style="max-width:260px"><button class="btn" id="w-go">Pokaż wyniki</button><select id="w-f" style="max-width:320px"><option value="">Wszystkie egzaminy</option></select><button class="btn danger-ghost" id="w-all" style="display:none">Usuń wszystkie</button><span class="status" id="w-st"></span></div><div id="w-old"></div><div id="w-out"></div>':'<div class="empty">Moduł egzaminów nie jest jeszcze połączony z arkuszem.</div>');
   var go=$("#w-go");if(!go)return;
   var data=[];
   function render(){
@@ -894,7 +895,7 @@ function wynikiView(){
     ab.onclick=function(){
       if(!ab.dataset.ok){ab.dataset.ok="1";ab.classList.add("danger");ab.textContent="Na pewno usunąć "+l.length+" "+odm(l.length,"pracę","prace","prac")+"? Tego nie da się cofnąć — kliknij ponownie";setTimeout(function(){if(ab.isConnected&&ab.dataset.ok&&!ab.disabled)render()},6000);return}
       ab.disabled=true;setStatus($("#w-st"),"Usuwanie…");
-      fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usunWszystkie",haslo:$("#w-h").value,egzamin:f})}).then(function(r){return r.json()}).then(function(r){
+      fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usunWszystkie",haslo:SEC.h,egzamin:f})}).then(function(r){return r.json()}).then(function(r){
         if(!r.ok) throw new Error(r.blad||"Nie udało się usunąć.");
         data=data.filter(function(p){return f&&p.egzamin!==f});setStatus($("#w-st"),"Usunięto: "+r.usunieto+". Zostało: "+data.length,true);
         fillF();
@@ -912,7 +913,7 @@ function wynikiView(){
       var st=b.nextElementSibling;
       if(!b.dataset.ok){b.dataset.ok="1";b.textContent="Na pewno usunąć? Kliknij ponownie";b.classList.add("danger");setTimeout(function(){if(b.isConnected&&!b.disabled){delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger")}},5000);return}
       b.disabled=true;setStatus(st,"Usuwanie…");
-      fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usun",haslo:$("#w-h").value,id:b.dataset.del})}).then(function(r){return r.json()}).then(function(r){
+      fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"usun",haslo:SEC.h,id:b.dataset.del})}).then(function(r){return r.json()}).then(function(r){
         if(!r.ok) throw new Error(r.blad||"Nie udało się usunąć.");
         data=data.filter(function(x){return x.id!==b.dataset.del});setStatus($("#w-st"),"Usunięto pracę. Zostało: "+data.length,true);render();
       }).catch(function(err){b.disabled=false;delete b.dataset.ok;b.textContent="Usuń tę pracę";b.classList.remove("danger");setStatus(st,/egzamin|imienia/i.test(err.message||"")?"Skrypt Google jest w starej wersji — zaktualizuj go (instrukcja wyżej na tej stronie).":(err.message||"Błąd"),false);if(/egzamin|imienia/i.test(err.message||""))$("#w-old").innerHTML='<div class="banner" style="display:block;margin-bottom:14px"><b>Skrypt Google działa jeszcze w starej wersji</b>, dlatego usuwanie nie działa. W arkuszu wejdź w Rozszerzenia → Apps Script, wklej nowy kod (plik Kod_egzaminy.gs), wpisz swoje hasło w linii HASLO, zapisz, a potem Wdróż → Zarządzaj wdrożeniami → ołówek → Wersja: <b>Nowa wersja</b> → Wdróż.</div>'});
@@ -922,9 +923,10 @@ function wynikiView(){
     $("#w-f").innerHTML='<option value="">Wszystkie egzaminy ('+data.length+')</option>'+ex.map(function(x){return '<option'+(x===cur?' selected':'')+'>'+esc(x)+'</option>'}).join("")}
   $("#w-f").onchange=render;
   go.onclick=function(){
-    var h=$("#w-h").value;LS.set("pz-haslo",h);setStatus($("#w-st"),"Wczytywanie…");
+    var h=$("#w-h").value||SEC.h;if(!h)return setStatus($("#w-st"),"Wpisz hasło.",false);$("#w-h").value="";setStatus($("#w-st"),"Wczytywanie…");
     fetch(S.config.egzaminUrl+"?akcja=wyniki&haslo="+encodeURIComponent(h)).then(function(r){return r.json()}).then(function(r){
       if(!r.ok) throw new Error(r.blad||"Błąd");
+      secSet(h,function(){if(location.hash==="#wyniki")route()});$("#w-h").placeholder="Hasło przyjęte – odświeżenie wymaga ponownego wpisania";
       data=r.prace||[];setStatus($("#w-st"),data.length+" prac",true);
       var stary=data.some(function(p){return p.odpowiedzi&&p.odpowiedzi.length&&!("opcje" in p.odpowiedzi[0])});
       $("#w-old").innerHTML=stary?'<div class="banner" style="display:block;margin-bottom:14px"><b>Skrypt Google działa jeszcze w starej wersji</b>, dlatego usuwanie prac i podgląd wszystkich odpowiedzi nie działają. W arkuszu wejdź w Rozszerzenia → Apps Script, wklej nowy kod (plik Kod_egzaminy.gs), wpisz swoje hasło w linii HASLO, zapisz, a potem Wdróż → Zarządzaj wdrożeniami → ołówek → Wersja: <b>Nowa wersja</b> → Wdróż.</div>':'';
@@ -932,7 +934,7 @@ function wynikiView(){
       render();
     }).catch(function(err){setStatus($("#w-st"),err.message||"Nie udało się pobrać wyników.",false)});
   };
-  if(has) go.click();
+  $("#w-h").onkeydown=function(e){if(e.key==="Enter")go.click()};
 }
 var ICON_EGZ='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="6" width="28" height="36" rx="3"/><path d="M18 6V3h12v3M16 18l3 3 6-6M16 30l3 3 6-6M29 19h4M29 31h4"/></svg>';
 function artEgz(){return svgWrap("0 0 360 150",
@@ -1024,21 +1026,29 @@ function wyStats(D){
 }
 function wychowawcaView(){
   hero(false);
-  var has=LS.get("pz-haslo","");
+  secClear();
   app().innerHTML='<div class="zspm">'+crumb([["Panel wychowawcy"]])+'<div class="zsband"><div class="zslogo"><img src="'+egzUrl("assets/zspm-logo.webp")+'" alt="Logo ZSPM Katowice im. Armii Krajowej"></div><div class="zstxt"><div class="zsschool">Zespół Szkół Poligraficzno-Mechanicznych<br>im. Armii Krajowej w Katowicach</div><h1>Panel wychowawcy</h1><p id="wy-sub">Analiza klasy na podstawie zestawień z dziennika. Strona tylko dla wychowawcy.</p></div></div>'+
-   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" value="'+esc(has)+'" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div><div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>')+'<div class="zsfoot">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · wychowawca: Mateusz Stasica</div></div>';
+   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" autocomplete="off" value="" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div>'+secBar("wy-sec","Panel otwarty").replace('class="secbar','style="display:none" class="secbar')+'<div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>')+'<div class="zsfoot">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · wychowawca: Mateusz Stasica</div></div>';
   var go=$("#wy-go");if(!go)return;
   go.onclick=function(){
     var h=$("#wy-h").value;if(!h)return setStatus($("#wy-st"),"Wpisz hasło.",false);
-    setStatus($("#wy-st"),"Wczytywanie…");
+    $("#wy-h").value="";setStatus($("#wy-st"),"Wczytywanie…");
     Promise.all([wyLibs(false),fetch(S.config.egzaminUrl+"?akcja=klasa&haslo="+encodeURIComponent(h)).then(function(r){return r.json()})]).then(function(x){var r=x[1];
       if(!r.ok) throw new Error(/egzamin/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd"));
       if(r.dane===undefined&&r.info) throw new Error("Skrypt Google jest w starej wersji — zaktualizuj go.");
-      LS.set("pz-haslo",h);WY.dane=r.dane;WY.zapisano=r.zapisano||"";setStatus($("#wy-st"),"",true);wyRender();
+      secSet(h,wyLock);WY.dane=r.dane;WY.zapisano=r.zapisano||"";setStatus($("#wy-st"),"",true);
+      $(".wtool").style.display="none";var sb=$("#wy-sec");if(sb){sb.style.display="";sb.querySelector("button").onclick=wyLock}wyRender();
     }).catch(function(e){setStatus($("#wy-st"),e.message||"Nie udało się wczytać.",false)});
   };
-  if(has) go.click();
+  $("#wy-h").onkeydown=function(e){if(e.key==="Enter")go.click()};
 }
+function wyLock(){secClear();WY.dane=null;WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];if(location.hash==="#wychowawca")wychowawcaView()}
+
+/* hasło trzymane tylko w pamięci strony: nie zapisuje się w przeglądarce i znika po wyjściu z widoku */
+var SEC={h:"",t:0};
+function secClear(){SEC.h="";clearTimeout(SEC.t);try{localStorage.removeItem("pz-haslo")}catch(e){}}
+function secSet(h,onLock){SEC.h=h;clearTimeout(SEC.t);SEC.t=setTimeout(function(){SEC.h="";if(onLock)onLock()},20*60*1000)}
+function secBar(id,txt){return '<div class="secbar noprint" id="'+id+'"><span>🔓 '+txt+' · hasło nie jest zapamiętywane, panel zablokuje się sam po 20 min</span><button class="btn ghost sm" type="button">Zablokuj</button></div>'}
 
 var WY_PLIKI=[
  {k:"oceny",n:"Zestawienie ocen cząstkowych uczniów według przedmiotów",f:"ZestawienieROCUczniowiePrzedmioty.xlsx",a:"ZestROCUcznPrzedmioty",p:"okres klasyfikacyjny (np. Semestr 1), dziennik Twojej klasy, zaznaczone wszystkie przedmioty",w:"średnia klasy, średnie według przedmiotów, rozkład ocen 1–6, średnie uczniów w tabeli"},
@@ -1136,7 +1146,7 @@ function wyBindUpload(){
         opis.push('<li><b>'+esc(r.n)+'</b> — '+(k.length?k.map(function(x){var v=r.p[x];return x==="oceny"?"rozkład ocen ("+Object.keys(v.uczniowie).length+" uczniów)":x==="frekwencja"?"frekwencja ("+Object.keys(v.uczniowie).length+" uczniów)":x==="zagrozenia"?"przewidywane oceny niedostateczne ("+Object.keys(v).length+" uczniów)":"uwagi i pochwały ("+v.length+")"}).join(", "):'<span style="color:#a3301f">nie rozpoznano zestawienia</span>')+'</li>')});
       pv.innerHTML='<ul class="wyl">'+opis.join("")+'</ul><div class="toolbar" style="margin:8px 0 0"><button class="btn" id="wy-save">Zapisz w arkuszu i pokaż analizę</button><span class="status" id="wy-sst"></span></div>';
       $("#wy-save").onclick=function(){var b=this;b.disabled=true;setStatus($("#wy-sst"),"Zapisywanie…");
-        fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"zapiszKlase",haslo:$("#wy-h").value,dane:JSON.stringify(nowe)})}).then(function(r){return r.json()}).then(function(r){
+        fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"zapiszKlase",haslo:SEC.h,dane:JSON.stringify(nowe)})}).then(function(r){return r.json()}).then(function(r){
           if(!r.ok) throw new Error(/egzamin|imienia/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd zapisu"));
           WY.dane=nowe;WY.zapisano=new Date().toISOString();wyRender();
         }).catch(function(e){b.disabled=false;setStatus($("#wy-sst"),e.message,false)})};

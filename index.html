@@ -340,6 +340,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .ksent{text-align:center;padding:20px 0}.ksent .bico{margin:0 auto 10px;width:56px;height:56px}.ksent h2{margin:0 0 6px}
 .field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 11px;font:inherit}
+.erev{max-width:860px;margin:22px auto 0}.erev h2{margin:0 0 4px}
+.erq{background:#fff;border:1px solid var(--line);border-left:4px solid #9fd5b4;border-radius:12px;padding:14px 16px;margin-top:12px;box-shadow:var(--sh)}
+.erq.no{border-left-color:#f2b8ae}.erqn{font-family:var(--mono);font-size:12px;color:var(--muted);margin-bottom:6px}
+.erq.ok .erqn span{color:#1d6b3c;font-weight:700}.erq.no .erqn span{color:#a3301f;font-weight:700}
+.erq .wq{font-weight:600;margin-bottom:8px}.erq .eimg{margin:6px 0 10px}
+.erq .wopt.bad{background:#fdecea;border-color:#f2b8ae;color:#7a2516}.erq .wopt.bad .el{background:#c2462f;color:#fff}
 </style>
 </head>
 <body>
@@ -768,7 +774,7 @@ function egzStart(e){
     LS.set("pz-uczen",{imie:im,nazwisko:na,klasa:kl});
     go.disabled=true;setStatus($("#e-st"),"Losuję pytania…");
     egzBank(e.id).then(function(b){
-      var qs=shuffle(b.pytania).slice(0,Math.min(b.liczba||40,b.pytania.length)).map(function(q){
+      var gs={},pool=shuffle(b.pytania).filter(function(q){var g=q.g||q.id;if(gs[g])return false;gs[g]=1;return true});var qs=pool.slice(0,Math.min(b.liczba||40,pool.length)).map(function(q){
         var ord=shuffle(q.o.map(function(_,i){return i}));return {id:q.id,q:q.q,parts:q.parts||null,o:ord.map(function(i){return q.o[i]}),map:ord,w:-1}});
       var st={imie:im,nazwisko:na,klasa:kl,start:Date.now(),koniec:Date.now()+(+e.czas||60)*60000,pytania:qs,cur:0};
       egzSave(e.id,st);egzRun(e,st);window.scrollTo(0,0);
@@ -826,6 +832,14 @@ function egzResult(e,st){
   var r=st.wynik,k=kier(e.kierunek),zal=r.procent>=50;
   app().innerHTML=crumb([["Egzaminy","egzaminy"],[e.nazwa]])+'<div class="eres panel" style="'+cvar(k)+'"><div class="eresc '+(zal?"ok":"no")+'"><b>'+esc(r.procent)+'%</b><span>'+esc(r.punkty)+' / '+esc(r.max)+' pkt</span></div><div><h2>'+(zal?"Test zaliczony":"Test niezaliczony")+'</h2><p>Ocena: <b>'+esc(r.ocena)+'</b></p><p class="note">'+esc(st.imie+" "+st.nazwisko)+(st.klasa?" · "+esc(st.klasa):"")+' · odpowiedzi zostały wysłane do nauczyciela.</p>'+
    '<div class="toolbar" style="margin:14px 0 0"><a class="btn ghost" href="#egzaminy">← Lista egzaminów</a><button class="btn ghost" id="e-again">Rozwiąż ponownie</button></div></div></div>';
+  if(r.przeglad&&r.przeglad.length){
+    var pm={};r.przeglad.forEach(function(x){pm[x.id]=x});
+    var html='<div class="erev"><h2>Twój egzamin — odpowiedzi</h2><p class="note">Na zielono poprawna odpowiedź. Twoja odpowiedź jest oznaczona.</p>'+st.pytania.map(function(q,i){
+      var x=pm[q.id]||{w:-1,c:-1},okq=x.w>=0&&x.w===x.c;
+      var body=q.parts&&q.parts.length?q.parts.map(function(pt){return pt.img?'<a class="eimg" href="'+esc(egzUrl(pt.img))+'" target="_blank" rel="noopener"><img src="'+esc(egzUrl(pt.img))+'" alt="Ilustracja" loading="lazy" style="max-width:min(100%,'+Math.round((pt.w||400)*1.4)+'px)"></a>':'<div class="wq">'+esc(pt.t)+'</div>'}).join(""):'<div class="wq">'+esc(q.q)+'</div>';
+      return '<div class="erq '+(okq?'ok':'no')+'"><div class="erqn">'+(i+1)+'. <span>'+(okq?'✓ dobrze':(x.w<0?'✗ brak odpowiedzi':'✗ źle'))+'</span></div>'+body+'<div class="wopts">'+q.o.map(function(o,j){var orig=q.map[j],c=orig===x.c,u=orig===x.w;return '<div class="wopt'+(c?' good':'')+(u&&!c?' bad':'')+'"><span class="el">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span>'+(u?'<em>'+(c?'Twoja odpowiedź — poprawna':'Twoja odpowiedź')+'</em>':(c?'<em>poprawna</em>':''))+'</div>'}).join("")+'</div></div>'}).join("")+'</div>';
+    app().insertAdjacentHTML("beforeend",html);
+  }
   $("#e-again").onclick=function(){egzClear(e.id);egzStart(e)};
 }
 /* --- podgląd wyników dla nauczyciela (#wyniki) --- */

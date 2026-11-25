@@ -38,29 +38,102 @@
       "tabele": [
         {
           "tytul": "Tabela 1. Protokół pomiarów rezystancji połączeń",
-          "kolumny": ["Lp.", "Mierzone połączenie (punkty)", "Zmierzona wartość [Ω]", "Ocena: poprawne / niepoprawne"],
+          "kolumny": [
+            "Lp.",
+            "Mierzone połączenie (punkty)",
+            "Zmierzona wartość [Ω]",
+            "Ocena: poprawne / niepoprawne"
+          ],
           "wiersze": [
-            ["1.", "+24 V / S2:1", "", ""],
-            ["2.", "S2:2 / S1:3", "", ""],
-            ["3.", "S1:4 / K1:A1", "", ""],
-            ["4.", "K1:13 / K1:A1", "", ""],
-            ["5.", "K1:23 / Y1:1", "", ""],
-            ["6.", "K1:A2 / 0 V", "", ""],
-            ["7.", "Y1:2 / 0 V", "", ""],
-            ["8.", "H1:X2 / 0 V", "", ""]
+            [
+              "1.",
+              "+24 V / S2:1",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "S2:2 / S1:3",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "S1:4 / K1:A1",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "K1:13 / K1:A1",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "K1:23 / Y1:1",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "K1:A2 / 0 V",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "Y1:2 / 0 V",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "H1:X2 / 0 V",
+              "",
+              ""
+            ]
           ],
           "stopka": "Rodzaj i model przyrządu, którym wykonano pomiary: ………………………………………"
         },
         {
           "tytul": "Tabela 2. Wyniki testowania działania układu",
-          "kolumny": ["Lp.", "Czynność i oczekiwany efekt", "Czy efekt wystąpił?"],
+          "kolumny": [
+            "Lp.",
+            "Czynność i oczekiwany efekt",
+            "Czy efekt wystąpił?"
+          ],
           "wiersze": [
-            ["1.", "Tłoczysko wsunięte – naciśnięcie S1 powoduje wysuwanie tłoczyska 1A1.", "tak / nie"],
-            ["2.", "Podczas wysuwania tłoczyska świeci lampka H1.", "tak / nie"],
-            ["3.", "Po osiągnięciu położenia 1B2 tłoczysko samoczynnie się wsuwa, H1 gaśnie.", "tak / nie"],
-            ["4.", "Naciśnięcie S2 podczas wysuwania powoduje natychmiastowe wsunięcie tłoczyska.", "tak / nie"],
-            ["5.", "Naciśnięcie S1 przy wysuniętym tłoczysku nie powoduje ponownego cyklu.", "tak / nie"],
-            ["6.", "Czas wysuwania tłoczyska: ……… s, czas wsuwania: ……… s.", ""]
+            [
+              "1.",
+              "Tłoczysko wsunięte – naciśnięcie S1 powoduje wysuwanie tłoczyska 1A1.",
+              "tak / nie"
+            ],
+            [
+              "2.",
+              "Podczas wysuwania tłoczyska świeci lampka H1.",
+              "tak / nie"
+            ],
+            [
+              "3.",
+              "Po osiągnięciu położenia 1B2 tłoczysko samoczynnie się wsuwa, H1 gaśnie.",
+              "tak / nie"
+            ],
+            [
+              "4.",
+              "Naciśnięcie S2 podczas wysuwania powoduje natychmiastowe wsunięcie tłoczyska.",
+              "tak / nie"
+            ],
+            [
+              "5.",
+              "Naciśnięcie S1 przy wysuniętym tłoczysku nie powoduje ponownego cyklu.",
+              "tak / nie"
+            ],
+            [
+              "6.",
+              "Czas wysuwania tłoczyska: ……… s, czas wsuwania: ……… s.",
+              ""
+            ]
           ]
         }
       ],
@@ -118,6 +191,222 @@
             "Pomiary rezystancji wykonał przy odłączonym zasilaniu.",
             "Zasilanie włączył po zgłoszeniu gotowości i uzyskaniu zgody.",
             "Po zakończeniu pracy wyłączył zasilanie i uporządkował stanowisko."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "elm03-2023-z1",
+      "kwal": "ELM.03",
+      "kierunek": "mechatronik",
+      "nazwa": "Egzamin CKE – styczeń 2023 (Z1): układ elektropneumatyczny z przekaźnikiem czasowym",
+      "opis": "Archiwalne zadanie z sesji zima 2023: montaż układu elektropneumatycznego z siłownikiem dwustronnego działania, przekaźnikiem K1 i przekaźnikiem czasowym KT1.",
+      "czas": 180,
+      "pdf": "https://oke.waw.pl/wp-content/uploads/OKE_WARSZAWA/EZ/EZ_2019/Archiwum_2019/ZJ_ZIMA_2023/elm_03_2023_Z1.pdf",
+      "pdfNazwa": "Oryginalny arkusz CKE (PDF)",
+      "zrodlo": "Źródło: arkusz egzaminu zawodowego ELM.03, sesja zima 2023 – archiwum OKE Warszawa. Poniżej omówienie zadania; pełna treść, schematy i dokładne brzmienie tabel są w oryginalnym arkuszu.",
+      "notaRysunki": "Schemat pneumatyczny i elektryczny (rysunki 1 i 2) znajdziesz w oryginalnym arkuszu CKE – przycisk „Oryginalny arkusz CKE (PDF)” na górze strony.",
+      "rysunki": [],
+      "wstep": "Na płycie montażowej zmontuj układ elektropneumatyczny zgodnie z dokumentacją techniczną z arkusza. Elementy wybierz ze stanowiska, a przed montażem sprawdź sprawność elementów stykowych. Sprawdź poprawność połączeń pomiarami ciągłości (tabela 1), następnie podłącz zasilanie elektryczne i pneumatyczne, przetestuj działanie układu i uzupełnij tabelę 2.",
+      "stanowisko": [
+        "zespół przygotowania powietrza ZPP,",
+        "siłownik dwustronnego działania 1A1, zawór rozdzielający 5/2 monostabilny 1V1 sterowany elektrycznie (cewka Y1, powrót sprężyną), zawór dławiąco-zwrotny 1V2,",
+        "zawór 3/2 NC z przyciskiem 1S1 (powrót sprężyną),",
+        "przycisk S1 (NO, monostabilny), łączniki krańcowe z dźwignią i rolką S2 i S3 (NO+NC),",
+        "przekaźnik K1 z gniazdem, przekaźnik czasowy KT1 (opóźnione załączanie),",
+        "zasilacz 24 V DC, listwa zaciskowa, przewody: +24 V – czerwony lub brązowy, 0 V – niebieski, pozostałe – czarny,",
+        "multimetr, stoper, okulary ochronne."
+      ],
+      "dzialanie": [
+        "stan początkowy: S1 i 1S1 zwolnione, S2 wciśnięty, S3 niewciśnięty, K1, KT1 i Y1 niezasilone, tłoczysko wsunięte,",
+        "naciśnięcie S1 przy wciśniętym 1S1 załącza K1 i Y1 – tłoczysko wysuwa się z dławieniem w czasie 3 s ± 0,5 s,",
+        "po pełnym wysunięciu zostaje wciśnięty S3 i zasilony KT1; po 6 s ± 0,5 s cewka Y1 zostaje wyłączona i tłoczysko wsuwa się,",
+        "kolejne naciśnięcie S1 rozpoczyna nowy cykl,",
+        "zwolnienie 1S1 podczas wysuwania zatrzymuje ruch; tłoczysko pozostaje w miejscu do ponownego wciśnięcia 1S1."
+      ],
+      "polecenia": [
+        "Wybierz ze stanowiska elementy potrzebne do montażu i sprawdź sprawność elementów stykowych.",
+        "Zmontuj część pneumatyczną i elektryczną układu na płycie zgodnie ze schematami z arkusza. Zachowaj kolorystykę przewodów.",
+        "Przy odłączonym zasilaniu, wyłączonym sprężonym powietrzu i tłoczysku w położeniu pośrednim zmierz rezystancję wskazanych połączeń i oceń ich ciągłość (tabela 1).",
+        "Przed każdym włączeniem zasilania zgłoś gotowość przez podniesienie ręki. Podczas uruchamiania używaj okularów ochronnych.",
+        "Podłącz zasilanie elektryczne i pneumatyczne, ustaw parametry i przetestuj działanie układu – wyniki zapisz w tabeli 2.",
+        "Po zakończeniu pracy uporządkuj stanowisko (zgodnie z arkuszem zasilanie pozostaje włączone)."
+      ],
+      "tabele": [
+        {
+          "tytul": "Tabela 1. Protokół pomiarów rezystancji połączeń (wybrane pomiary – pełna lista w arkuszu)",
+          "kolumny": [
+            "Lp.",
+            "Mierzone połączenie",
+            "Rezystancja z jednostką",
+            "Ocena: ciągłe / przerwa"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "+24 V / S2:3",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "+24 V / S2:3 po wciśnięciu S1",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "+24 V / K1:11",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "+24 V / K1:21",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "+24 V / KT1:A1",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "+24 V / KT1:A1 po wciśnięciu S3",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "S2:3 / K1:A1",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "K1:14 / K1:A1",
+              "",
+              ""
+            ],
+            [
+              "9.",
+              "K1:24 / Y1:A1",
+              "",
+              ""
+            ],
+            [
+              "10.",
+              "0 V / K1:A2",
+              "",
+              ""
+            ],
+            [
+              "11.",
+              "0 V / Y1:A2",
+              "",
+              ""
+            ],
+            [
+              "12.",
+              "0 V / KT1:A2",
+              "",
+              ""
+            ]
+          ],
+          "stopka": "Rodzaj i model przyrządu, którym wykonano pomiary: ………………………………………"
+        },
+        {
+          "tytul": "Tabela 2. Wyniki testowania działania układu",
+          "kolumny": [
+            "Lp.",
+            "Sprawdzana funkcja",
+            "Czy wystąpiła? tak / nie"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "Naciśnięcie S1 przy wciśniętym 1S1 rozpoczyna wysuwanie tłoczyska.",
+              ""
+            ],
+            [
+              "2.",
+              "Naciśnięcie S1 przy zwolnionym 1S1 (tłoczysko wsunięte) rozpoczyna wysuwanie.",
+              ""
+            ],
+            [
+              "3.",
+              "Wysuwanie trwa 3,0 s ± 0,5 s.",
+              ""
+            ],
+            [
+              "4.",
+              "Przy wciśniętym 1S1 tłoczysko pozostaje wysunięte przez 6,0 s ± 0,5 s.",
+              ""
+            ],
+            [
+              "5.",
+              "Po upływie czasu tłoczysko wraca do pełnego wsunięcia.",
+              ""
+            ],
+            [
+              "6.",
+              "Wsuwanie trwa 3,0 s ± 0,5 s.",
+              ""
+            ],
+            [
+              "7.",
+              "Zwolnienie 1S1 podczas wysuwania zatrzymuje tłoczysko.",
+              ""
+            ]
+          ]
+        }
+      ],
+      "rezultaty": [
+        {
+          "id": "R1",
+          "nazwa": "Zmontowany układ elektropneumatyczny",
+          "kryteria": [
+            "Elementy dobrane zgodnie z dokumentacją i zamocowane na płycie.",
+            "Połączenia pneumatyczne zgodne ze schematem (ZPP, 1S1, 1V1, 1V2, 1A1), dławienie przy wysuwaniu.",
+            "Połączenia elektryczne zgodne ze schematem (S1, S2, S3, K1, KT1, Y1).",
+            "Zachowana kolorystyka przewodów (+24 V czerwony/brązowy, 0 V niebieski, pozostałe czarne).",
+            "Przewody zakończone tulejkami, prowadzone w korytkach, połączenia dokręcone.",
+            "Brak nieszczelności w układzie pneumatycznym."
+          ]
+        },
+        {
+          "id": "R2",
+          "nazwa": "Protokół pomiarów rezystancji połączeń – tabela 1",
+          "kryteria": [
+            "Wpisany rodzaj i model przyrządu.",
+            "Wyniki zapisane z jednostkami dla wszystkich pomiarów.",
+            "Wyniki zgodne ze stanem rzeczywistym układu.",
+            "Poprawna ocena „ciągłe / przerwa” dla każdego połączenia."
+          ]
+        },
+        {
+          "id": "R3",
+          "nazwa": "Wyniki testu działania – tabela 2",
+          "kryteria": [
+            "Układ rozpoczyna wysuwanie po naciśnięciu S1 (z wciśniętym 1S1).",
+            "Czas wysuwania 3 s ± 0,5 s.",
+            "Przekaźnik czasowy ustawiony – postój w wysunięciu 6 s ± 0,5 s i automatyczny powrót.",
+            "Zwolnienie 1S1 zatrzymuje wysuwanie tłoczyska.",
+            "Wyniki w tabeli 2 zgodne z rzeczywistym działaniem układu."
+          ]
+        },
+        {
+          "id": "P",
+          "nazwa": "Przebieg wykonania zadania",
+          "przebieg": true,
+          "kryteria": [
+            "Sprawdził sprawność elementów stykowych przed montażem.",
+            "Montaż wykonywał przy wyłączonym zasilaniu elektrycznym i pneumatycznym.",
+            "Pomiary wykonał w warunkach podanych w arkuszu (bez zasilania, tłoczysko w położeniu pośrednim).",
+            "Przed włączeniem zasilania zgłaszał gotowość i używał okularów ochronnych.",
+            "Uporządkował stanowisko po zakończeniu pracy."
           ]
         }
       ]

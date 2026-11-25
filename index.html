@@ -803,7 +803,7 @@ function prTresc(z,print){
   var R=z.rezultaty.filter(function(r){return !r.przebieg}),P=z.rezultaty.filter(function(r){return r.przebieg});
   return '<h2>Treść zadania</h2><p>'+esc(z.wstep)+'</p>'+
    (z.dzialanie&&z.dzialanie.length?'<h3>Opis działania układu</h3><ul>'+z.dzialanie.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
-   (z.rysunki&&z.rysunki.length?z.rysunki.map(function(r,i){return '<figure class="prfig"><img src="'+esc(print?new URL(egzUrl(r.img),location.href).href:egzUrl(r.img))+'" alt="'+esc(r.podpis||"")+'"><figcaption>'+esc(r.podpis||("Rysunek "+(i+1)))+'</figcaption></figure>'}).join(""):(print?'':'<div class="prnote">Schematy (rysunek 1 – pneumatyczny, rysunek 2 – elektryczny) wydaje nauczyciel na stanowisku.</div>'))+
+   (z.rysunki&&z.rysunki.length?z.rysunki.map(function(r,i){return '<figure class="prfig"><img src="'+esc(print?new URL(egzUrl(r.img),location.href).href:egzUrl(r.img))+'" alt="'+esc(r.podpis||"")+'"><figcaption>'+esc(r.podpis||("Rysunek "+(i+1)))+'</figcaption></figure>'}).join(""):(print?'':'<div class="prnote">'+esc(z.notaRysunki||"Schematy (rysunek 1 – pneumatyczny, rysunek 2 – elektryczny) wydaje nauczyciel na stanowisku.")+'</div>'))+
    (z.stanowisko&&z.stanowisko.length?'<h3>Wyposażenie stanowiska</h3><ul>'+z.stanowisko.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
    '<h3>Polecenia</h3><ol>'+z.polecenia.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol>'+
    (z.tabele||[]).map(function(t){return prTabela(t,print)}).join("")+
@@ -819,8 +819,8 @@ function praktykaView(id){
     app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka","praktyka"],[z.kwal]])+
      '<div class="prw" style="'+cvar(k)+'"><div class="panel"><span class="pill">'+esc(z.kwal)+' · część praktyczna'+(k?' · '+esc(k.nazwa):'')+'</span><h1>'+esc(z.nazwa)+'</h1><p class="note">'+esc(z.opis||"")+'</p>'+
      '<div class="erules"><div><b>'+esc(z.czas)+'</b>minut</div><div><b>'+z.rezultaty.filter(function(r){return !r.przebieg}).length+'</b>rezultaty</div><div><b>'+prMax(z)+'</b>kryteriów</div><div><b>'+prog+'%</b>próg zdania</div></div>'+
-     '<div class="toolbar" style="margin:0"><button class="btn" id="pr-print">🖨 Drukuj arkusz zadania</button>'+(z.pdf?'<a class="btn ghost" href="'+esc(egzUrl(z.pdf))+'" target="_blank" rel="noopener">📄 Arkusz PDF</a>':'')+'<button class="btn ghost" id="pr-clk">⏱ Zegar ćwiczenia</button></div></div>'+
-     '<div class="panel prtxt">'+prTresc(z,false)+'</div>'+
+     '<div class="toolbar" style="margin:0"><button class="btn" id="pr-print">🖨 Drukuj arkusz zadania</button>'+(z.pdf?'<a class="btn ghost" href="'+esc(/^https?:/.test(z.pdf)?z.pdf:egzUrl(z.pdf))+'" target="_blank" rel="noopener">📄 '+esc(z.pdfNazwa||"Arkusz PDF")+'</a>':'')+'<button class="btn ghost" id="pr-clk">⏱ Zegar ćwiczenia</button></div></div>'+
+     (z.zrodlo?'<div class="prnote" style="margin:0">'+esc(z.zrodlo)+'</div>':'')+'<div class="panel prtxt">'+prTresc(z,false)+'</div>'+
      '<details class="panel prgr noprint" id="pr-gr"><summary><b>✅ Ocena zadania — dla nauczyciela</b> <span class="note">— karta oceny według kryteriów, wynik zapisuje się w arkuszu Google</span></summary><div id="pr-go"></div></details></div>';
     $("#pr-print").onclick=function(){prDrukuj(z,prog)};
     $("#pr-clk").onclick=function(){prZegar(z)};
@@ -844,7 +844,7 @@ function prOcenaLogin(z,prog){
 function prOcenaForm(z,prog){
   var box=$("#pr-go");if(!box)return;
   box.innerHTML=secBar("pr-sec","Karta oceny otwarta")+
-   '<div class="form prform"><div class="row2"><div class="field"><label>Uczeń (imię i nazwisko)</label><input type="text" id="pr-u" maxlength="80"></div><div class="row2"><div class="field"><label>Klasa</label><input type="text" id="pr-k" maxlength="12"></div><div class="field"><label>Stanowisko</label><input type="text" id="pr-s" maxlength="12"></div></div></div>'+
+   '<div class="form prform"><div class="row2"><div class="field"><label>Uczeń (imię i nazwisko)</label><input type="text" id="pr-u" maxlength="80"></div><div class="field"><label>Klasa</label><input type="text" id="pr-k" maxlength="12"></div></div>'+
    z.rezultaty.map(function(r,ri){return '<div class="prr" data-r="'+ri+'"><div class="prrh"><b>'+esc(r.id)+'</b><span class="grow">'+esc(r.nazwa)+'</span><span class="prpk" id="pr-pk'+ri+'">0 / '+r.kryteria.length+'</span><button type="button" class="btn ghost sm" data-all="'+ri+'">wszystkie spełnione</button></div>'+
      r.kryteria.map(function(c,ci){return '<label class="prk"><input type="checkbox" data-c="'+ri+'-'+ci+'"><span>'+esc(c)+'</span></label>'}).join("")+'</div>'}).join("")+
    '<div class="field"><label>Uwagi (nieobowiązkowe)</label><textarea id="pr-uw" maxlength="1000" rows="2"></textarea></div>'+
@@ -859,13 +859,13 @@ function prOcenaForm(z,prog){
   $("#pr-save").onclick=function(){
     var u=$("#pr-u").value.trim();if(u.length<3)return setStatus($("#pr-st"),"Wpisz imię i nazwisko ucznia.",false);
     if(!SEC.h){prOcenaLogin(z,prog);return}
-    var body={akcja:"praktyka",haslo:SEC.h,zid:z.id,kwal:z.kwal,zadanie:z.nazwa,uczen:u,klasa:$("#pr-k").value.trim(),stanowisko:$("#pr-s").value.trim(),uwagi:$("#pr-uw").value.trim(),prog:prog,
+    var body={akcja:"praktyka",haslo:SEC.h,zid:z.id,kwal:z.kwal,zadanie:z.nazwa,uczen:u,klasa:$("#pr-k").value.trim(),uwagi:$("#pr-uw").value.trim(),prog:prog,
       rezultaty:z.rezultaty.map(function(r,ri){var br=[];r.kryteria.forEach(function(c,ci){if(!$('[data-c="'+ri+'-'+ci+'"]').checked)br.push(c)});return {id:r.id,nazwa:r.nazwa,pkt:r.kryteria.length-br.length,max:r.kryteria.length,brak:br}})};
     var b=this;b.disabled=true;setStatus($("#pr-st"),"Zapisywanie…");
     fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(r){
       b.disabled=false;if(!r.ok)throw new Error(r.blad||"Błąd zapisu");
       setStatus($("#pr-st"),"Zapisano: "+u+" — "+wyFmt(r.procent,1)+"%, "+r.wynik+".",true);
-      ["pr-u","pr-s","pr-uw"].forEach(function(i){$("#"+i).value=""});$$("[data-c]").forEach(function(c){c.checked=false});calc();prOdswiez(z);
+      ["pr-u","pr-uw"].forEach(function(i){$("#"+i).value=""});$$("[data-c]").forEach(function(c){c.checked=false});calc();prOdswiez(z);
     }).catch(function(e){b.disabled=false;setStatus($("#pr-st"),e.message||"Nie udało się zapisać.",false)});
   };
 }
@@ -873,8 +873,8 @@ function prOdswiez(z){if(!SEC.h)return;fetch(S.config.egzaminUrl+"?akcja=praktyk
 function prLista(z){
   var el=$("#pr-l");if(!el)return;var L=PR.lista||[];
   if(!L.length){el.innerHTML='<p class="note">Brak zapisanych ocen.</p>';return}
-  el.innerHTML='<div class="wytw"><table class="wyt"><thead><tr><th>Data</th><th>Uczeń</th><th>Klasa</th><th>Stan.</th>'+z.rezultaty.map(function(r){return '<th>'+esc(r.id)+'</th>'}).join("")+'<th>Wynik</th><th></th></tr></thead><tbody>'+L.map(function(o){var rm={};(o.rez||[]).forEach(function(r){rm[r.id]=r});var ok=o.wynik==="zdany";
-    return '<tr title="'+esc((o.rez||[]).filter(function(r){return r.brak&&r.brak.length}).map(function(r){return r.id+": "+r.brak.join("; ")}).join("\n")+(o.uwagi?"\nUwagi: "+o.uwagi:""))+'"><td>'+esc(new Date(o.data).toLocaleDateString("pl-PL"))+'</td><td><b>'+esc(o.uczen)+'</b></td><td>'+esc(o.klasa)+'</td><td>'+esc(o.stanowisko)+'</td>'+z.rezultaty.map(function(r){var x=rm[r.id];return '<td class="mono">'+(x?x.pkt+"/"+x.max:"—")+'</td>'}).join("")+'<td class="'+(ok?"okc":"bad")+'"><b>'+wyFmt(o.procent,1)+'%</b> '+esc(o.wynik)+'</td><td><button class="btn ghost sm" data-prdel="'+esc(o.id)+'">usuń</button></td></tr>'}).join("")+'</tbody></table></div><p class="note">Najedź na wiersz, aby zobaczyć niespełnione kryteria i uwagi. Wszystkie oceny są w arkuszu Google w zakładce „Praktyka”.</p>';
+  el.innerHTML='<div class="wytw"><table class="wyt"><thead><tr><th>Data</th><th>Uczeń</th><th>Klasa</th>'+z.rezultaty.map(function(r){return '<th>'+esc(r.id)+'</th>'}).join("")+'<th>Wynik</th><th></th></tr></thead><tbody>'+L.map(function(o){var rm={};(o.rez||[]).forEach(function(r){rm[r.id]=r});var ok=o.wynik==="zdany";
+    return '<tr title="'+esc((o.rez||[]).filter(function(r){return r.brak&&r.brak.length}).map(function(r){return r.id+": "+r.brak.join("; ")}).join("\n")+(o.uwagi?"\nUwagi: "+o.uwagi:""))+'"><td>'+esc(new Date(o.data).toLocaleDateString("pl-PL"))+'</td><td><b>'+esc(o.uczen)+'</b></td><td>'+esc(o.klasa)+'</td>'+z.rezultaty.map(function(r){var x=rm[r.id];return '<td class="mono">'+(x?x.pkt+"/"+x.max:"—")+'</td>'}).join("")+'<td class="'+(ok?"okc":"bad")+'"><b>'+wyFmt(o.procent,1)+'%</b> '+esc(o.wynik)+'</td><td><button class="btn ghost sm" data-prdel="'+esc(o.id)+'">usuń</button></td></tr>'}).join("")+'</tbody></table></div><p class="note">Najedź na wiersz, aby zobaczyć niespełnione kryteria i uwagi. Wszystkie oceny są w arkuszu Google w zakładce „Praktyka”.</p>';
   $$("[data-prdel]").forEach(function(b){b.onclick=function(){
     if(!b.dataset.ok){b.dataset.ok=1;b.textContent="na pewno?";b.classList.add("danger");return}
     b.disabled=true;fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"praktykaUsun",haslo:SEC.h,id:b.dataset.prdel})}).then(function(r){return r.json()}).then(function(){prOdswiez(z)}).catch(function(){b.disabled=false})}});
@@ -896,7 +896,7 @@ function prDrukuj(z,prog){
    'table{width:100%;border-collapse:collapse;font-size:9.5pt;margin-top:4px}th,td{border:1px solid #333;padding:5px 6px;text-align:left;vertical-align:top}th{background:#eee}td{height:24px}.prtab{break-inside:avoid;margin-top:10px}.prtt{font-weight:700;margin:0}.prst{margin:6px 0 0}.prfig{text-align:center;margin:8px 0;break-inside:avoid}.prfig img{max-width:100%;max-height:120mm}.prfig figcaption{font-size:9pt}'+
    '.foot{margin-top:14px;font-size:8pt;color:#666;border-top:1px solid #ccc;padding-top:4px}';
   var html='<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>'+esc(z.kwal+" — "+z.nazwa)+'</title><style>'+css+'</style></head><body>'+
-   '<div class="top"><div><small>EGZAMIN ZAWODOWY — ZADANIE ĆWICZENIOWE · CZĘŚĆ PRAKTYCZNA</small><h1>'+esc(z.kwal)+' — '+esc(z.nazwa)+'</h1><small>Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18</small><small>Czas trwania: '+esc(z.czas)+' minut · próg zdania: '+prog+'% punktów</small></div><div class="pes">Imię i nazwisko<div></div>Klasa / stanowisko<div></div></div></div>'+
+   '<div class="top"><div><small>EGZAMIN ZAWODOWY — ZADANIE ĆWICZENIOWE · CZĘŚĆ PRAKTYCZNA</small><h1>'+esc(z.kwal)+' — '+esc(z.nazwa)+'</h1><small>Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18</small><small>Czas trwania: '+esc(z.czas)+' minut · próg zdania: '+prog+'% punktów</small></div><div class="pes">Imię i nazwisko<div></div>Klasa<div></div></div></div>'+
    '<div class="ins"><b>Instrukcja.</b> Zapoznaj się z treścią zadania i stanowiskiem (10 minut – nie wlicza się do czasu). Usterki stanowiska zgłaszaj przez podniesienie ręki. Wyniki zapisuj długopisem w tabelach. Po zakończeniu oddaj arkusz nauczycielowi.</div>'+
    prTresc(z,true)+'<div class="foot">Zadanie ćwiczeniowe przygotowane w formule części praktycznej egzaminu zawodowego · materiały: Mateusz Stasica</div></body></html>';
   var old=$("#pr-prf");if(old)old.remove();

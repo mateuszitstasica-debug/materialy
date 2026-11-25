@@ -365,6 +365,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .zgb{display:inline-block;background:#fdecea;color:#a3301f;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700;font-family:var(--mono)}
 .wyt2{width:100%;border-collapse:collapse;font-size:13px;background:#fafbfd;border-radius:8px}.wyt2 th{font-size:11px;padding:6px 8px;cursor:default}.wyt2 td{padding:5px 8px;border-bottom:1px solid var(--line2)}.wyt2 tr.zg td{background:#fff5f4}
 @media print{header.top,footer,.noprint,.crumb{display:none!important}body{background:#fff}main{padding:0}.panel,.kpi{box-shadow:none;break-inside:avoid}.wygrid{grid-template-columns:1fr 1fr}.wyd{display:none}}
+.zspm{--zs-navy:#0f2953;--zs-blue:#2b66ae;--zs-teal:#19829a;--zs-maroon:#81002b;font-family:Roboto,"IBM Plex Sans",system-ui,sans-serif}
+.zsband{display:flex;align-items:center;gap:22px;background:linear-gradient(120deg,#0f2953 0%,#183c69 45%,#19829a 100%);color:#fff;border-radius:16px;padding:18px 24px;margin:6px 0 16px;border-bottom:5px solid #81002b;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.zslogo{background:#fff;border-radius:12px;padding:8px 12px;flex:none;box-shadow:0 2px 10px rgba(0,0,0,.18)}.zslogo img{display:block;height:74px;width:auto}
+.zstxt h1{margin:2px 0 2px;color:#fff;font-size:30px}.zstxt p{margin:0;color:rgba(255,255,255,.85);font-size:14px}
+.zsschool{font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:#bfe9ef;font-weight:600;line-height:1.35}
+@media(max-width:640px){.zsband{flex-direction:column;align-items:flex-start}.zstxt h1{font-size:24px}}
+.zspm .btn{background:#0f2953;border-color:#0f2953}.zspm .btn:hover{background:#183c69}.zspm .btn.ghost{background:#fff;color:#0f2953;border-color:#0f2953}
+.zspm .kpi{border-top-color:#2b66ae}.zspm .kpi b{color:#0f2953}.zspm .kpi.crit{border-top-color:#dc3c3d}.zspm .kpi.warn{border-top-color:#fbb315}
+.zspm .panel h2,.zspm .wybox h3{color:#0f2953}.zspm .wybox{border-top:3px solid #19829a}
+.zspm .wyt th.on{color:#81002b}.zspm .pnote{background:#eaf6f8;border-color:#bfe2e8;color:#0f2953}
+.zsfoot{margin:22px 0 4px;padding-top:10px;border-top:2px solid #81002b;font-size:12px;color:#5b6472;text-align:center}
+@media print{.zsband{border-radius:0;margin-top:0}.zspm .wybox{border-top:3px solid #19829a}}
 </style>
 </head>
 <body>
@@ -971,7 +983,7 @@ function wyParse(wb){
 function wyMerge(a,b){var o=JSON.parse(JSON.stringify(a||{}));["oceny","frekwencja","zagrozenia","uwagi"].forEach(function(k){if(b[k]!==undefined)o[k]=b[k]});o.meta=Object.assign({},o.meta||{},b.meta||{});o.wczytano=new Date().toISOString();return o}
 /* --- panel wychowawcy: widok --- */
 var WY={dane:null,zapisano:"",rodzice:false,charts:[],sort:"nr"};
-var WY_C={blue:"#257de0",orange:"#f47230",aqua:"#00b894",yellow:"#f2a600",crit:"#dc3c3d",warn:"#fbb315",good:"#0aac23",ink:"#191919",ink2:"#666666",grid:"#ececec"};
+var WY_C={blue:"#2b66ae",orange:"#f47230",aqua:"#19a7b8",yellow:"#f2a600",crit:"#dc3c3d",warn:"#fbb315",good:"#0aac23",ink:"#191919",ink2:"#666666",grid:"#ececec"};
 function loadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=function(){rej(new Error("Nie udało się wczytać "+src))};document.head.appendChild(s)})}
 function wyLibs(xlsx){var p=[];if(!window.Chart)p.push(loadScript(egzUrl("vendor/chart.umd.min.js")));if(xlsx&&!window.XLSX)p.push(loadScript(egzUrl("vendor/xlsx.full.min.js")));return Promise.all(p)}
 function wyFmt(n,d){return n==null||isNaN(n)?"—":Number(n).toFixed(d==null?2:d).replace(".",",")}
@@ -1008,8 +1020,8 @@ function wyStats(D){
 function wychowawcaView(){
   hero(false);
   var has=LS.get("pz-haslo","");
-  app().innerHTML=crumb([["Panel wychowawcy"]])+'<div class="wyhead"><div><h1>Panel wychowawcy</h1><p class="note" id="wy-sub">Analiza klasy na podstawie zestawień z dziennika. Strona tylko dla wychowawcy.</p></div></div>'+
-   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" value="'+esc(has)+'" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div><div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>');
+  app().innerHTML='<div class="zspm">'+crumb([["Panel wychowawcy"]])+'<div class="zsband"><div class="zslogo"><img src="'+egzUrl("assets/zspm-logo.webp")+'" alt="Logo ZSPM Katowice im. Armii Krajowej"></div><div class="zstxt"><div class="zsschool">Zespół Szkół Poligraficzno-Mechanicznych<br>im. Armii Krajowej w Katowicach</div><h1>Panel wychowawcy</h1><p id="wy-sub">Analiza klasy na podstawie zestawień z dziennika. Strona tylko dla wychowawcy.</p></div></div>'+
+   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" value="'+esc(has)+'" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div><div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>')+'<div class="zsfoot">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · wychowawca: Mateusz Stasica</div></div>';
   var go=$("#wy-go");if(!go)return;
   go.onclick=function(){
     var h=$("#wy-h").value;if(!h)return setStatus($("#wy-st"),"Wpisz hasło.",false);
@@ -1065,8 +1077,8 @@ function wyRender(){
   hb("c-sr",S.przedm.slice().sort(function(a,b){return (b.sr||0)-(a.sr||0)}),"sr",function(v){return wyFmt(v)},function(p){return p.sr<2?WY_C.crit:WY_C.blue},6);
   hb("c-fr",S.przedm.slice().sort(function(a,b){return (a.frek||0)-(b.frek||0)}),"frek",function(v){return wyFmt(v,0)+"%"},function(p){return p.frek<50?WY_C.crit:p.frek<75?WY_C.warn:WY_C.blue},100);
   if(zc.length) hb("c-zg",zc,"zagr",function(v){return v+" "+odm(v,"uczeń","uczniów","uczniów")},WY_C.crit,undefined);
-  var dn=$("#c-ob");if(dn){var lab=["Obecności","Nieob. usprawiedliwione","Nieob. nieusprawiedliwione","Spóźnienia"],val=[K.ob,K.u,K.nb,K.s],sum=val.reduce(function(a,b){return a+b},0);
-    WY.charts.push(new Chart(dn,{type:"doughnut",data:{labels:lab.map(function(l,i){return l+" — "+val[i]+" ("+wyFmt(sum?val[i]*100/sum:0,1)+"%)"}),datasets:[{data:val,backgroundColor:[WY_C.blue,WY_C.aqua,WY_C.orange,WY_C.yellow],borderColor:"#fff",borderWidth:2}]},options:{cutout:"58%",plugins:{legend:{position:"bottom",labels:{color:WY_C.ink,boxWidth:12,padding:12}}}}}))}
+  var dn=$("#c-ob");if(dn){var lab=["Obecności","Nieob. nieusprawiedliwione","Nieob. usprawiedliwione","Spóźnienia"],val=[K.ob,K.nb,K.u,K.s],sum=val.reduce(function(a,b){return a+b},0);
+    WY.charts.push(new Chart(dn,{type:"doughnut",data:{labels:lab.map(function(l,i){return l+" — "+val[i]+" ("+wyFmt(sum?val[i]*100/sum:0,1)+"%)"}),datasets:[{data:val,backgroundColor:[WY_C.blue,WY_C.orange,WY_C.aqua,WY_C.yellow],borderColor:"#fff",borderWidth:2}]},options:{cutout:"58%",plugins:{legend:{position:"bottom",labels:{color:WY_C.ink,boxWidth:12,padding:12}}}}}))}
   var di=$("#c-di");if(di&&K.dist) WY.charts.push(new Chart(di,{type:"bar",data:{labels:["1","2","3","4","5","6"],datasets:[{data:K.dist.map(function(v){return Math.round(v*10)/10}),backgroundColor:WY_C.blue,borderRadius:4,borderSkipped:"start"}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return "Ocena "+c[0].label},label:function(c){return " "+wyFmt(c.raw,1)+"% ocen"}}}},scales:{y:{grid:{color:WY_C.grid},ticks:{callback:function(v){return v+"%"}}},x:{grid:{display:false},title:{display:true,text:"ocena"}}}}}));
   var hzc=$("#c-hz");if(hzc) WY.charts.push(new Chart(hzc,{type:"bar",data:{labels:["brak","1","2","3 i więcej"],datasets:[{data:hz,backgroundColor:[WY_C.good,WY_C.warn,WY_C.crit,WY_C.crit],borderRadius:4,borderSkipped:"start"}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.raw+" "+odm(c.raw,"uczeń","uczniów","uczniów")}}}},scales:{y:{grid:{color:WY_C.grid},ticks:{precision:0},title:{display:true,text:"liczba uczniów"}},x:{grid:{display:false},title:{display:true,text:"liczba przewidywanych ocen niedostatecznych"}}}}}));
   var sc=$("#c-sc");if(sc){var pts=S.uczniowie.filter(function(u){return u.sr!=null&&u.frek!=null});

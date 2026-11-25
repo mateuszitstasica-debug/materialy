@@ -377,6 +377,11 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .zspm .wyt th.on{color:#81002b}.zspm .pnote{background:#eaf6f8;border-color:#bfe2e8;color:#0f2953}
 .zsfoot{margin:22px 0 4px;padding-top:10px;border-top:2px solid #81002b;font-size:12px;color:#5b6472;text-align:center}
 @media print{.zsband{border-radius:0;margin-top:0}.zspm .wybox{border-top:3px solid #19829a}}
+.wysc{margin:14px 0 0}.wysc summary{cursor:pointer}.wysl{margin:10px 0 6px;padding-left:22px}.wysl li{margin:0 0 12px}
+.wyst{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:#0f2953}.wyok{background:#e7f6ea;color:#0b6b1d;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:700}.wyno{background:#fff4dc;color:#8a5a00;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:700}
+.wysg{display:grid;grid-template-columns:130px 1fr;gap:3px 12px;font-size:13.5px;margin-top:5px}.wysg span{color:var(--muted);font-size:12px;padding-top:2px}.wysg em{font-style:normal}.wysg code,.wytips code{font-family:var(--mono);font-size:12.5px;background:#f1f4f8;border-radius:5px;padding:1px 6px;word-break:break-all;justify-self:start}.wytips code{white-space:nowrap;word-break:normal}
+.wytips{background:#f4f8fc;border:1px solid #dbe6f2;border-radius:10px;padding:10px 14px;font-size:13.5px}.wytips ul{margin:6px 0 0;padding-left:18px}.wytips li{margin:4px 0}
+@media(max-width:560px){.wysg{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -1034,6 +1039,26 @@ function wychowawcaView(){
   };
   if(has) go.click();
 }
+
+var WY_PLIKI=[
+ {k:"oceny",n:"Zestawienie ocen cząstkowych uczniów według przedmiotów",f:"ZestawienieROCUczniowiePrzedmioty.xlsx",a:"ZestROCUcznPrzedmioty",p:"okres klasyfikacyjny (np. Semestr 1), dziennik Twojej klasy, zaznaczone wszystkie przedmioty",w:"średnia klasy, średnie według przedmiotów, rozkład ocen 1–6, średnie uczniów w tabeli"},
+ {k:"frekwencja",n:"Zestawienie frekwencji na lekcjach przedmiotów",f:"ZestawienieFrekwencjeNaLekcjachPrzedmiotow.xlsx",a:"Frekwencja oddziałów",p:"rok szkolny, badany okres od 1 września do dziś, dziennik klasy, wszystkie przedmioty",w:"frekwencja klasy i według przedmiotów, struktura obecności, godziny nieusprawiedliwione, spóźnienia, kolumna „Frekwencja < 50%”"},
+ {k:"zagrozenia",n:"Zestawienie przewidywanych ocen niedostatecznych",f:"ZestawieniePrzewidywaneOcenyNiedostateczne.xlsx",a:"Oceny Niedostateczne",p:"okres klasyfikacyjny, dziennik klasy, wszystkie przedmioty",w:"liczba uczniów z zagrożeniem, zagrożenia według przedmiotów i na ucznia, kolumna „Zagrożenia”"},
+ {k:"uwagi",n:"Wykaz pochwał i uwag",f:"Wykaz_uwag_pochwał.xlsx",a:"Wykaz pochwał i uwag",p:"dziennik klasy, ten sam okres co frekwencja",w:"lista uwag i pochwał pod tabelą (plik nieobowiązkowy)"}];
+function wySciaga(){
+  var D=WY.dane||{};
+  return '<details class="panel wysc noprint"'+(WY.dane?'':' open')+'><summary><b>📋 Ściągawka – jakie pliki pobrać z dziennika</b> <span class="note">— 4 zestawienia w formacie Excel</span></summary>'+
+   '<ol class="wysl">'+WY_PLIKI.map(function(x,i){var ok=D[x.k]!==undefined&&!(x.k==="uwagi"&&!D.uwagi);
+     return '<li><div class="wyst"><b>'+esc(x.n)+'</b>'+(WY.dane?(ok?'<span class="wyok">✓ wczytane</span>':'<span class="wyno">brak</span>'):'')+'</div>'+
+      '<div class="wysg"><span>Plik z dziennika</span><code>'+esc(x.f)+'</code><span>Ustaw w dzienniku</span><em>'+esc(x.p)+'</em><span>Daje w panelu</span><em>'+esc(x.w)+'</em></div></li>'}).join("")+'</ol>'+
+   '<div class="wytips"><b>Jak to zrobić</b><ul>'+
+    '<li>W dzienniku elektronicznym otwórz zestawienia, wybierz każde z powyższych, ustaw parametry i zapisz wynik jako <b>Excel (.xlsx)</b>. Nazwy zestawień w dzienniku mogą się minimalnie różnić – ważna jest zawartość pliku.</li>'+
+    '<li>Nie zmieniaj plików w Excelu (nazw arkuszy, kolumn, wierszy). Nazwę pliku możesz zmienić – panel rozpoznaje plik po nazwie arkusza (np. <code>Frekwencja oddziałów</code>).</li>'+
+    '<li>Zaznacz <b>wszystkie pliki naraz</b> w polu „Wczytaj zestawienia z dziennika” i kliknij <b>Zapisz w arkuszu i pokaż analizę</b>. Panel pokaże, co rozpoznał w każdym pliku.</li>'+
+    '<li>Możesz wgrać też pojedynczy plik – podmieni tylko swoją część (np. sama nowa frekwencja), reszta zostanie.</li>'+
+    '<li>Przy nowym okresie (np. semestr 2) wgraj komplet, żeby nie mieszać danych z dwóch okresów.</li>'+
+    '<li>Kiedy aktualizować: przed radą klasyfikacyjną, wywiadówką i rozmową z dyrekcją.</li></ul></div></details>';
+}
 function wyUpload(){
   return '<details class="panel wyup noprint" '+(WY.dane?'':'open')+'><summary><b>Wczytaj zestawienia z dziennika</b> <span class="note">— pliki .xlsx: rozkład ocen, frekwencja, przewidywane oceny niedostateczne, uwagi i pochwały</span></summary>'+
    '<p class="note">Wybierz naraz wszystkie pliki wyeksportowane z dziennika. Strona rozpozna je sama i pokaże podgląd. Dane trafią tylko do Twojego arkusza Google (nie na stronę).</p>'+
@@ -1042,13 +1067,13 @@ function wyUpload(){
 function wyRender(){
   WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];
   var out=$("#wy-out");if(!out)return;var D=WY.dane;
-  if(!D){out.innerHTML=wyUpload()+'<div class="empty">Brak danych. Wczytaj zestawienia z dziennika powyżej.</div>';wyBindUpload();return}
+  if(!D){out.innerHTML=wySciaga()+wyUpload()+'<div class="empty">Brak danych. Wczytaj zestawienia z dziennika powyżej.</div>';wyBindUpload();return}
   var S=wyStats(D),K=S.kpi,P=WY.rodzice,m=D.meta||{};
   $("#wy-sub").textContent="Klasa "+(m.klasa||"")+(m.okres?" · "+m.okres:"")+(m.zakres?" · frekwencja: "+m.zakres:"")+(WY.zapisano?" · dane z "+new Date(WY.zapisano).toLocaleDateString("pl-PL"):"");
   var kp=function(v,l,cls,sub){return '<div class="kpi '+(cls||"")+'"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
   var zc=S.przedm.filter(function(p){return p.zagr}).sort(function(a,b){return b.zagr-a.zagr});
   var hz=[0,0,0,0];S.uczniowie.forEach(function(u){hz[Math.min(3,u.zagr.length)]++});
-  out.innerHTML=wyUpload()+
+  out.innerHTML=wySciaga()+wyUpload()+
    '<div class="wybar noprint"><label class="sw"><input type="checkbox" id="wy-par" '+(P?"checked":"")+'><span></span> Widok dla rodziców <em>(bez nazwisk i danych pojedynczych uczniów)</em></label><button class="btn ghost sm" id="wy-pr">🖨 Drukuj / zapisz PDF</button></div>'+
    (P?'<div class="pnote">Widok dla rodziców — pokazane są wyłącznie dane zbiorcze klasy.</div>':'')+
    '<div class="kpis">'+kp(K.n,"uczniów")+kp(wyFmt(K.sr),"średnia ocen klasy","","średnia ze średnich uczniów")+kp(wyFmt(K.frek,1)+"%","frekwencja klasy",K.frek!=null&&K.frek<80?"warn":"")+

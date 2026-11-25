@@ -383,6 +383,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wytips{background:#f4f8fc;border:1px solid #dbe6f2;border-radius:10px;padding:10px 14px;font-size:13.5px}.wytips ul{margin:6px 0 0;padding-left:18px}.wytips li{margin:4px 0}
 @media(max-width:560px){.wysg{grid-template-columns:1fr}}
 .secbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#eef7f0;border:1px solid #cfe8d5;color:#145c2a;border-radius:10px;padding:8px 12px;font-size:13.5px;margin:4px 0 6px}
+.wykr{margin-top:18px}.wykr .wkrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}.wykr select{max-width:320px}.wykr textarea{width:100%;min-height:70px;font:inherit;padding:10px;border:1px solid var(--line);border-radius:10px;resize:vertical}.wykr label.ck{display:flex;gap:6px;align-items:center;font-size:14px}.wyt .wpr{border:0;background:none;cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px}.wyt .wpr:hover{background:#eef3fb}
 .wytops{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}@media(max-width:800px){.wytops{grid-template-columns:1fr}}
 .wytop{border-top:3px solid #81002b}.wytop h3{margin:0 0 2px;font-size:18px;color:#0f2953}.wytop .note{margin:0 0 10px;font-size:13px}
 .podium{list-style:none;margin:0;padding:0}.podium li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;margin-bottom:8px;border:1px solid var(--line)}
@@ -1113,7 +1114,7 @@ function wyRender(){
   WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];
   var out=$("#wy-out");if(!out)return;var D=WY.dane;
   if(!D){out.innerHTML=wySciaga()+wyUpload()+'<div class="empty">Brak danych. Wczytaj zestawienia z dziennika powyżej.</div>';wyBindUpload();return}
-  var S=wyStats(D),K=S.kpi,P=WY.rodzice,m=D.meta||{};
+  var S=wyStats(D),K=S.kpi,P=WY.rodzice,m=D.meta||{};WY.S=S;
   $("#wy-sub").textContent="Klasa "+(m.klasa||"")+(m.okres?" · "+m.okres:"")+(m.zakres?" · frekwencja: "+m.zakres:"")+(WY.zapisano?" · dane z "+new Date(WY.zapisano).toLocaleDateString("pl-PL"):"");
   var kp=function(v,l,cls,sub){return '<div class="kpi '+(cls||"")+'"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
   var zc=S.przedm.filter(function(p){return p.zagr}).sort(function(a,b){return b.zagr-a.zagr});
@@ -1132,7 +1133,7 @@ function wyRender(){
      wyBox("c-hz","Liczba zagrożeń na ucznia","Ilu uczniów ma 0, 1, 2 lub 3 i więcej przewidywanych ocen niedostatecznych.",260)+
      (P?'':wyBox("c-sc","Średnia a frekwencja — uczniowie","Każdy punkt to jeden uczeń. Najedź na punkt, aby zobaczyć nazwisko.",340,true))+
    '</div>'+
-   (P?'':wyTable(S))+
+   (P?'':wyKartyPanel(S))+(P?'':wyTable(S))+
    (P||!(D.uwagi||[]).length?'':'<div class="panel" style="margin-top:18px"><h2>Uwagi i pochwały ('+D.uwagi.length+')</h2>'+D.uwagi.map(function(x){return '<div class="lrow"><b style="min-width:180px">'+esc(x.kto)+'</b><span class="pill">'+esc(x.typ||x.kategoria)+'</span><span class="grow">'+esc(x.tresc)+'</span></div>'}).join("")+'</div>')+
    (P?'':wyTop(S));
   wyBindUpload();
@@ -1140,6 +1141,11 @@ function wyRender(){
   $("#wy-pr").onclick=function(){window.print()};
   $$("[data-ws]").forEach(function(th){th.onclick=function(){WY.sort=WY.sort===th.dataset.ws?"-"+th.dataset.ws:th.dataset.ws;wyRender();var t=$("#wy-tab");if(t)t.scrollIntoView()}});
   $$("[data-wu]").forEach(function(tr){tr.onclick=function(){var d=$("#wyd-"+tr.dataset.wu);if(d)d.hidden=!d.hidden}});
+  $$("[data-wpr]").forEach(function(b){b.onclick=function(ev){ev.stopPropagation();wyKartyDrukuj([+b.dataset.wpr])}});
+  var kp1=$("#wk-1"),kpa=$("#wk-all"),kms=$("#wk-msg");
+  if(kms)kms.oninput=function(){WY.msg=kms.value};
+  if(kp1)kp1.onclick=function(){var v=$("#wk-sel").value;if(v)wyKartyDrukuj([+v])};
+  if(kpa)kpa.onclick=function(){wyKartyDrukuj(S.uczniowie.map(function(u){return u.nr}))};
   if(!window.Chart) return;
   Chart.defaults.font.family="IBM Plex Sans, system-ui, sans-serif";Chart.defaults.color=WY_C.ink2;Chart.defaults.animation=false;Chart.defaults.maintainAspectRatio=false;
   var hb=function(id,items,val,fmt,color,max){var el=$("#"+id);if(!el)return;items=items.filter(function(p){return p[val]!=null});
@@ -1156,6 +1162,64 @@ function wyRender(){
     WY.charts.push(new Chart(sc,{type:"scatter",data:{datasets:[{data:pts.map(function(u){return {x:u.frek,y:u.sr,u:u}}),pointRadius:6,pointHoverRadius:8,backgroundColor:pts.map(function(u){return u.zagr.length?WY_C.crit:WY_C.blue}),borderColor:"#fff",borderWidth:2}]},
       options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var u=c.raw.u;return " "+u.nr+". "+u.kto+" — średnia "+wyFmt(u.sr)+", frekwencja "+wyFmt(u.frek,1)+"%"+(u.zagr.length?", zagrożenia: "+u.zagr.length:"")}}}},
       scales:{x:{min:Math.max(0,Math.floor(Math.min.apply(null,pts.map(function(u){return u.frek}).concat([100]))/10)*10-5),max:100,title:{display:true,text:"frekwencja [%]"},grid:{color:WY_C.grid}},y:{min:1,max:6,title:{display:true,text:"średnia ocen"},grid:{color:WY_C.grid}}}}}))}
+}
+function wyKartyPanel(S){
+  return '<div class="panel wykr noprint"><h2>🖨 Kartki dla rodziców</h2><p class="note">Osobne zestawienie dla każdego ucznia, na jednej stronie A4: oceny i frekwencja z każdego przedmiotu, zagrożenia, uwagi i pochwały, miejsce na podpis. „Drukuj wszystkie” daje każdego ucznia na osobnej stronie. Możesz też wybrać <b>Zapisz jako PDF</b> w oknie drukowania.</p>'+
+   '<label class="note" for="wk-msg" style="display:block;margin:10px 0 4px">Wiadomość wychowawcy (pojawi się na każdej kartce, nieobowiązkowa)</label><textarea id="wk-msg" maxlength="600" placeholder="np. Zapraszam na konsultacje we wtorki 14:30–15:15, sala 12.">'+esc(WY.msg||"")+'</textarea>'+
+   '<div class="wkrow"><label class="ck"><input type="checkbox" id="wk-cmp" '+(WY.cmp===false?'':'checked')+'> porównanie z klasą</label><label class="ck"><input type="checkbox" id="wk-uw" '+(WY.uw===false?'':'checked')+'> uwagi i pochwały</label><label class="ck"><input type="checkbox" id="wk-slip" '+(WY.slip?'checked':'')+'> odcinek do zwrotu z podpisem rodzica</label></div>'+
+   '<div class="wkrow"><select id="wk-sel"><option value="">— wybierz ucznia —</option>'+S.uczniowie.map(function(u){return '<option value="'+u.nr+'">'+u.nr+'. '+esc(u.kto)+'</option>'}).join("")+'</select><button class="btn ghost sm" id="wk-1">Drukuj dla wybranego</button><button class="btn sm" id="wk-all">Drukuj wszystkie ('+S.uczniowie.length+')</button></div></div>';
+}
+function wyKarta(u,S,o){
+  var D=WY.dane,OC=D.oceny,FR=D.frekwencja,m=D.meta||{},K=S.kpi;
+  var oo=OC&&OC.uczniowie[u.nr]?OC.uczniowie[u.nr].o:{},ff=FR&&FR.uczniowie[u.nr]?FR.uczniowie[u.nr].f:{};
+  var ks=[];S.przedm.forEach(function(p){if(oo[p.kod]||ff[p.kod]||u.zagr.some(function(z){return z.kod===p.kod}))ks.push(p)});
+  Object.keys(oo).concat(Object.keys(ff)).forEach(function(k){if(k!=="*"&&!ks.some(function(p){return p.kod===k}))ks.push({kod:k,nazwa:k})});ks.sort(function(a,b){return String(a.nazwa).localeCompare(String(b.nazwa),"pl",{sensitivity:"base"})});
+  var dist=function(d){if(!d)return "—";var a=[];for(var i=5;i>=0;i--)if(d[i]>=0.5)a.push('<b>'+(i+1)+'</b> '+Math.round(d[i])+'%');return a.join(" · ")||"—"};
+  var rows=ks.map(function(p){var x=oo[p.kod],f=ff[p.kod],z=u.zagr.some(function(q){return q.kod===p.kod}),lw=f&&f.pct!=null&&f.pct<50,cl=p.sr,cf=p.frek;
+    var uw=[];if(z)uw.push('<span class="t z">zagrożenie</span>');if(lw)uw.push('<span class="t l">frek. &lt; 50%</span>');
+    return '<tr class="'+(z?"z":"")+'"><td class="pn">'+esc(p.nazwa)+'</td><td class="n"><b>'+(x?wyFmt(x.sr):"—")+'</b></td>'+(o.cmp?'<td class="n c">'+(cl!=null?wyFmt(cl):"—")+'</td>':'')+'<td class="dd">'+dist(x&&x.d)+'</td><td class="n'+(lw?" bad":"")+'"><b>'+(f&&f.pct!=null?wyFmt(f.pct,1)+"%":"—")+'</b></td>'+(o.cmp?'<td class="n c">'+(cf!=null?wyFmt(cf,1)+"%":"—")+'</td>':'')+'<td class="n">'+(f?f.nb:"—")+'</td><td class="n">'+(f?(f.s+f.su):"—")+'</td><td class="u">'+uw.join(" ")+'</td></tr>'}).join("");
+  var box=function(v,l,cls,sub){return '<div class="k '+(cls||"")+'"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
+  var uwagi=o.uw?(u.uwagi||[]):[],poch=uwagi.filter(function(x){return /pochwa/i.test(x.typ+x.kategoria)});
+  return '<section class="kart">'+
+   '<header><img src="'+o.logo+'" alt=""><div><div class="sch">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18</div><h1>Informacja o postępach w nauce i frekwencji</h1><div class="meta">'+esc([m.rok?"rok szkolny "+m.rok:"",m.okres||"",m.zakres?"frekwencja: "+m.zakres:""].filter(Boolean).join(" · "))+'</div></div></header>'+
+   '<div class="who"><div><span>Uczeń / uczennica</span><b>'+esc(u.kto)+'</b></div><div><span>Klasa</span><b>'+esc(m.klasa||"—")+'</b></div><div><span>Nr w dzienniku</span><b>'+u.nr+'</b></div><div><span>Data</span><b>'+new Date().toLocaleDateString("pl-PL")+'</b></div></div>'+
+   '<div class="ks">'+box(wyFmt(u.sr),"średnia ocen",u.sr!=null&&u.sr<2?"bad":"",o.cmp&&K.sr!=null?"średnia klasy "+wyFmt(K.sr):"")+box(u.frek!=null?wyFmt(u.frek,1)+"%":"—","frekwencja",u.frek!=null&&u.frek<75?"bad":"",o.cmp&&K.frek!=null?"frekwencja klasy "+wyFmt(K.frek,1)+"%":"")+box(u.nb,"godz. nieusprawiedliwionych",u.nb?"warn":"")+box(u.s,"spóźnień")+box(u.zagr.length,"zagrożeń",u.zagr.length?"bad":"",u.zagr.length?"przewidywane oceny ndst.":"brak")+'</div>'+
+   (u.zagr.length||u.low.length?'<div class="alert">'+(u.zagr.length?'<p><b>Przewidywana ocena niedostateczna:</b> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", "))+'.</p>':'')+(u.low.length?'<p><b>Frekwencja poniżej 50%:</b> '+u.low.map(function(p){return esc(p.nazwa)+" ("+wyFmt(p.pct,0)+"%)"}).join(", ")+' — grozi nieklasyfikowaniem z przedmiotu.</p>':'')+'</div>':'')+
+   '<table><thead><tr><th>Przedmiot</th><th class="n">Średnia</th>'+(o.cmp?'<th class="n c">klasa</th>':'')+'<th>Udział ocen</th><th class="n">Frekwencja</th>'+(o.cmp?'<th class="n c">klasa</th>':'')+'<th class="n">Nieuspr. [h]</th><th class="n">Spóźn.</th><th></th></tr></thead><tbody>'+(rows||'<tr><td colspan="9">Brak danych z przedmiotów.</td></tr>')+'</tbody></table>'+
+   '<p class="leg">Udział ocen: np. <b>5</b> 40% oznacza, że 40% ocen cząstkowych z przedmiotu to oceny bardzo dobre. Średnia ogólna nie uwzględnia religii i etyki.'+(o.cmp?' „Klasa” – średnia wszystkich uczniów klasy.':'')+'</p>'+
+   (o.uw&&uwagi.length?'<h2>Uwagi i pochwały ('+uwagi.length+(poch.length?', w tym pochwał: '+poch.length:'')+')</h2><ul class="uw">'+uwagi.map(function(x){var pw=/pochwa/i.test(x.typ+x.kategoria);return '<li class="'+(pw?"p":"n")+'"><span>'+(pw?"pochwała":"uwaga")+'</span>'+esc(x.tresc)+(x.naucz?' <em>— '+esc(x.naucz)+'</em>':'')+'</li>'}).join("")+'</ul>':'')+
+   (o.msg?'<h2>Wiadomość od wychowawcy</h2><div class="msg">'+esc(o.msg).replace(/\n/g,"<br>")+'</div>':'')+
+   '<div class="sig"><div><span></span>podpis wychowawcy</div><div><span></span>podpis rodzica / opiekuna prawnego</div></div>'+
+   (o.slip?'<div class="slip"><div class="cut">✂ odetnij i oddaj wychowawcy</div><p>Potwierdzam, że zapoznałem/zapoznałam się z informacją o postępach w nauce i frekwencji ucznia <b>'+esc(u.kto)+'</b>, klasa '+esc(m.klasa||"")+'.</p><div class="sig"><div><span></span>data</div><div><span></span>czytelny podpis rodzica / opiekuna prawnego</div></div></div>':'')+
+   '<footer>Dokument zawiera dane osobowe ucznia – przeznaczony wyłącznie dla rodziców / opiekunów prawnych. Wychowawca: Mateusz Stasica · na podstawie zestawień z dziennika elektronicznego.</footer></section>';
+}
+function wyKartyDrukuj(nrs){
+  var S=WY.S;if(!S||!WY.dane)return;
+  var g=function(id){var e=$("#"+id);return e?e.checked:false};
+  WY.cmp=g("wk-cmp");WY.uw=g("wk-uw");WY.slip=g("wk-slip");var ms=$("#wk-msg");if(ms)WY.msg=ms.value;
+  var o={cmp:WY.cmp,uw:WY.uw,slip:WY.slip,msg:(WY.msg||"").trim(),logo:new URL(egzUrl("assets/zspm-logo.webp"),location.href).href};
+  var U=S.uczniowie.filter(function(u){return nrs.indexOf(u.nr)>=0});if(!U.length)return;
+  var css='@page{size:A4;margin:12mm 13mm}*{box-sizing:border-box}body{margin:0;font:10pt/1.3 Roboto,"Segoe UI",Arial,sans-serif;color:#191919;-webkit-print-color-adjust:exact;print-color-adjust:exact}'+
+   '.kart{break-after:page;page-break-after:always}.kart:last-child{break-after:auto;page-break-after:auto}'+
+   'header{display:flex;gap:14px;align-items:center;background:linear-gradient(120deg,#0f2953,#19829a);color:#fff;border-bottom:4px solid #81002b;border-radius:8px;padding:10px 14px}header img{height:48px;background:#fff;border-radius:6px;padding:3px}.sch{font-size:8.5pt;opacity:.9}h1{font-size:14pt;margin:2px 0}.meta{font-size:8.5pt;opacity:.9}'+
+   '.who{display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr;gap:8px;margin:8px 0}.who div{border:1px solid #d8dee8;border-radius:6px;padding:5px 9px}.who span,.k span{display:block;font-size:8pt;color:#555}.who b{font-size:11.5pt}'+
+   '.ks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.k{border:1px solid #d8dee8;border-top:3px solid #19829a;border-radius:6px;padding:6px 9px}.k b{font-size:14pt;display:block;color:#0f2953}.k small{font-size:7.5pt;color:#666}.k.bad{border-top-color:#c0392b}.k.bad b{color:#b42318}.k.warn{border-top-color:#e6a100}'+
+   '.alert{border:1px solid #f2c1bb;background:#fff5f4;border-radius:6px;padding:6px 10px;margin-bottom:8px}.alert p{margin:2px 0}'+
+   'table{width:100%;border-collapse:collapse;font-size:9pt;line-height:1.2}th{background:#0f2953;color:#fff;text-align:left;padding:4px 6px;font-weight:600;font-size:8pt}td{padding:2px 6px;border-bottom:1px solid #e3e7ee;vertical-align:top}tr:nth-child(even) td{background:#f7f9fc}tr.z td{background:#fff1ef}td.n{text-align:right;white-space:nowrap}td.n b{font-weight:600}th.n{text-align:right}.c{color:#777;font-size:8pt}th.c{color:#cfe0f5}td.pn{max-width:190px}td.u{white-space:nowrap}.tight{font-size:9pt}.tight table{font-size:8.2pt}.tight td{padding:1px 5px}.tight .k b{font-size:12pt}.tight .sig{margin-top:12px}.tight h2{margin:6px 0 4px}td.bad{color:#b42318;font-weight:700}td.dd{font-size:8.5pt;color:#333;white-space:nowrap}td.pn{font-weight:500}.t{display:inline-block;font-size:7pt;border-radius:9px;padding:0 6px;margin:1px 0}.t.z{background:#fdecea;color:#a3301f}.t.l{background:#fff4dc;color:#8a5a00}'+
+   '.leg{font-size:7.5pt;color:#666;margin:4px 0 8px}h2{font-size:11pt;color:#0f2953;border-bottom:2px solid #19829a;padding-bottom:2px;margin:10px 0 6px}'+
+   '.uw{list-style:none;padding:0;margin:0;font-size:9pt}.uw li{padding:3px 0;border-bottom:1px dotted #ccd}.uw li span{display:inline-block;min-width:62px;font-size:7.5pt;font-weight:700;text-transform:uppercase;margin-right:6px}.uw li.p span{color:#0a7a1a}.uw li.n span{color:#a3301f}.uw em{color:#666;font-size:8pt}'+
+   '.msg{border-left:3px solid #81002b;background:#f7f9fc;padding:6px 10px;border-radius:0 6px 6px 0}'+
+   '.sig{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:18px;font-size:8pt;color:#555;text-align:center}.sig span{display:block;border-bottom:1px solid #555;height:22px;margin-bottom:3px}'+
+   '.slip{margin-top:16px;border-top:1.5px dashed #888;padding-top:4px;break-inside:avoid}.slip .cut{font-size:7.5pt;color:#777}.slip p{margin:6px 0 0}.slip .sig{margin-top:18px}'+
+   'footer{margin-top:12px;font-size:7pt;color:#888;border-top:1px solid #e3e7ee;padding-top:4px}';
+  var html='<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>Kartki dla rodziców – '+esc((WY.dane.meta||{}).klasa||"")+'</title><style>'+css+'</style></head><body>'+U.map(function(u){return wyKarta(u,S,o)}).join("")+'</body></html>';
+  var old=$("#wy-prf");if(old)old.remove();
+  var f=document.createElement("iframe");f.id="wy-prf";f.setAttribute("aria-hidden","true");f.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";document.body.appendChild(f);
+  var d=f.contentWindow.document;d.open();d.write(html);d.close();
+  f.style.width="695px";f.style.height="1000px";var pagePx=(297-24)*96/25.4-4;
+  [].forEach.call(d.querySelectorAll(".kart"),function(k){if(k.scrollHeight>pagePx){k.classList.add("tight");var h=k.scrollHeight;if(h>pagePx)k.style.zoom=Math.max(0.8,Math.floor(pagePx/h*1000)/1000)}});
+  var go=function(){try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}};
+  var im=d.images[0];if(im&&!im.complete){im.onload=im.onerror=function(){setTimeout(go,50)}}else setTimeout(go,150);
 }
 function wyTop(S){
   var med=["🥇","🥈","🥉"],cls=["g","s","b"];
@@ -1177,13 +1241,13 @@ function wyTable(S){
   var U=S.uczniowie.slice().sort(function(a,b){var x=(k==="zagr"||k==="low")?a[k].length:a[k],y=(k==="zagr"||k==="low")?b[k].length:b[k];if(typeof x==="string")return desc?y.localeCompare(x,"pl"):x.localeCompare(y,"pl");x=x==null?-1:x;y=y==null?-1:y;return desc?y-x:x-y});
   var th=function(key,l){return '<th data-ws="'+key+'" class="'+(k===key?"on":"")+'">'+l+(k===key?(desc?" ▼":" ▲"):"")+'</th>'};
   var D=WY.dane,OC=D.oceny,FR=D.frekwencja;
-  return '<div class="panel" style="margin-top:18px" id="wy-tab"><h2>Uczniowie</h2><p class="note">Kliknij nagłówek, aby posortować. Kliknij ucznia, aby zobaczyć szczegóły z przedmiotów.</p><div class="wytw"><table class="wyt"><thead><tr>'+th("nr","Nr")+th("kto","Uczeń")+th("sr","Średnia")+th("frek","Frekwencja")+th("nb","Nieuspr. [h]")+th("s","Spóźnienia")+th("zagr","Zagrożenia")+th("low","Frekwencja &lt; 50%")+'</tr></thead><tbody>'+
+  return '<div class="panel" style="margin-top:18px" id="wy-tab"><h2>Uczniowie</h2><p class="note">Kliknij nagłówek, aby posortować. Kliknij ucznia, aby zobaczyć szczegóły z przedmiotów.</p><div class="wytw"><table class="wyt"><thead><tr>'+th("nr","Nr")+th("kto","Uczeń")+th("sr","Średnia")+th("frek","Frekwencja")+th("nb","Nieuspr. [h]")+th("s","Spóźnienia")+th("zagr","Zagrożenia")+th("low","Frekwencja &lt; 50%")+'<th class="noprint" title="Kartka dla rodzica">🖨</th></tr></thead><tbody>'+
    U.map(function(u){
      var det='';var ks={};if(OC&&OC.uczniowie[u.nr])Object.keys(OC.uczniowie[u.nr].o).forEach(function(x){ks[x]=1});if(FR&&FR.uczniowie[u.nr])Object.keys(FR.uczniowie[u.nr].f).forEach(function(x){if(x!=="*")ks[x]=1});
      det=Object.keys(ks).map(function(x){var p=S.przedm.filter(function(q){return q.kod===x})[0],o=OC&&OC.uczniowie[u.nr]&&OC.uczniowie[u.nr].o[x],f=FR&&FR.uczniowie[u.nr]&&FR.uczniowie[u.nr].f[x],z=u.zagr.some(function(q){return q.kod===x});
        return '<tr class="'+(z?"zg":"")+'"><td>'+esc(p?p.nazwa:x)+(z?' <span class="zgb">zagrożenie</span>':'')+'</td><td>'+(o?wyFmt(o.sr):"—")+'</td><td class="'+(f&&f.pct<50?"bad":"")+'">'+(f?wyFmt(f.pct,1)+"%":"—")+'</td><td>'+(f?f.nb:"—")+'</td></tr>'}).join("");
-     return '<tr class="wr'+(u.zagr.length?" hz":"")+'" data-wu="'+u.nr+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b></td><td class="'+(u.sr!=null&&u.sr<2?"bad":"")+'">'+wyFmt(u.sr)+'</td><td class="'+(u.frek!=null&&u.frek<50?"bad":u.frek<75?"mid":"")+'">'+wyFmt(u.frek,1)+'%</td><td>'+u.nb+'</td><td>'+u.s+'</td><td>'+(u.zagr.length?'<span class="zgb">'+u.zagr.length+'</span> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", ")):'—')+'</td><td>'+(u.low.length?'<span class="lowb">'+u.low.length+'</span> '+u.low.map(function(p){return esc(p.nazwa)+' <b class="lowp">'+wyFmt(p.pct,0)+'%</b>'}).join(", "):'—')+'</td></tr>'+
-       '<tr class="wyd" id="wyd-'+u.nr+'" hidden><td></td><td colspan="7"><table class="wyt2"><thead><tr><th>Przedmiot</th><th>Średnia</th><th>Frekwencja</th><th>Nieuspr. [h]</th></tr></thead><tbody>'+det+'</tbody></table></td></tr>'}).join("")+
+     return '<tr class="wr'+(u.zagr.length?" hz":"")+'" data-wu="'+u.nr+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b></td><td class="'+(u.sr!=null&&u.sr<2?"bad":"")+'">'+wyFmt(u.sr)+'</td><td class="'+(u.frek!=null&&u.frek<50?"bad":u.frek<75?"mid":"")+'">'+wyFmt(u.frek,1)+'%</td><td>'+u.nb+'</td><td>'+u.s+'</td><td>'+(u.zagr.length?'<span class="zgb">'+u.zagr.length+'</span> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", ")):'—')+'</td><td>'+(u.low.length?'<span class="lowb">'+u.low.length+'</span> '+u.low.map(function(p){return esc(p.nazwa)+' <b class="lowp">'+wyFmt(p.pct,0)+'%</b>'}).join(", "):'—')+'</td><td class="noprint"><button class="wpr" data-wpr="'+u.nr+'" title="Drukuj kartkę dla rodzica">🖨</button></td></tr>'+
+       '<tr class="wyd" id="wyd-'+u.nr+'" hidden><td></td><td colspan="8"><table class="wyt2"><thead><tr><th>Przedmiot</th><th>Średnia</th><th>Frekwencja</th><th>Nieuspr. [h]</th></tr></thead><tbody>'+det+'</tbody></table></td></tr>'}).join("")+
    '</tbody></table></div></div>';
 }
 function wyBindUpload(){

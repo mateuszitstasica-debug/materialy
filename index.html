@@ -383,6 +383,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wytips{background:#f4f8fc;border:1px solid #dbe6f2;border-radius:10px;padding:10px 14px;font-size:13.5px}.wytips ul{margin:6px 0 0;padding-left:18px}.wytips li{margin:4px 0}
 @media(max-width:560px){.wysg{grid-template-columns:1fr}}
 .secbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#eef7f0;border:1px solid #cfe8d5;color:#145c2a;border-radius:10px;padding:8px 12px;font-size:13.5px;margin:4px 0 6px}
+.wytops{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}@media(max-width:800px){.wytops{grid-template-columns:1fr}}
+.wytop{border-top:3px solid #81002b}.wytop h3{margin:0 0 2px;font-size:18px;color:#0f2953}.wytop .note{margin:0 0 10px;font-size:13px}
+.podium{list-style:none;margin:0;padding:0}.podium li{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;margin-bottom:8px;border:1px solid var(--line)}
+.podium li.g{background:linear-gradient(90deg,#fff6d8,#fff);border-color:#f0d78a}.podium li.s{background:linear-gradient(90deg,#f1f3f6,#fff)}.podium li.b{background:linear-gradient(90deg,#f8ebe1,#fff);border-color:#ecd2bd}
+.podium .med{font-size:28px;line-height:1}.podium .pn{flex:1;display:flex;flex-direction:column}.podium .pn small{color:var(--muted);font-size:12px}
+.podium .pv{font-family:var(--mono);font-size:20px;font-weight:700;color:#0f2953}
+@media print{.wytops{break-inside:avoid}}
 </style>
 </head>
 <body>
@@ -1098,7 +1105,8 @@ function wyRender(){
      (P?'':wyBox("c-sc","Średnia a frekwencja — uczniowie","Każdy punkt to jeden uczeń. Najedź na punkt, aby zobaczyć nazwisko.",340,true))+
    '</div>'+
    (P?'':wyTable(S))+
-   (P||!(D.uwagi||[]).length?'':'<div class="panel" style="margin-top:18px"><h2>Uwagi i pochwały ('+D.uwagi.length+')</h2>'+D.uwagi.map(function(x){return '<div class="lrow"><b style="min-width:180px">'+esc(x.kto)+'</b><span class="pill">'+esc(x.typ||x.kategoria)+'</span><span class="grow">'+esc(x.tresc)+'</span></div>'}).join("")+'</div>');
+   (P||!(D.uwagi||[]).length?'':'<div class="panel" style="margin-top:18px"><h2>Uwagi i pochwały ('+D.uwagi.length+')</h2>'+D.uwagi.map(function(x){return '<div class="lrow"><b style="min-width:180px">'+esc(x.kto)+'</b><span class="pill">'+esc(x.typ||x.kategoria)+'</span><span class="grow">'+esc(x.tresc)+'</span></div>'}).join("")+'</div>')+
+   (P?'':wyTop(S));
   wyBindUpload();
   $("#wy-par").onchange=function(){WY.rodzice=this.checked;wyRender()};
   $("#wy-pr").onclick=function(){window.print()};
@@ -1120,6 +1128,20 @@ function wyRender(){
     WY.charts.push(new Chart(sc,{type:"scatter",data:{datasets:[{data:pts.map(function(u){return {x:u.frek,y:u.sr,u:u}}),pointRadius:6,pointHoverRadius:8,backgroundColor:pts.map(function(u){return u.zagr.length?WY_C.crit:WY_C.blue}),borderColor:"#fff",borderWidth:2}]},
       options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var u=c.raw.u;return " "+u.nr+". "+u.kto+" — średnia "+wyFmt(u.sr)+", frekwencja "+wyFmt(u.frek,1)+"%"+(u.zagr.length?", zagrożenia: "+u.zagr.length:"")}}}},
       scales:{x:{min:Math.max(0,Math.floor(Math.min.apply(null,pts.map(function(u){return u.frek}).concat([100]))/10)*10-5),max:100,title:{display:true,text:"frekwencja [%]"},grid:{color:WY_C.grid}},y:{min:1,max:6,title:{display:true,text:"średnia ocen"},grid:{color:WY_C.grid}}}}}))}
+}
+function wyTop(S){
+  var med=["🥇","🥈","🥉"],cls=["g","s","b"];
+  function lista(key,fmt,tyt,sub){
+    var U=S.uczniowie.filter(function(u){return u[key]!=null}).sort(function(a,b){return b[key]-a[key]||a.kto.localeCompare(b.kto,"pl")});
+    if(!U.length) return '';
+    var out=[],rank=0,prev=null;
+    for(var i=0;i<U.length;i++){var v=Math.round(U[i][key]*100)/100;if(v!==prev){rank=out.length+1;prev=v}if(rank>3)break;out.push({u:U[i],r:rank})}
+    return '<div class="panel wytop"><h3>'+tyt+'</h3><p class="note">'+sub+'</p><ol class="podium">'+out.map(function(x){
+      return '<li class="'+cls[x.r-1]+'"><span class="med">'+med[x.r-1]+'</span><span class="pn"><b>'+esc(x.u.kto)+'</b><small>nr '+x.u.nr+'</small></span><span class="pv">'+fmt(x.u[key])+'</span></li>'}).join("")+'</ol></div>';
+  }
+  var a=lista("frek",function(v){return wyFmt(v,1)+"%"},"🏆 Top 3 — frekwencja","Najwyższa frekwencja na wszystkich lekcjach w badanym okresie."),
+      b=lista("sr",function(v){return wyFmt(v)},"🏆 Top 3 — średnia ocen","Najwyższa średnia ocen cząstkowych (bez religii i etyki).");
+  return (a||b)?'<div class="wytops">'+a+b+'</div>':'';
 }
 function wyBox(id,t,sub,h,wide){return '<div class="panel wybox'+(wide?' wide':'')+'"><h3>'+esc(t)+'</h3><p class="note">'+esc(sub)+'</p><div style="position:relative;height:'+h+'px"><canvas id="'+id+'" role="img" aria-label="'+esc(t)+'"></canvas></div></div>'}
 function wyTable(S){

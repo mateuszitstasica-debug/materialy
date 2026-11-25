@@ -346,6 +346,24 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .erq.ok .erqn span{color:#1d6b3c;font-weight:700}.erq.no .erqn span{color:#a3301f;font-weight:700}
 .erq .wq{font-weight:600;margin-bottom:8px}.erq .eimg{margin:6px 0 10px}
 .erq .wopt.bad{background:#fdecea;border-color:#f2b8ae;color:#7a2516}.erq .wopt.bad .el{background:#c2462f;color:#fff}
+.flinks{display:flex;gap:16px;flex-wrap:wrap}
+.wyhead h1{margin:0 0 4px}.wyup{margin:14px 0}.wyup summary{cursor:pointer}.wyup input[type=file]{margin:10px 0}.wyl{margin:8px 0;padding-left:20px;font-size:14px}
+.wybar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 12px}
+.sw{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.sw em{font-style:normal;font-weight:400;color:var(--muted);font-size:13px}
+.pnote{background:#eef5ff;border:1px solid #cfe0fb;color:#1b4f99;border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh);border-top:4px solid #257de0}
+.kpi b{display:block;font-size:28px;font-family:var(--mono);color:#191919;line-height:1.1}.kpi span{font-size:13px;color:var(--muted)}.kpi small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.kpi.crit{border-top-color:#dc3c3d}.kpi.warn{border-top-color:#fbb315}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:560px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.wygrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.wybox h3{margin:0 0 2px;font-size:17px}.wybox .note{margin:0 0 10px;font-size:13px}.wybox.wide{grid-column:span 1}
+@media(max-width:900px){.wygrid{grid-template-columns:1fr}}
+.wytw{overflow-x:auto}.wyt{width:100%;border-collapse:collapse;font-size:14px}.wyt th{text-align:left;font-size:12px;font-family:var(--mono);color:var(--muted);padding:8px;border-bottom:2px solid var(--line);cursor:pointer;white-space:nowrap}.wyt th.on{color:var(--ink)}
+.wyt td{padding:8px;border-bottom:1px solid var(--line2);vertical-align:top}.wyt tr.wr{cursor:pointer}.wyt tr.wr:hover td{background:#f6f8fb}
+.wyt td.bad{color:#b42318;font-weight:700}.wyt td.mid{color:#9a5b00;font-weight:600}
+.zgb{display:inline-block;background:#fdecea;color:#a3301f;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700;font-family:var(--mono)}
+.wyt2{width:100%;border-collapse:collapse;font-size:13px;background:#fafbfd;border-radius:8px}.wyt2 th{font-size:11px;padding:6px 8px;cursor:default}.wyt2 td{padding:5px 8px;border-bottom:1px solid var(--line2)}.wyt2 tr.zg td{background:#fff5f4}
+@media print{header.top,footer,.noprint,.crumb{display:none!important}body{background:#fff}main{padding:0}.panel,.kpi{box-shadow:none;break-inside:avoid}.wygrid{grid-template-columns:1fr 1fr}.wyd{display:none}}
 </style>
 </head>
 <body>
@@ -652,7 +670,7 @@ function updateNav(){
   $("#brand").innerHTML=esc(c.tytul)+"<small>"+esc(c.podtytul)+"</small>";
   $("#mark").innerHTML=logoSvg();
   $("#nav").innerHTML='<a href="#start" class="'+(h==="start"?"on":"")+'">Start</a><a href="#egzaminy" class="'+(h==="egzaminy"||h.indexOf("e-")===0?"on":"")+'">Egzaminy</a><a href="#kontakt" class="'+(h==="kontakt"?"on":"")+'">Kontakt</a>'+c.kierunki.map(function(k){return '<a href="#k-'+k.id+'" class="'+(ak===k.id?"on":"")+'">'+esc(k.skrot)+'</a>'}).join("")+(S.admin?'<a href="#admin" class="adm-link '+(h==="admin"?"on":"")+'">⚙ Panel</a>':"");
-  $("#foot").innerHTML='<span>'+esc(c.stopka)+'</span><a class="mono flink" href="#wyniki">🔒 Wyniki egzaminów (nauczyciel)</a>';
+  $("#foot").innerHTML='<span>'+esc(c.stopka)+'</span><span class="flinks"><a class="mono flink" href="#wyniki">🔒 Wyniki egzaminów</a><a class="mono flink" href="#wychowawca">🔒 Panel wychowawcy</a></span>';
   var b="";
   if(S.mode==="local") b="Tryb lokalny: strona otwarta poza claude.ai — zmiany zapisują się tylko w tej przeglądarce.";
   if(S.err==="error"||S.err==="timeout") b="Nie udało się połączyć z bazą materiałów. Dane mogą być nieaktualne — odśwież stronę za chwilę.";
@@ -695,6 +713,7 @@ function route(scroll){
   if(h==="egzaminy") return egzListView();
   if(h==="wyniki") return wynikiView();
   if(h==="kontakt") return kontaktView();
+  if(h==="wychowawca") return wychowawcaView();
   if(h.indexOf("e-")===0) return egzView(h.slice(2));
   if(h.indexOf("k-")===0){var parts=h.slice(2).split("-"),k=kier(parts[0]); if(k){return (parts[1]&&+parts[1]>=1&&+parts[1]<=klasyOf(k).length)?klasaView(k,+parts[1]):kierunekView(k)}}
   if(h.indexOf("s-")===0){var p=przedmiot(h.slice(2)); if(p) return przedmiotView(p)}
@@ -904,6 +923,188 @@ function artEgz(){return svgWrap("0 0 360 150",
   '<circle cx="230" cy="78" r="46" '+SOFT+'/><path d="M230 78V48M230 78l22 14"/><path d="M220 22h20M230 22v10" />'+
   '<g stroke-opacity=".5"><path d="M196 44l-8-8M264 44l8-8"/></g>'+
   '<rect x="296" y="40" width="44" height="76" rx="5"/><path d="M304 56h28M304 70h28M304 84h18" stroke-opacity=".6"/><path d="M306 100l6 6 14-14"/>')}
+
+/* --- panel wychowawcy: parsowanie zestawień z dziennika --- */
+function wyNum(v){if(v==null||v==="")return null;var s=String(v).replace("%","").replace(",",".").trim();var n=parseFloat(s);return isNaN(n)?null:n}
+function wyUczen(s){var m=String(s||"").match(/^(.*),\s*nr\s*(\d+)\s*$/);return m?{nr:+m[2],kto:m[1].trim()}:null}
+function wyKod(s){var m=String(s||"").match(/\(([^()]*)\)\s*$/);return m?m[1].trim():String(s||"").trim()}
+function wyNazwa(s){return String(s||"").replace(/\s*\([^()]*\)\s*$/,"").trim()}
+function wyRows(ws){return XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:""})}
+function wyMeta(wb){var m={};var ws=wb.Sheets["Opis parametrów"];if(!ws)return m;wyRows(ws).forEach(function(r){var t=String(r[0]||"");var x;
+  if(x=t.match(/^(?:Okres klasyfikacyjny|Okres):\s*(.*?);?$/))m.okres=x[1];if(x=t.match(/^Dziennik(?:i)?:\s*(.*?);?$/))m.klasa=x[1];if(x=t.match(/^Badany okres:\s*(.*?);?$/))m.zakres=x[1];if(x=t.match(/^Rok szkolny:\s*(.*?);?$/))m.rok=x[1]});return m}
+function wyParse(wb){
+  var out={meta:wyMeta(wb)},n;
+  if(wb.Sheets["ZestROCUcznPrzedmioty"]){
+    var R=wyRows(wb.Sheets["ZestROCUcznPrzedmioty"]),h=R[0],przed=[];
+    for(var i=2;i<h.length;i++) if(h[i]) przed.push({kod:wyKod(h[i]),nazwa:wyNazwa(h[i]),col:i});
+    var ucz={},sredOddz={};
+    R.slice(3).forEach(function(r){var u=wyUczen(r[1]);var isAvg=/Średnia oddziału/i.test(r[1]);if(!u&&!isAvg)return;
+      przed.forEach(function(p){var dist=[];for(var k=0;k<6;k++)dist.push(wyNum(r[p.col+k])||0);var sr=wyNum(r[p.col+6]);var has=dist.some(function(x){return x>0});
+        if(isAvg){if(has||sr)sredOddz[p.kod]=sr;return}
+        if(!has)return;(ucz[u.nr]=ucz[u.nr]||{kto:u.kto,o:{}}).o[p.kod]={sr:sr,d:dist}})});
+    out.oceny={przedmioty:przed.map(function(p){return {kod:p.kod,nazwa:p.nazwa}}),uczniowie:ucz,sredniaOddzialu:sredOddz};
+  }
+  if(wb.Sheets["Frekwencja oddziałów"]){
+    var R=wyRows(wb.Sheets["Frekwencja oddziałów"]),h1=R[0],h2=R[1],bl=[];
+    for(var i=2;i<h1.length;i++) if(h1[i]) bl.push({kod:/Wszystkie wpisy/i.test(h1[i])?"*":wyKod(h1[i]),nazwa:wyNazwa(h1[i]),col:i});
+    bl.forEach(function(b,j){b.end=j+1<bl.length?bl[j+1].col:h2.length;b.map={};for(var c=b.col;c<b.end;c++){var t=String(h2[c]).trim();if(!t)continue;if(t==="% frekwencji")b.map.pct=c;else if(b.map[t]==null)b.map[t]=c}});
+    var ucz={};
+    R.slice(2).forEach(function(r){var u=wyUczen(r[1]);if(!u)return;
+      bl.forEach(function(b){var g=function(t){return b.map[t]==null?0:(wyNum(r[b.map[t]])||0)};
+        var x={ob:g("●"),nb:g("▬"),u:g("u"),s:g("s"),su:g("su"),ns:g("ns"),z:g("z"),pct:b.map.pct==null?null:wyNum(r[b.map.pct])};
+        if(x.ob+x.nb+x.u+x.s+x.su+x.ns+x.z===0)return;(ucz[u.nr]=ucz[u.nr]||{kto:u.kto,f:{}}).f[b.kod]=x})});
+    out.frekwencja={przedmioty:bl.filter(function(b){return b.kod!=="*"}).map(function(b){return {kod:b.kod,nazwa:b.nazwa}}),uczniowie:ucz};
+  }
+  if(wb.Sheets["Oceny Niedostateczne"]){
+    var R=wyRows(wb.Sheets["Oceny Niedostateczne"]),z={};
+    R.slice(1).forEach(function(r){var u=wyUczen(r[1]);if(!u)return;String(r[2]||"").split(/,\s*(?![^()]*\))/).forEach(function(p){p=p.trim();if(!p)return;var e=(z[u.nr]=z[u.nr]||{kto:u.kto,p:[]});var k=wyKod(p);if(!e.p.some(function(x){return x.kod===k}))e.p.push({kod:k,nazwa:wyNazwa(p)})})});
+    out.zagrozenia=z;
+  }
+  if(wb.Sheets["Wykaz pochwał i uwag"]){
+    var R=wyRows(wb.Sheets["Wykaz pochwał i uwag"]),h=R[0].map(String),ix=function(re){for(var i=0;i<h.length;i++)if(re.test(h[i]))return i;return -1};
+    var iu=ix(/^Uczeń/),ik=ix(/^Kategoria/),it=ix(/^Typ/),ir=ix(/^Rodzaj/),itr=ix(/^Treść/),ip=ix(/^Punkty/),un=ix(/^Nauczyciel/);
+    out.uwagi=R.slice(1).filter(function(r){return wyUczen(r[iu])}).map(function(r){var u=wyUczen(r[iu]);return {nr:u.nr,kto:u.kto,kategoria:r[ik]||"",typ:r[it]||"",rodzaj:r[ir]||"",tresc:r[itr]||"",pkt:wyNum(r[ip]),naucz:r[un]||""}});
+  }
+  return out;
+}
+function wyMerge(a,b){var o=JSON.parse(JSON.stringify(a||{}));["oceny","frekwencja","zagrozenia","uwagi"].forEach(function(k){if(b[k]!==undefined)o[k]=b[k]});o.meta=Object.assign({},o.meta||{},b.meta||{});o.wczytano=new Date().toISOString();return o}
+/* --- panel wychowawcy: widok --- */
+var WY={dane:null,zapisano:"",rodzice:false,charts:[],sort:"nr"};
+var WY_C={blue:"#257de0",orange:"#f47230",aqua:"#00b894",yellow:"#f2a600",crit:"#dc3c3d",warn:"#fbb315",good:"#0aac23",ink:"#191919",ink2:"#666666",grid:"#ececec"};
+function loadScript(src){return new Promise(function(res,rej){var s=document.createElement("script");s.src=src;s.onload=res;s.onerror=function(){rej(new Error("Nie udało się wczytać "+src))};document.head.appendChild(s)})}
+function wyLibs(xlsx){var p=[];if(!window.Chart)p.push(loadScript(egzUrl("vendor/chart.umd.min.js")));if(xlsx&&!window.XLSX)p.push(loadScript(egzUrl("vendor/xlsx.full.min.js")));return Promise.all(p)}
+function wyFmt(n,d){return n==null||isNaN(n)?"—":Number(n).toFixed(d==null?2:d).replace(".",",")}
+function wyMean(a){a=a.filter(function(x){return x!=null&&!isNaN(x)});return a.length?a.reduce(function(s,x){return s+x},0)/a.length:null}
+/* wyliczenia */
+function wyStats(D){
+  var S={uczniowie:[],przedm:[],kpi:{}};
+  var nrs={};["oceny","frekwencja"].forEach(function(k){if(D[k])Object.keys(D[k].uczniowie).forEach(function(n){nrs[n]=D[k].uczniowie[n].kto})});
+  Object.keys(D.zagrozenia||{}).forEach(function(n){nrs[n]=nrs[n]||D.zagrozenia[n].kto});
+  var OC=D.oceny,FR=D.frekwencja,ZG=D.zagrozenia||{},UW=D.uwagi||[];
+  Object.keys(nrs).map(Number).sort(function(a,b){return a-b}).forEach(function(nr){
+    var o=OC&&OC.uczniowie[nr],f=FR&&FR.uczniowie[nr]&&FR.uczniowie[nr].f["*"];
+    var sr=o?wyMean(Object.keys(o.o).filter(function(k){return !/religia|etyka/i.test(k)}).map(function(k){return o.o[k].sr})):null;
+    var z=ZG[nr]?ZG[nr].p:[];
+    S.uczniowie.push({nr:nr,kto:nrs[nr],sr:sr,frek:f?f.pct:null,nb:f?f.nb:0,u:f?f.u:0,s:f?(f.s+f.su):0,ob:f?f.ob:0,zagr:z,uwagi:UW.filter(function(x){return x.nr===nr})});
+  });
+  var names={};[OC,FR].forEach(function(X){if(X)X.przedmioty.forEach(function(p){names[p.kod]=p.nazwa})});
+  Object.keys(names).forEach(function(k){
+    var srs=OC?Object.keys(OC.uczniowie).map(function(n){var x=OC.uczniowie[n].o[k];return x?x.sr:null}):[];
+    var fr=FR?Object.keys(FR.uczniowie).map(function(n){var x=FR.uczniowie[n].f[k];return x?x.pct:null}):[];
+    var sr=OC&&OC.sredniaOddzialu[k]!=null?OC.sredniaOddzialu[k]:wyMean(srs),fk=wyMean(fr);
+    var zg=Object.keys(ZG).filter(function(n){return ZG[n].p.some(function(p){return p.kod===k})}).length;
+    if(sr==null&&fk==null&&!zg)return;
+    S.przedm.push({kod:k,nazwa:names[k],sr:sr,frek:fk,zagr:zg});
+  });
+  Object.keys(ZG).forEach(function(n){ZG[n].p.forEach(function(p){if(!S.przedm.some(function(x){return x.kod===p.kod}))S.przedm.push({kod:p.kod,nazwa:p.nazwa,sr:null,frek:null,zagr:Object.keys(ZG).filter(function(m){return ZG[m].p.some(function(q){return q.kod===p.kod})}).length})})});
+  var U=S.uczniowie,tot=function(f){return U.reduce(function(s,u){return s+(u[f]||0)},0)};
+  var dist=[0,0,0,0,0,0];if(OC)Object.keys(OC.uczniowie).forEach(function(n){var o=OC.uczniowie[n].o;Object.keys(o).forEach(function(k){o[k].d.forEach(function(v,i){dist[i]+=v})})});
+  var ds=dist.reduce(function(a,b){return a+b},0);
+  S.kpi={n:U.length,sr:wyMean(U.map(function(u){return u.sr})),frek:wyMean(U.map(function(u){return u.frek})),zagrU:U.filter(function(u){return u.zagr.length}).length,zagr:U.reduce(function(s,u){return s+u.zagr.length},0),
+    ob:tot("ob"),nb:tot("nb"),u:tot("u"),s:tot("s"),dist:ds?dist.map(function(v){return v*100/ds}):null,uwagi:UW.length,pochwaly:UW.filter(function(x){return /pochwa/i.test(x.typ+x.kategoria)}).length};
+  return S;
+}
+function wychowawcaView(){
+  hero(false);
+  var has=LS.get("pz-haslo","");
+  app().innerHTML=crumb([["Panel wychowawcy"]])+'<div class="wyhead"><div><h1>Panel wychowawcy</h1><p class="note" id="wy-sub">Analiza klasy na podstawie zestawień z dziennika. Strona tylko dla wychowawcy.</p></div></div>'+
+   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" value="'+esc(has)+'" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div><div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>');
+  var go=$("#wy-go");if(!go)return;
+  go.onclick=function(){
+    var h=$("#wy-h").value;if(!h)return setStatus($("#wy-st"),"Wpisz hasło.",false);
+    setStatus($("#wy-st"),"Wczytywanie…");
+    Promise.all([wyLibs(false),fetch(S.config.egzaminUrl+"?akcja=klasa&haslo="+encodeURIComponent(h)).then(function(r){return r.json()})]).then(function(x){var r=x[1];
+      if(!r.ok) throw new Error(/egzamin/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd"));
+      if(r.dane===undefined&&r.info) throw new Error("Skrypt Google jest w starej wersji — zaktualizuj go.");
+      LS.set("pz-haslo",h);WY.dane=r.dane;WY.zapisano=r.zapisano||"";setStatus($("#wy-st"),"",true);wyRender();
+    }).catch(function(e){setStatus($("#wy-st"),e.message||"Nie udało się wczytać.",false)});
+  };
+  if(has) go.click();
+}
+function wyUpload(){
+  return '<details class="panel wyup noprint" '+(WY.dane?'':'open')+'><summary><b>Wczytaj zestawienia z dziennika</b> <span class="note">— pliki .xlsx: rozkład ocen, frekwencja, przewidywane oceny niedostateczne, uwagi i pochwały</span></summary>'+
+   '<p class="note">Wybierz naraz wszystkie pliki wyeksportowane z dziennika. Strona rozpozna je sama i pokaże podgląd. Dane trafią tylko do Twojego arkusza Google (nie na stronę).</p>'+
+   '<input type="file" id="wy-f" multiple accept=".xlsx,.xls"><div id="wy-prev"></div></details>';
+}
+function wyRender(){
+  WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];
+  var out=$("#wy-out");if(!out)return;var D=WY.dane;
+  if(!D){out.innerHTML=wyUpload()+'<div class="empty">Brak danych. Wczytaj zestawienia z dziennika powyżej.</div>';wyBindUpload();return}
+  var S=wyStats(D),K=S.kpi,P=WY.rodzice,m=D.meta||{};
+  $("#wy-sub").textContent="Klasa "+(m.klasa||"")+(m.okres?" · "+m.okres:"")+(m.zakres?" · frekwencja: "+m.zakres:"")+(WY.zapisano?" · dane z "+new Date(WY.zapisano).toLocaleDateString("pl-PL"):"");
+  var kp=function(v,l,cls,sub){return '<div class="kpi '+(cls||"")+'"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
+  var zc=S.przedm.filter(function(p){return p.zagr}).sort(function(a,b){return b.zagr-a.zagr});
+  var hz=[0,0,0,0];S.uczniowie.forEach(function(u){hz[Math.min(3,u.zagr.length)]++});
+  out.innerHTML=wyUpload()+
+   '<div class="wybar noprint"><label class="sw"><input type="checkbox" id="wy-par" '+(P?"checked":"")+'><span></span> Widok dla rodziców <em>(bez nazwisk i danych pojedynczych uczniów)</em></label><button class="btn ghost sm" id="wy-pr">🖨 Drukuj / zapisz PDF</button></div>'+
+   (P?'<div class="pnote">Widok dla rodziców — pokazane są wyłącznie dane zbiorcze klasy.</div>':'')+
+   '<div class="kpis">'+kp(K.n,"uczniów")+kp(wyFmt(K.sr),"średnia ocen klasy","","średnia ze średnich uczniów")+kp(wyFmt(K.frek,1)+"%","frekwencja klasy",K.frek!=null&&K.frek<80?"warn":"")+
+     kp(K.zagrU,"uczniów z zagrożeniem",K.zagrU?"crit":"","z "+K.n+" · "+K.zagr+" "+odm(K.zagr,"zagrożenie","zagrożenia","zagrożeń"))+kp(K.nb,"godz. nieusprawiedliwionych",K.nb?"warn":"")+kp(K.s,"spóźnień")+'</div>'+
+   '<div class="wygrid">'+
+     wyBox("c-sr","Średnia ocen według przedmiotów","Średnia ocen cząstkowych klasy w każdym przedmiocie (bez religii w średniej ogólnej).",Math.max(220,S.przedm.filter(function(p){return p.sr!=null}).length*24+40),true)+
+     wyBox("c-fr","Frekwencja według przedmiotów","Średnia frekwencja uczniów na lekcjach danego przedmiotu.",Math.max(220,S.przedm.filter(function(p){return p.frek!=null}).length*24+40),true)+
+     wyBox("c-ob","Struktura obecności","Wszystkie wpisy frekwencji klasy w badanym okresie.",280)+
+     wyBox("c-di","Rozkład ocen w klasie","Udział ocen 1–6 wśród ocen cząstkowych (średnio na ucznia i przedmiot).",280)+
+     (zc.length?wyBox("c-zg","Przewidywane oceny niedostateczne według przedmiotów","Liczba uczniów zagrożonych oceną niedostateczną.",Math.max(200,zc.length*26+40),true):'')+
+     wyBox("c-hz","Liczba zagrożeń na ucznia","Ilu uczniów ma 0, 1, 2 lub 3 i więcej przewidywanych ocen niedostatecznych.",260)+
+     (P?'':wyBox("c-sc","Średnia a frekwencja — uczniowie","Każdy punkt to jeden uczeń. Najedź na punkt, aby zobaczyć nazwisko.",340,true))+
+   '</div>'+
+   (P?'':wyTable(S))+
+   (P||!(D.uwagi||[]).length?'':'<div class="panel" style="margin-top:18px"><h2>Uwagi i pochwały ('+D.uwagi.length+')</h2>'+D.uwagi.map(function(x){return '<div class="lrow"><b style="min-width:180px">'+esc(x.kto)+'</b><span class="pill">'+esc(x.typ||x.kategoria)+'</span><span class="grow">'+esc(x.tresc)+'</span></div>'}).join("")+'</div>');
+  wyBindUpload();
+  $("#wy-par").onchange=function(){WY.rodzice=this.checked;wyRender()};
+  $("#wy-pr").onclick=function(){window.print()};
+  $$("[data-ws]").forEach(function(th){th.onclick=function(){WY.sort=WY.sort===th.dataset.ws?"-"+th.dataset.ws:th.dataset.ws;wyRender();var t=$("#wy-tab");if(t)t.scrollIntoView()}});
+  $$("[data-wu]").forEach(function(tr){tr.onclick=function(){var d=$("#wyd-"+tr.dataset.wu);if(d)d.hidden=!d.hidden}});
+  if(!window.Chart) return;
+  Chart.defaults.font.family="IBM Plex Sans, system-ui, sans-serif";Chart.defaults.color=WY_C.ink2;Chart.defaults.animation=false;Chart.defaults.maintainAspectRatio=false;
+  var hb=function(id,items,val,fmt,color,max){var el=$("#"+id);if(!el)return;items=items.filter(function(p){return p[val]!=null});
+    WY.charts.push(new Chart(el,{type:"bar",data:{labels:items.map(function(p){return p.nazwa}),datasets:[{data:items.map(function(p){return Math.round(p[val]*100)/100}),backgroundColor:typeof color==="function"?items.map(color):color,borderRadius:4,borderSkipped:"start",barPercentage:.8,categoryPercentage:.9}]},
+      options:{indexAxis:"y",plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+fmt(c.raw)}}}},scales:{x:{min:0,max:max,grid:{color:WY_C.grid},ticks:max?{callback:function(v){return fmt(v)}}:{precision:0}},y:{grid:{display:false},ticks:{color:WY_C.ink,autoSkip:false,font:{size:12}}}}}}))};
+  hb("c-sr",S.przedm.slice().sort(function(a,b){return (b.sr||0)-(a.sr||0)}),"sr",function(v){return wyFmt(v)},function(p){return p.sr<2?WY_C.crit:WY_C.blue},6);
+  hb("c-fr",S.przedm.slice().sort(function(a,b){return (a.frek||0)-(b.frek||0)}),"frek",function(v){return wyFmt(v,0)+"%"},function(p){return p.frek<50?WY_C.crit:p.frek<75?WY_C.warn:WY_C.blue},100);
+  if(zc.length) hb("c-zg",zc,"zagr",function(v){return v+" "+odm(v,"uczeń","uczniów","uczniów")},WY_C.crit,undefined);
+  var dn=$("#c-ob");if(dn){var lab=["Obecności","Nieob. usprawiedliwione","Nieob. nieusprawiedliwione","Spóźnienia"],val=[K.ob,K.u,K.nb,K.s],sum=val.reduce(function(a,b){return a+b},0);
+    WY.charts.push(new Chart(dn,{type:"doughnut",data:{labels:lab.map(function(l,i){return l+" — "+val[i]+" ("+wyFmt(sum?val[i]*100/sum:0,1)+"%)"}),datasets:[{data:val,backgroundColor:[WY_C.blue,WY_C.aqua,WY_C.orange,WY_C.yellow],borderColor:"#fff",borderWidth:2}]},options:{cutout:"58%",plugins:{legend:{position:"bottom",labels:{color:WY_C.ink,boxWidth:12,padding:12}}}}}))}
+  var di=$("#c-di");if(di&&K.dist) WY.charts.push(new Chart(di,{type:"bar",data:{labels:["1","2","3","4","5","6"],datasets:[{data:K.dist.map(function(v){return Math.round(v*10)/10}),backgroundColor:WY_C.blue,borderRadius:4,borderSkipped:"start"}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{title:function(c){return "Ocena "+c[0].label},label:function(c){return " "+wyFmt(c.raw,1)+"% ocen"}}}},scales:{y:{grid:{color:WY_C.grid},ticks:{callback:function(v){return v+"%"}}},x:{grid:{display:false},title:{display:true,text:"ocena"}}}}}));
+  var hzc=$("#c-hz");if(hzc) WY.charts.push(new Chart(hzc,{type:"bar",data:{labels:["brak","1","2","3 i więcej"],datasets:[{data:hz,backgroundColor:[WY_C.good,WY_C.warn,WY_C.crit,WY_C.crit],borderRadius:4,borderSkipped:"start"}]},options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return " "+c.raw+" "+odm(c.raw,"uczeń","uczniów","uczniów")}}}},scales:{y:{grid:{color:WY_C.grid},ticks:{precision:0},title:{display:true,text:"liczba uczniów"}},x:{grid:{display:false},title:{display:true,text:"liczba przewidywanych ocen niedostatecznych"}}}}}));
+  var sc=$("#c-sc");if(sc){var pts=S.uczniowie.filter(function(u){return u.sr!=null&&u.frek!=null});
+    WY.charts.push(new Chart(sc,{type:"scatter",data:{datasets:[{data:pts.map(function(u){return {x:u.frek,y:u.sr,u:u}}),pointRadius:6,pointHoverRadius:8,backgroundColor:pts.map(function(u){return u.zagr.length?WY_C.crit:WY_C.blue}),borderColor:"#fff",borderWidth:2}]},
+      options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var u=c.raw.u;return " "+u.nr+". "+u.kto+" — średnia "+wyFmt(u.sr)+", frekwencja "+wyFmt(u.frek,1)+"%"+(u.zagr.length?", zagrożenia: "+u.zagr.length:"")}}}},
+      scales:{x:{min:Math.max(0,Math.floor(Math.min.apply(null,pts.map(function(u){return u.frek}).concat([100]))/10)*10-5),max:100,title:{display:true,text:"frekwencja [%]"},grid:{color:WY_C.grid}},y:{min:1,max:6,title:{display:true,text:"średnia ocen"},grid:{color:WY_C.grid}}}}}))}
+}
+function wyBox(id,t,sub,h,wide){return '<div class="panel wybox'+(wide?' wide':'')+'"><h3>'+esc(t)+'</h3><p class="note">'+esc(sub)+'</p><div style="position:relative;height:'+h+'px"><canvas id="'+id+'" role="img" aria-label="'+esc(t)+'"></canvas></div></div>'}
+function wyTable(S){
+  var s=WY.sort,desc=s.charAt(0)==="-",k=desc?s.slice(1):s;
+  var U=S.uczniowie.slice().sort(function(a,b){var x=k==="zagr"?a.zagr.length:a[k],y=k==="zagr"?b.zagr.length:b[k];if(typeof x==="string")return desc?y.localeCompare(x,"pl"):x.localeCompare(y,"pl");x=x==null?-1:x;y=y==null?-1:y;return desc?y-x:x-y});
+  var th=function(key,l){return '<th data-ws="'+key+'" class="'+(k===key?"on":"")+'">'+l+(k===key?(desc?" ▼":" ▲"):"")+'</th>'};
+  var D=WY.dane,OC=D.oceny,FR=D.frekwencja;
+  return '<div class="panel" style="margin-top:18px" id="wy-tab"><h2>Uczniowie</h2><p class="note">Kliknij nagłówek, aby posortować. Kliknij ucznia, aby zobaczyć szczegóły z przedmiotów.</p><div class="wytw"><table class="wyt"><thead><tr>'+th("nr","Nr")+th("kto","Uczeń")+th("sr","Średnia")+th("frek","Frekwencja")+th("nb","Nieuspr. [h]")+th("s","Spóźnienia")+th("zagr","Zagrożenia")+'</tr></thead><tbody>'+
+   U.map(function(u){
+     var det='';var ks={};if(OC&&OC.uczniowie[u.nr])Object.keys(OC.uczniowie[u.nr].o).forEach(function(x){ks[x]=1});if(FR&&FR.uczniowie[u.nr])Object.keys(FR.uczniowie[u.nr].f).forEach(function(x){if(x!=="*")ks[x]=1});
+     det=Object.keys(ks).map(function(x){var p=S.przedm.filter(function(q){return q.kod===x})[0],o=OC&&OC.uczniowie[u.nr]&&OC.uczniowie[u.nr].o[x],f=FR&&FR.uczniowie[u.nr]&&FR.uczniowie[u.nr].f[x],z=u.zagr.some(function(q){return q.kod===x});
+       return '<tr class="'+(z?"zg":"")+'"><td>'+esc(p?p.nazwa:x)+(z?' <span class="zgb">zagrożenie</span>':'')+'</td><td>'+(o?wyFmt(o.sr):"—")+'</td><td class="'+(f&&f.pct<50?"bad":"")+'">'+(f?wyFmt(f.pct,1)+"%":"—")+'</td><td>'+(f?f.nb:"—")+'</td></tr>'}).join("");
+     return '<tr class="wr'+(u.zagr.length?" hz":"")+'" data-wu="'+u.nr+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b></td><td class="'+(u.sr!=null&&u.sr<2?"bad":"")+'">'+wyFmt(u.sr)+'</td><td class="'+(u.frek!=null&&u.frek<50?"bad":u.frek<75?"mid":"")+'">'+wyFmt(u.frek,1)+'%</td><td>'+u.nb+'</td><td>'+u.s+'</td><td>'+(u.zagr.length?'<span class="zgb">'+u.zagr.length+'</span> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", ")):'—')+'</td></tr>'+
+       '<tr class="wyd" id="wyd-'+u.nr+'" hidden><td></td><td colspan="6"><table class="wyt2"><thead><tr><th>Przedmiot</th><th>Średnia</th><th>Frekwencja</th><th>Nieuspr. [h]</th></tr></thead><tbody>'+det+'</tbody></table></td></tr>'}).join("")+
+   '</tbody></table></div></div>';
+}
+function wyBindUpload(){
+  var f=$("#wy-f");if(!f)return;
+  f.onchange=function(){
+    var files=[].slice.call(f.files);if(!files.length)return;var pv=$("#wy-prev");pv.innerHTML='<p class="note">Wczytywanie plików…</p>';
+    wyLibs(true).then(function(){return Promise.all(files.map(function(fl){return fl.arrayBuffer().then(function(b){return {n:fl.name,p:wyParse(XLSX.read(b,{type:"array"}))}})}))}).then(function(res){
+      var nowe=WY.dane||{},opis=[];
+      res.forEach(function(r){var k=Object.keys(r.p).filter(function(x){return x!=="meta"});nowe=wyMerge(nowe,r.p);
+        opis.push('<li><b>'+esc(r.n)+'</b> — '+(k.length?k.map(function(x){var v=r.p[x];return x==="oceny"?"rozkład ocen ("+Object.keys(v.uczniowie).length+" uczniów)":x==="frekwencja"?"frekwencja ("+Object.keys(v.uczniowie).length+" uczniów)":x==="zagrozenia"?"przewidywane oceny niedostateczne ("+Object.keys(v).length+" uczniów)":"uwagi i pochwały ("+v.length+")"}).join(", "):'<span style="color:#a3301f">nie rozpoznano zestawienia</span>')+'</li>')});
+      pv.innerHTML='<ul class="wyl">'+opis.join("")+'</ul><div class="toolbar" style="margin:8px 0 0"><button class="btn" id="wy-save">Zapisz w arkuszu i pokaż analizę</button><span class="status" id="wy-sst"></span></div>';
+      $("#wy-save").onclick=function(){var b=this;b.disabled=true;setStatus($("#wy-sst"),"Zapisywanie…");
+        fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"zapiszKlase",haslo:$("#wy-h").value,dane:JSON.stringify(nowe)})}).then(function(r){return r.json()}).then(function(r){
+          if(!r.ok) throw new Error(/egzamin|imienia/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd zapisu"));
+          WY.dane=nowe;WY.zapisano=new Date().toISOString();wyRender();
+        }).catch(function(e){b.disabled=false;setStatus($("#wy-sst"),e.message,false)})};
+    }).catch(function(e){pv.innerHTML='<p class="note" style="color:#a3301f">'+esc(e.message||"Nie udało się odczytać plików.")+'</p>'});
+  };
+}
 
 /* --- formularz kontaktowy --- */
 function kontaktView(){

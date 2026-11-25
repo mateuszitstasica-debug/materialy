@@ -390,6 +390,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .podium .med{font-size:28px;line-height:1}.podium .pn{flex:1;display:flex;flex-direction:column}.podium .pn small{color:var(--muted);font-size:12px}
 .podium .pv{font-family:var(--mono);font-size:20px;font-weight:700;color:#0f2953}
 @media print{.wytops{break-inside:avoid}}
+.ewyj{margin-top:10px}.ewbtn{background:#1aa34a;border-color:#1aa34a}.ewbtn:hover{background:#158a3e}
+.ewin{margin-top:10px;background:#eef9f1;border:1px solid #bfe5cb;border-radius:10px;padding:12px 14px;font-size:14.5px;line-height:1.55;color:#14532d}.ewin p{margin:0 0 8px}
+.ewmore{background:#1f5fd6;border-color:#1f5fd6;margin-top:2px}
 </style>
 </head>
 <body>
@@ -882,10 +885,34 @@ function egzResult(e,st){
     var html='<div class="erev"><h2>Twój egzamin — odpowiedzi</h2><p class="note">Na zielono poprawna odpowiedź. Twoja odpowiedź jest oznaczona.</p>'+st.pytania.map(function(q,i){
       var x=pm[q.id]||{w:-1,c:-1},okq=x.w>=0&&x.w===x.c;
       var body=q.parts&&q.parts.length?q.parts.map(function(pt){return pt.img?'<a class="eimg" href="'+esc(egzUrl(pt.img))+'" target="_blank" rel="noopener"><img src="'+esc(egzUrl(pt.img))+'" alt="Ilustracja" loading="lazy" style="max-width:min(100%,'+Math.round((pt.w||400)*1.4)+'px)"></a>':'<div class="wq">'+esc(pt.t)+'</div>'}).join(""):'<div class="wq">'+esc(q.q)+'</div>';
-      return '<div class="erq '+(okq?'ok':'no')+'"><div class="erqn">'+(i+1)+'. <span>'+(okq?'✓ dobrze':(x.w<0?'✗ brak odpowiedzi':'✗ źle'))+'</span></div>'+body+'<div class="wopts">'+q.o.map(function(o,j){var orig=q.map[j],c=orig===x.c,u=orig===x.w;return '<div class="wopt'+(c?' good':'')+(u&&!c?' bad':'')+'"><span class="el">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span>'+(u?'<em>'+(c?'Twoja odpowiedź — poprawna':'Twoja odpowiedź')+'</em>':(c?'<em>poprawna</em>':''))+'</div>'}).join("")+'</div></div>'}).join("")+'</div>';
+      return '<div class="erq '+(okq?'ok':'no')+'"><div class="erqn">'+(i+1)+'. <span>'+(okq?'✓ dobrze':(x.w<0?'✗ brak odpowiedzi':'✗ źle'))+'</span></div>'+body+'<div class="wopts">'+q.o.map(function(o,j){var orig=q.map[j],c=orig===x.c,u=orig===x.w;return '<div class="wopt'+(c?' good':'')+(u&&!c?' bad':'')+'"><span class="el">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span>'+(u?'<em>'+(c?'Twoja odpowiedź — poprawna':'Twoja odpowiedź')+'</em>':(c?'<em>poprawna</em>':''))+'</div>'}).join("")+'</div>'+(x.k?'<div class="ewyj" data-q="'+esc(q.id)+'" data-k="'+esc(x.k)+'"></div>':'')+'</div>'}).join("")+'</div>';
     app().insertAdjacentHTML("beforeend",html);
+    egzWyj(e);
   }
   $("#e-again").onclick=function(){egzClear(e.id);egzStart(e)};
+}
+/* wyjaśnienia odpowiedzi: zaszyfrowane, klucz wydaje skrypt dopiero po oddaniu testu */
+function b64u8(b){var s=atob(b),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
+function egzWyj(e){
+  var boxes=$$(".ewyj");if(!boxes.length||!window.crypto||!crypto.subtle)return;
+  fetch(egzUrl("egzaminy/"+e.id+"_wyj.json"),{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(W){
+    if(!W||!W.q)return;
+    boxes.forEach(function(b){var it=W.q[b.dataset.q];if(!it)return;
+      b.innerHTML='<button class="btn sm ewbtn" type="button">Pokaż wyjaśnienie odpowiedzi ▾</button><div class="ewin" hidden></div>';
+      var btn=b.querySelector(".ewbtn"),box=b.querySelector(".ewin"),done=false;
+      btn.onclick=function(){
+        if(done){box.hidden=!box.hidden;btn.textContent=box.hidden?"Pokaż wyjaśnienie odpowiedzi ▾":"Ukryj wyjaśnienie ▴";return}
+        btn.disabled=true;
+        crypto.subtle.importKey("raw",b64u8(b.dataset.k),{name:"AES-GCM"},false,["decrypt"]).then(function(key){
+          return crypto.subtle.decrypt({name:"AES-GCM",iv:b64u8(it.i)},key,b64u8(it.c))}).then(function(buf){
+          var d=JSON.parse(new TextDecoder().decode(buf));done=true;
+          box.innerHTML='<p><b>Wyjaśnienie poprawnej odpowiedzi:</b> <i>'+esc(d.s)+'</i></p>'+(d.f?'<div class="ewfull" hidden><p><b><i>Pełne wyjaśnienie:</i></b></p><p>'+esc(d.f)+'</p></div><button class="btn sm ewmore" type="button">rozwiń pełne wyjaśnienie ▾</button>':'');
+          var m=box.querySelector(".ewmore");if(m)m.onclick=function(){var f=box.querySelector(".ewfull");f.hidden=!f.hidden;m.textContent=f.hidden?"rozwiń pełne wyjaśnienie ▾":"zwiń pełne wyjaśnienie ▴"};
+          box.hidden=false;btn.disabled=false;btn.textContent="Ukryj wyjaśnienie ▴";
+        }).catch(function(){btn.disabled=false;btn.textContent="Nie udało się wczytać wyjaśnienia"});
+      };
+    });
+  }).catch(function(){});
 }
 /* --- podgląd wyników dla nauczyciela (#wyniki) --- */
 function wynikiView(){

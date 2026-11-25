@@ -96,6 +96,17 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .subhead .ico svg{width:36px;height:36px}
 .subhead h1{margin:2px 0 0;font-size:30px;line-height:1.15;letter-spacing:-.4px}
 .subhead p{margin:4px 0 0;color:var(--muted)}
+.etabs a{display:inline-block;padding:9px 20px;font-weight:600;color:var(--muted);border-radius:9px;text-decoration:none;transition:background .15s,color .15s}.etabs a:hover{color:var(--ink)}.etabs a.on{background:var(--c);color:#fff}
+.prw{max-width:900px;margin:0 auto;display:grid;gap:16px}.prw h1{margin:10px 0 6px;font-size:26px}
+.prtxt h2{margin:0 0 8px}.prtxt h3{margin:18px 0 6px;font-size:16px;color:var(--c)}.prtxt ul,.prtxt ol{padding-left:22px;line-height:1.65;margin:4px 0}.prtxt p{line-height:1.6}
+.prtab{margin-top:16px}.prtt{font-weight:700;margin:0 0 6px}.prst{color:var(--muted);font-size:13.5px;margin:6px 0 0}.wyt.pt td{height:30px}
+.prnote{background:color-mix(in srgb,var(--c) 7%,white);border-left:4px solid var(--c);border-radius:8px;padding:10px 14px;margin:12px 0;font-size:14px}
+.prfig{margin:14px 0;text-align:center}.prfig img{max-width:100%;border:1px solid var(--line);border-radius:8px}.prfig figcaption{font-size:13px;color:var(--muted)}
+.prgr summary{cursor:pointer}.prform{margin-top:12px}.prr{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}.prrh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.prrh>b{background:var(--c);color:#fff;border-radius:7px;padding:1px 8px;font-family:var(--mono)}.prpk{font-family:var(--mono);font-weight:700}
+.prk{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;border-top:1px solid var(--line2);cursor:pointer;font-size:14.5px}.prk input{margin-top:3px;width:18px;height:18px;flex:none}.prk:has(input:checked){color:#145c2a}
+.prsum{display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;padding:12px 0;border-top:1px solid var(--line)}.prtot b{font-family:var(--mono);font-size:24px;margin-right:8px}.prtot b.ok{color:#0a7a1a}.prtot b.no{color:#b42318}.prtot span{color:var(--muted)}
+.prlist{margin-top:18px}.prlist h3{margin:0 0 8px}.wyt td.okc{color:#0a7a1a}
+.przeg{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;gap:8px;align-items:center;background:#0d1830;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3)}.przt{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);min-width:120px;text-align:center}.przt.warn{color:#ff6b5a}
 .tabs{display:inline-flex;gap:4px;background:#fff;border:1px solid var(--line);padding:5px;border-radius:12px;margin-bottom:20px;box-shadow:var(--sh)}
 .tabs button{background:none;border:0;padding:9px 20px;font-weight:600;color:var(--muted);border-radius:9px;transition:background .15s,color .15s}
 .tabs button:hover{color:var(--ink)}
@@ -699,7 +710,7 @@ function updateNav(){
   document.title=c.tytul+(c.heroTag?" · "+c.heroTag:"");
   $("#brand").innerHTML=esc(c.tytul)+"<small>"+esc(c.podtytul)+"</small>";
   $("#mark").innerHTML=logoSvg();
-  $("#nav").innerHTML='<a href="#start" class="'+(h==="start"?"on":"")+'">Start</a><a href="#egzaminy" class="'+(h==="egzaminy"||h.indexOf("e-")===0?"on":"")+'">Egzaminy</a><a href="#kontakt" class="'+(h==="kontakt"?"on":"")+'">Kontakt</a>'+c.kierunki.map(function(k){return '<a href="#k-'+k.id+'" class="'+(ak===k.id?"on":"")+'">'+esc(k.skrot)+'</a>'}).join("")+(S.admin?'<a href="#admin" class="adm-link '+(h==="admin"?"on":"")+'">⚙ Panel</a>':"");
+  $("#nav").innerHTML='<a href="#start" class="'+(h==="start"?"on":"")+'">Start</a><a href="#egzaminy" class="'+(h==="egzaminy"||h==="praktyka"||h.indexOf("e-")===0||h.indexOf("p-")===0?"on":"")+'">Egzaminy</a><a href="#kontakt" class="'+(h==="kontakt"?"on":"")+'">Kontakt</a>'+c.kierunki.map(function(k){return '<a href="#k-'+k.id+'" class="'+(ak===k.id?"on":"")+'">'+esc(k.skrot)+'</a>'}).join("")+(S.admin?'<a href="#admin" class="adm-link '+(h==="admin"?"on":"")+'">⚙ Panel</a>':"");
   $("#foot").innerHTML='<span>'+esc(c.stopka)+'</span><span class="flinks"><a class="mono flink" href="#wyniki">🔒 Wyniki egzaminów</a><a class="mono flink" href="#wychowawca">🔒 Panel wychowawcy</a></span>';
   var b="";
   if(S.mode==="local") b="Tryb lokalny: strona otwarta poza claude.ai — zmiany zapisują się tylko w tej przeglądarce.";
@@ -741,6 +752,8 @@ function route(scroll){
   if(S.err==="timeout"&&!S.przedmioty.length){hero(false);app().innerHTML='<div class="empty">Nie udało się wczytać materiałów. Sprawdź połączenie z internetem i odśwież stronę.</div>';return}
   if(h==="admin"){ if(S.admin) return adminView(); }
   if(h==="egzaminy") return egzListView();
+  if(h==="praktyka") return praktykaListView();
+  if(h.indexOf("p-")===0) return praktykaView(h.slice(2));
   if(h==="wyniki") return wynikiView();
   if(h==="kontakt") return kontaktView();
   if(h==="wychowawca") return wychowawcaView();
@@ -765,7 +778,134 @@ function homeBody(){
     '<div class="cols'+(wyn.length?'':' one')+'">'+board("Tablica ogłoszeń",oglFor(null,null),{where:true,limit:10,add:true,sub:"Najnowsze ogłoszenia ze wszystkich kierunków i klas"})+
     (wyn.length?'<div class="panel"><h2>Twoje wyniki</h2><ul class="res-list">'+wyn.slice(-6).reverse().map(function(r){return '<li><span>'+esc(r.tytul)+'</span><span class="mono">'+r.pkt+'/'+r.max+' · '+esc(r.ocena)+'</span></li>'}).join("")+'</ul><p class="note">Wyniki zapisują się tylko w tej przeglądarce.</p></div>':'')+'</div>';
   wireAdd({});
-}/* ================== EGZAMINY ================== */
+}/* ================== EGZAMIN PRAKTYCZNY ================== */
+var PR={dane:null,p:null,ocena:null,zegar:null};
+function egzTabs(on){return '<div class="tabs etabs" style="--c:#c2462f"><a href="#egzaminy" class="'+(on==="t"?"on":"")+'">📝 Teoria — testy</a><a href="#praktyka" class="'+(on==="p"?"on":"")+'">🔧 Praktyka — zadania</a></div>'}
+function prLoad(){
+  if(PR.dane) return Promise.resolve(PR.dane);
+  if(!PR.p) PR.p=fetch(egzUrl("egzaminy/praktyka.json")+"?t="+Math.floor(Date.now()/60000)).then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(d){PR.dane=d&&d.zadania?d:{prog:75,zadania:[]};return PR.dane}).catch(function(){PR.p=null;return {prog:75,zadania:[]}});
+  return PR.p;
+}
+function prMax(z){return z.rezultaty.reduce(function(s,r){return s+r.kryteria.length},0)}
+function prCard(z){var k=kier(z.kierunek);
+  return '<a class="ecard" href="#p-'+esc(z.id)+'" style="'+cvar(k)+'"><div class="eico">'+ICON_PR+'</div><div class="grow"><span class="pill">'+esc(z.kwal)+' · część praktyczna</span><h3>'+esc(z.nazwa)+'</h3><p>'+esc(z.opis||"")+'</p><div class="emeta"><span><b>'+esc(z.czas)+'</b> min</span><span><b>'+z.rezultaty.filter(function(r){return !r.przebieg}).length+'</b> rezultaty + przebieg</span><span><b>'+prMax(z)+'</b> kryteriów</span></div></div><span class="arr">→</span></a>'}
+function praktykaListView(){
+  hero(false);
+  app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka"]])+egzTabs("p")+'<div class="subhead banner" style="--c:#c2462f"><div class="ico">'+ICON_PR+'</div><div class="grow"><h1>Egzamin zawodowy — część praktyczna</h1><p>Zadania w formule części praktycznej: treść zadania, opis stanowiska, polecenia i tabele do wypełnienia. Ocenę według kryteriów wystawia nauczyciel na stanowisku.</p></div></div><div id="plist"><div class="empty">Wczytywanie zadań…</div></div>';
+  prLoad().then(function(d){var el=$("#plist");if(!el)return;var l=d.zadania;
+    if(!l.length){el.innerHTML='<div class="empty">Na razie nie ma zadań praktycznych.</div>';return}
+    var ks=[];l.forEach(function(z){if(ks.indexOf(z.kwal)<0)ks.push(z.kwal)});
+    el.innerHTML=ks.map(function(q){var x=l.filter(function(z){return z.kwal===q}),k=kier(x[0].kierunek);return '<p class="sec-label">'+esc(q)+(k?' — '+esc(k.nazwa):'')+'</p><div class="elist">'+x.map(prCard).join("")+'</div>'}).join("");
+  });
+}
+function prTabela(t,print){return '<div class="prtab"><p class="prtt">'+esc(t.tytul)+'</p><table class="'+(print?'':'wyt pt')+'"><thead><tr>'+t.kolumny.map(function(c){return '<th>'+esc(c)+'</th>'}).join("")+'</tr></thead><tbody>'+t.wiersze.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+esc(c)+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table>'+(t.stopka?'<p class="prst">'+esc(t.stopka)+'</p>':'')+'</div>'}
+function prTresc(z,print){
+  var R=z.rezultaty.filter(function(r){return !r.przebieg}),P=z.rezultaty.filter(function(r){return r.przebieg});
+  return '<h2>Treść zadania</h2><p>'+esc(z.wstep)+'</p>'+
+   (z.dzialanie&&z.dzialanie.length?'<h3>Opis działania układu</h3><ul>'+z.dzialanie.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
+   (z.rysunki&&z.rysunki.length?z.rysunki.map(function(r,i){return '<figure class="prfig"><img src="'+esc(print?new URL(egzUrl(r.img),location.href).href:egzUrl(r.img))+'" alt="'+esc(r.podpis||"")+'"><figcaption>'+esc(r.podpis||("Rysunek "+(i+1)))+'</figcaption></figure>'}).join(""):(print?'':'<div class="prnote">Schematy (rysunek 1 – pneumatyczny, rysunek 2 – elektryczny) wydaje nauczyciel na stanowisku.</div>'))+
+   (z.stanowisko&&z.stanowisko.length?'<h3>Wyposażenie stanowiska</h3><ul>'+z.stanowisko.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
+   '<h3>Polecenia</h3><ol>'+z.polecenia.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol>'+
+   (z.tabele||[]).map(function(t){return prTabela(t,print)}).join("")+
+   '<h3>Ocenie podlegać będą</h3><p>Czas przeznaczony na wykonanie zadania wynosi <b>'+esc(z.czas)+' minut</b>. Ocenie podlegać będą '+R.length+' rezultaty:</p><ul>'+R.map(function(r){return '<li>'+esc(r.nazwa.charAt(0).toLowerCase()+r.nazwa.slice(1))+'</li>'}).join("")+'</ul>'+(P.length?'<p>oraz przebieg wykonania zadania.</p>':'');
+}
+function praktykaView(id){
+  hero(false);app().innerHTML='<div class="empty">Wczytywanie zadania…</div>';
+  prLoad().then(function(d){
+    if(curHash()!=="p-"+id) return;
+    var z=d.zadania.filter(function(x){return x.id===id})[0];
+    if(!z){app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka","praktyka"]])+'<div class="empty">Nie znaleziono zadania.</div>';return}
+    var k=kier(z.kierunek),prog=d.prog||75;
+    app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka","praktyka"],[z.kwal]])+
+     '<div class="prw" style="'+cvar(k)+'"><div class="panel"><span class="pill">'+esc(z.kwal)+' · część praktyczna'+(k?' · '+esc(k.nazwa):'')+'</span><h1>'+esc(z.nazwa)+'</h1><p class="note">'+esc(z.opis||"")+'</p>'+
+     '<div class="erules"><div><b>'+esc(z.czas)+'</b>minut</div><div><b>'+z.rezultaty.filter(function(r){return !r.przebieg}).length+'</b>rezultaty</div><div><b>'+prMax(z)+'</b>kryteriów</div><div><b>'+prog+'%</b>próg zdania</div></div>'+
+     '<div class="toolbar" style="margin:0"><button class="btn" id="pr-print">🖨 Drukuj arkusz zadania</button>'+(z.pdf?'<a class="btn ghost" href="'+esc(egzUrl(z.pdf))+'" target="_blank" rel="noopener">📄 Arkusz PDF</a>':'')+'<button class="btn ghost" id="pr-clk">⏱ Zegar ćwiczenia</button></div></div>'+
+     '<div class="panel prtxt">'+prTresc(z,false)+'</div>'+
+     '<details class="panel prgr noprint" id="pr-gr"><summary><b>✅ Ocena zadania — dla nauczyciela</b> <span class="note">— karta oceny według kryteriów, wynik zapisuje się w arkuszu Google</span></summary><div id="pr-go"></div></details></div>';
+    $("#pr-print").onclick=function(){prDrukuj(z,prog)};
+    $("#pr-clk").onclick=function(){prZegar(z)};
+    prOcenaLogin(z,prog);
+  });
+}
+function prOcenaLogin(z,prog){
+  var box=$("#pr-go");if(!box)return;
+  if(!S.config.egzaminUrl){box.innerHTML='<div class="empty">Moduł nie jest połączony z arkuszem Google.</div>';return}
+  if(SEC.h){prOcenaForm(z,prog);return}
+  box.innerHTML='<div class="toolbar wtool" style="margin:10px 0 0"><input type="password" id="pr-h" placeholder="Hasło nauczyciela" autocomplete="off" value="" style="max-width:240px"><button class="btn" id="pr-hgo">Otwórz kartę oceny</button><span class="status" id="pr-hst"></span></div>';
+  var go=$("#pr-hgo");
+  go.onclick=function(){var h=$("#pr-h").value;if(!h)return setStatus($("#pr-hst"),"Wpisz hasło.",false);$("#pr-h").value="";setStatus($("#pr-hst"),"Sprawdzam…");
+    fetch(S.config.egzaminUrl+"?akcja=praktyka&zid="+encodeURIComponent(z.id)+"&haslo="+encodeURIComponent(h)).then(function(r){return r.json()}).then(function(r){
+      if(!r.ok) throw new Error(r.blad||"Błąd");
+      if(!r.oceny) throw new Error("Skrypt Google jest w starej wersji — wdróż wersję 7.");
+      secSet(h,function(){if(curHash()==="p-"+z.id)prOcenaLogin(z,prog)});PR.lista=r.oceny;prOcenaForm(z,prog);
+    }).catch(function(e){setStatus($("#pr-hst"),e.message||"Nie udało się.",false)})};
+  $("#pr-h").onkeydown=function(e){if(e.key==="Enter")go.click()};
+}
+function prOcenaForm(z,prog){
+  var box=$("#pr-go");if(!box)return;
+  box.innerHTML=secBar("pr-sec","Karta oceny otwarta")+
+   '<div class="form prform"><div class="row2"><div class="field"><label>Uczeń (imię i nazwisko)</label><input type="text" id="pr-u" maxlength="80"></div><div class="row2"><div class="field"><label>Klasa</label><input type="text" id="pr-k" maxlength="12"></div><div class="field"><label>Stanowisko</label><input type="text" id="pr-s" maxlength="12"></div></div></div>'+
+   z.rezultaty.map(function(r,ri){return '<div class="prr" data-r="'+ri+'"><div class="prrh"><b>'+esc(r.id)+'</b><span class="grow">'+esc(r.nazwa)+'</span><span class="prpk" id="pr-pk'+ri+'">0 / '+r.kryteria.length+'</span><button type="button" class="btn ghost sm" data-all="'+ri+'">wszystkie spełnione</button></div>'+
+     r.kryteria.map(function(c,ci){return '<label class="prk"><input type="checkbox" data-c="'+ri+'-'+ci+'"><span>'+esc(c)+'</span></label>'}).join("")+'</div>'}).join("")+
+   '<div class="field"><label>Uwagi (nieobowiązkowe)</label><textarea id="pr-uw" maxlength="1000" rows="2"></textarea></div>'+
+   '<div class="prsum"><div id="pr-tot" class="prtot"></div><button class="btn" id="pr-save">Zapisz ocenę</button><span class="status" id="pr-st"></span></div></div>'+
+   '<div class="prlist"><h3>Ocenione prace z tego zadania</h3><div id="pr-l"></div></div>';
+  var sb=$("#pr-sec");sb.querySelector("button").onclick=function(){secClear();prOcenaLogin(z,prog)};
+  function calc(){var pkt=0,max=0;z.rezultaty.forEach(function(r,ri){var n=$$('[data-c^="'+ri+'-"]:checked').length;pkt+=n;max+=r.kryteria.length;$("#pr-pk"+ri).textContent=n+" / "+r.kryteria.length});
+    var proc=max?Math.round(pkt*1000/max)/10:0,ok=proc>=prog;$("#pr-tot").innerHTML='<b class="'+(ok?"ok":"no")+'">'+wyFmt(proc,1)+'%</b><span>'+pkt+' / '+max+' pkt · '+(ok?'zdany':'niezdany')+' (próg '+prog+'%)</span>';return {pkt:pkt,max:max}}
+  $$("[data-c]").forEach(function(c){c.onchange=calc});
+  $$("[data-all]").forEach(function(b){b.onclick=function(){var ri=b.dataset.all,cs=$$('[data-c^="'+ri+'-"]'),all=cs.every(function(c){return c.checked});cs.forEach(function(c){c.checked=!all});calc()}});
+  calc();prLista(z);
+  $("#pr-save").onclick=function(){
+    var u=$("#pr-u").value.trim();if(u.length<3)return setStatus($("#pr-st"),"Wpisz imię i nazwisko ucznia.",false);
+    if(!SEC.h){prOcenaLogin(z,prog);return}
+    var body={akcja:"praktyka",haslo:SEC.h,zid:z.id,kwal:z.kwal,zadanie:z.nazwa,uczen:u,klasa:$("#pr-k").value.trim(),stanowisko:$("#pr-s").value.trim(),uwagi:$("#pr-uw").value.trim(),prog:prog,
+      rezultaty:z.rezultaty.map(function(r,ri){var br=[];r.kryteria.forEach(function(c,ci){if(!$('[data-c="'+ri+'-'+ci+'"]').checked)br.push(c)});return {id:r.id,nazwa:r.nazwa,pkt:r.kryteria.length-br.length,max:r.kryteria.length,brak:br}})};
+    var b=this;b.disabled=true;setStatus($("#pr-st"),"Zapisywanie…");
+    fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(r){
+      b.disabled=false;if(!r.ok)throw new Error(r.blad||"Błąd zapisu");
+      setStatus($("#pr-st"),"Zapisano: "+u+" — "+wyFmt(r.procent,1)+"%, "+r.wynik+".",true);
+      ["pr-u","pr-s","pr-uw"].forEach(function(i){$("#"+i).value=""});$$("[data-c]").forEach(function(c){c.checked=false});calc();prOdswiez(z);
+    }).catch(function(e){b.disabled=false;setStatus($("#pr-st"),e.message||"Nie udało się zapisać.",false)});
+  };
+}
+function prOdswiez(z){if(!SEC.h)return;fetch(S.config.egzaminUrl+"?akcja=praktyka&zid="+encodeURIComponent(z.id)+"&haslo="+encodeURIComponent(SEC.h)).then(function(r){return r.json()}).then(function(r){if(r.ok){PR.lista=r.oceny;prLista(z)}}).catch(function(){})}
+function prLista(z){
+  var el=$("#pr-l");if(!el)return;var L=PR.lista||[];
+  if(!L.length){el.innerHTML='<p class="note">Brak zapisanych ocen.</p>';return}
+  el.innerHTML='<div class="wytw"><table class="wyt"><thead><tr><th>Data</th><th>Uczeń</th><th>Klasa</th><th>Stan.</th>'+z.rezultaty.map(function(r){return '<th>'+esc(r.id)+'</th>'}).join("")+'<th>Wynik</th><th></th></tr></thead><tbody>'+L.map(function(o){var rm={};(o.rez||[]).forEach(function(r){rm[r.id]=r});var ok=o.wynik==="zdany";
+    return '<tr title="'+esc((o.rez||[]).filter(function(r){return r.brak&&r.brak.length}).map(function(r){return r.id+": "+r.brak.join("; ")}).join("\n")+(o.uwagi?"\nUwagi: "+o.uwagi:""))+'"><td>'+esc(new Date(o.data).toLocaleDateString("pl-PL"))+'</td><td><b>'+esc(o.uczen)+'</b></td><td>'+esc(o.klasa)+'</td><td>'+esc(o.stanowisko)+'</td>'+z.rezultaty.map(function(r){var x=rm[r.id];return '<td class="mono">'+(x?x.pkt+"/"+x.max:"—")+'</td>'}).join("")+'<td class="'+(ok?"okc":"bad")+'"><b>'+wyFmt(o.procent,1)+'%</b> '+esc(o.wynik)+'</td><td><button class="btn ghost sm" data-prdel="'+esc(o.id)+'">usuń</button></td></tr>'}).join("")+'</tbody></table></div><p class="note">Najedź na wiersz, aby zobaczyć niespełnione kryteria i uwagi. Wszystkie oceny są w arkuszu Google w zakładce „Praktyka”.</p>';
+  $$("[data-prdel]").forEach(function(b){b.onclick=function(){
+    if(!b.dataset.ok){b.dataset.ok=1;b.textContent="na pewno?";b.classList.add("danger");return}
+    b.disabled=true;fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"praktykaUsun",haslo:SEC.h,id:b.dataset.prdel})}).then(function(r){return r.json()}).then(function(){prOdswiez(z)}).catch(function(){b.disabled=false})}});
+}
+function prZegar(z){
+  var el=$("#pr-zeg");
+  if(!el){el=document.createElement("div");el.id="pr-zeg";el.className="przeg";document.body.appendChild(el)}
+  var Zg=PR.zegar;if(!Zg||Zg.zid!==z.id){clearInterval(Zg&&Zg.t);Zg=PR.zegar={zid:z.id,left:z.czas*60000,run:false,last:0,t:0}}
+  function draw(){var l=Math.max(0,Zg.left),h=Math.floor(l/3600000),m=Math.floor(l%3600000/60000),s=Math.floor(l%60000/1000);
+    el.innerHTML='<span class="przt'+(l<=10*60000?' warn':'')+'">'+h+':'+String(m).padStart(2,"0")+':'+String(s).padStart(2,"0")+'</span><button class="btn sm" data-zg="go">'+(Zg.run?"Pauza":"Start")+'</button><button class="btn ghost sm" data-zg="rs">Od nowa</button><button class="btn ghost sm" data-zg="x" title="Zamknij">✕</button>';
+    $$("[data-zg]",el).forEach(function(b){b.onclick=function(){var a=b.dataset.zg;
+      if(a==="go"){Zg.run=!Zg.run;Zg.last=Date.now()}if(a==="rs"){Zg.run=false;Zg.left=z.czas*60000}if(a==="x"){clearInterval(Zg.t);el.remove();PR.zegar=null;return}draw()}})}
+  clearInterval(Zg.t);Zg.t=setInterval(function(){if(!document.body.contains(el)){clearInterval(Zg.t);return}if(Zg.run){var n=Date.now();Zg.left-=n-Zg.last;Zg.last=n;if(Zg.left<=0){Zg.left=0;Zg.run=false}draw()}},500);draw();
+}
+function prDrukuj(z,prog){
+  var css='@page{size:A4;margin:14mm 15mm}*{box-sizing:border-box}body{margin:0;font:10.5pt/1.45 Roboto,"Segoe UI",Arial,sans-serif;color:#111}h1{font-size:15pt;margin:4px 0 2px}h2{font-size:12pt;margin:14px 0 4px}h3{font-size:11pt;margin:12px 0 4px}ul,ol{margin:4px 0 6px;padding-left:20px}li{margin:2px 0}'+
+   '.top{border:1.5px solid #111;padding:8px 12px;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.top small{display:block;font-size:8.5pt;color:#444}.pes{border:1px solid #111;padding:6px 10px;font-size:8.5pt;min-width:200px}.pes div{height:20px;border-bottom:1px dotted #555;margin-top:6px}'+
+   '.ins{font-size:9pt;border:1px solid #bbb;padding:6px 10px;margin:10px 0;background:#f6f6f6}'+
+   'table{width:100%;border-collapse:collapse;font-size:9.5pt;margin-top:4px}th,td{border:1px solid #333;padding:5px 6px;text-align:left;vertical-align:top}th{background:#eee}td{height:24px}.prtab{break-inside:avoid;margin-top:10px}.prtt{font-weight:700;margin:0}.prst{margin:6px 0 0}.prfig{text-align:center;margin:8px 0;break-inside:avoid}.prfig img{max-width:100%;max-height:120mm}.prfig figcaption{font-size:9pt}'+
+   '.foot{margin-top:14px;font-size:8pt;color:#666;border-top:1px solid #ccc;padding-top:4px}';
+  var html='<!doctype html><html lang="pl"><head><meta charset="utf-8"><title>'+esc(z.kwal+" — "+z.nazwa)+'</title><style>'+css+'</style></head><body>'+
+   '<div class="top"><div><small>EGZAMIN ZAWODOWY — ZADANIE ĆWICZENIOWE · CZĘŚĆ PRAKTYCZNA</small><h1>'+esc(z.kwal)+' — '+esc(z.nazwa)+'</h1><small>Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18</small><small>Czas trwania: '+esc(z.czas)+' minut · próg zdania: '+prog+'% punktów</small></div><div class="pes">Imię i nazwisko<div></div>Klasa / stanowisko<div></div></div></div>'+
+   '<div class="ins"><b>Instrukcja.</b> Zapoznaj się z treścią zadania i stanowiskiem (10 minut – nie wlicza się do czasu). Usterki stanowiska zgłaszaj przez podniesienie ręki. Wyniki zapisuj długopisem w tabelach. Po zakończeniu oddaj arkusz nauczycielowi.</div>'+
+   prTresc(z,true)+'<div class="foot">Zadanie ćwiczeniowe przygotowane w formule części praktycznej egzaminu zawodowego · materiały: Mateusz Stasica</div></body></html>';
+  var old=$("#pr-prf");if(old)old.remove();
+  var f=document.createElement("iframe");f.id="pr-prf";f.setAttribute("aria-hidden","true");f.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";document.body.appendChild(f);
+  var d=f.contentWindow.document;d.open();d.write(html);d.close();
+  var imgs=[].slice.call(d.images),n=imgs.filter(function(i){return !i.complete}).length,go=function(){try{f.contentWindow.focus();f.contentWindow.print()}catch(e){}};
+  if(!n)setTimeout(go,150);else imgs.forEach(function(i){if(!i.complete)i.onload=i.onerror=function(){if(--n===0)setTimeout(go,50)}});
+}
+/* ================== EGZAMINY ================== */
 var EGZ={lista:null,p:null,bank:{}};
 function egzUrl(path){return fileUrl({sciezka:path})}
 function egzLista(){
@@ -787,7 +927,7 @@ function egzCard(e){
 }
 function egzListView(){
   hero(false);
-  app().innerHTML=crumb([["Egzaminy"]])+'<div class="subhead banner" style="--c:#c2462f"><div class="ico">'+ICON_EGZ+'</div><div class="grow"><h1>Egzaminy i testy</h1><p>Testy w formule egzaminu zawodowego: losowe pytania, jedna poprawna odpowiedź, limit czasu. Wynik trafia do nauczyciela.</p></div><div class="subart">'+artEgz()+'</div></div><div id="elist"><div class="empty">Wczytywanie listy egzaminów…</div></div>';
+  app().innerHTML=crumb([["Egzaminy"]])+egzTabs("t")+'<div class="subhead banner" style="--c:#c2462f"><div class="ico">'+ICON_EGZ+'</div><div class="grow"><h1>Egzaminy i testy</h1><p>Testy w formule egzaminu zawodowego: losowe pytania, jedna poprawna odpowiedź, limit czasu. Wynik trafia do nauczyciela.</p></div><div class="subart">'+artEgz()+'</div></div><div id="elist"><div class="empty">Wczytywanie listy egzaminów…</div></div>';
   egzLista().then(function(l){
     var el=$("#elist");if(!el)return;
     if(!l.length){el.innerHTML='<div class="empty">Na razie nie ma dostępnych egzaminów.</div>';return}
@@ -972,6 +1112,7 @@ function wynikiView(){
   };
   $("#w-h").onkeydown=function(e){if(e.key==="Enter")go.click()};
 }
+var ICON_PR='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M30 8a8 8 0 0 0-9 11L8 32a4 4 0 1 0 6 6l13-13a8 8 0 0 0 11-9l-5 5-5-1-1-5z"/><path d="M33 30l7 7M30 33l7 7"/></svg>';
 var ICON_EGZ='<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="6" width="28" height="36" rx="3"/><path d="M18 6V3h12v3M16 18l3 3 6-6M16 30l3 3 6-6M29 19h4M29 31h4"/></svg>';
 function artEgz(){return svgWrap("0 0 360 150",
   '<rect x="40" y="18" width="96" height="120" rx="6" '+SOFT+'/><path d="M62 18v-8h52v8"/>'+

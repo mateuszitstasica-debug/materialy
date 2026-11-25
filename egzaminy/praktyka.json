@@ -1,0 +1,126 @@
+{
+  "prog": 75,
+  "zadania": [
+    {
+      "id": "elm03-p01",
+      "kwal": "ELM.03",
+      "kierunek": "mechatronik",
+      "nazwa": "Układ elektropneumatyczny – siłownik dwustronnego działania z samopodtrzymaniem",
+      "opis": "Zadanie ćwiczeniowe w formule części praktycznej egzaminu ELM.03: montaż, pomiary, regulacja i test działania układu elektropneumatycznego.",
+      "czas": 180,
+      "pdf": null,
+      "rysunki": [],
+      "wstep": "Zmontuj układ elektropneumatyczny sterowania siłownikiem dwustronnego działania 1A1 na podstawie opisu działania oraz schematów otrzymanych od nauczyciela (rysunek 1 – schemat pneumatyczny, rysunek 2 – schemat elektryczny). Przeprowadź pomiary rezystancji połączeń, ustaw parametry pracy układu i wykonaj test jego działania.",
+      "stanowisko": [
+        "płyta montażowa z zespołem przygotowania powietrza (zawór odcinający, filtr z reduktorem i manometrem),",
+        "siłownik dwustronnego działania 1A1 z czujnikami położenia 1B1 (tłoczysko wsunięte) i 1B2 (tłoczysko wysunięte),",
+        "zawór rozdzielający 5/2 monostabilny 1V1 sterowany elektrycznie (cewka Y1), zawory dławiąco-zwrotne 1V2 i 1V3,",
+        "zasilacz 24 V DC, przekaźnik K1, przycisk S1 (START, NO), przycisk S2 (STOP, NC), lampka sygnalizacyjna H1,",
+        "przewody pneumatyczne, przewody elektryczne w kolorach: czerwony (+24 V), niebieski (0 V), czarny (sygnały),",
+        "multimetr, stoper, obcinak do przewodów pneumatycznych, narzędzia monterskie."
+      ],
+      "dzialanie": [
+        "naciśnięcie przycisku S1 przy wsuniętym tłoczysku (1B1 = 1) powoduje wysunięcie tłoczyska siłownika 1A1 i zaświecenie lampki H1,",
+        "po osiągnięciu przez tłoczysko położenia krańcowego (1B2 = 1) tłoczysko samoczynnie się wsuwa, a lampka H1 gaśnie,",
+        "naciśnięcie przycisku S2 w dowolnej chwili powoduje natychmiastowe wsunięcie tłoczyska i zgaśnięcie lampki H1,",
+        "ponowne uruchomienie układu jest możliwe po wsunięciu tłoczyska i naciśnięciu przycisku S1."
+      ],
+      "polecenia": [
+        "Zmontuj część pneumatyczną układu zgodnie ze schematem z rysunku 1. Przewody przycinaj prostopadle, bez załamań.",
+        "Zmontuj część elektryczną układu zgodnie ze schematem z rysunku 2. Zachowaj kolorystykę przewodów.",
+        "Przy wyłączonym zasilaniu zmierz rezystancję połączeń wymienionych w tabeli 1 i oceń ich poprawność.",
+        "Zgłoś przez podniesienie ręki gotowość do uruchomienia układu. Po uzyskaniu zgody włącz zasilanie.",
+        "Ustaw ciśnienie robocze 4 bar na wyjściu zespołu przygotowania powietrza.",
+        "Wyreguluj zawory dławiąco-zwrotne tak, aby czas wysuwania tłoczyska wynosił 3 s ± 0,5 s, a czas wsuwania 2 s ± 0,5 s.",
+        "Przeprowadź test działania układu i zapisz wyniki w tabeli 2.",
+        "Po zakończeniu pracy wyłącz zasilanie elektryczne i pneumatyczne, a następnie uporządkuj stanowisko."
+      ],
+      "tabele": [
+        {
+          "tytul": "Tabela 1. Protokół pomiarów rezystancji połączeń",
+          "kolumny": ["Lp.", "Mierzone połączenie (punkty)", "Zmierzona wartość [Ω]", "Ocena: poprawne / niepoprawne"],
+          "wiersze": [
+            ["1.", "+24 V / S2:1", "", ""],
+            ["2.", "S2:2 / S1:3", "", ""],
+            ["3.", "S1:4 / K1:A1", "", ""],
+            ["4.", "K1:13 / K1:A1", "", ""],
+            ["5.", "K1:23 / Y1:1", "", ""],
+            ["6.", "K1:A2 / 0 V", "", ""],
+            ["7.", "Y1:2 / 0 V", "", ""],
+            ["8.", "H1:X2 / 0 V", "", ""]
+          ],
+          "stopka": "Rodzaj i model przyrządu, którym wykonano pomiary: ………………………………………"
+        },
+        {
+          "tytul": "Tabela 2. Wyniki testowania działania układu",
+          "kolumny": ["Lp.", "Czynność i oczekiwany efekt", "Czy efekt wystąpił?"],
+          "wiersze": [
+            ["1.", "Tłoczysko wsunięte – naciśnięcie S1 powoduje wysuwanie tłoczyska 1A1.", "tak / nie"],
+            ["2.", "Podczas wysuwania tłoczyska świeci lampka H1.", "tak / nie"],
+            ["3.", "Po osiągnięciu położenia 1B2 tłoczysko samoczynnie się wsuwa, H1 gaśnie.", "tak / nie"],
+            ["4.", "Naciśnięcie S2 podczas wysuwania powoduje natychmiastowe wsunięcie tłoczyska.", "tak / nie"],
+            ["5.", "Naciśnięcie S1 przy wysuniętym tłoczysku nie powoduje ponownego cyklu.", "tak / nie"],
+            ["6.", "Czas wysuwania tłoczyska: ……… s, czas wsuwania: ……… s.", ""]
+          ]
+        }
+      ],
+      "rezultaty": [
+        {
+          "id": "R1",
+          "nazwa": "Zmontowany układ – część pneumatyczna",
+          "kryteria": [
+            "Elementy pneumatyczne rozmieszczone i zamocowane na płycie zgodnie ze schematem.",
+            "Przyłącze 1 zaworu 1V1 połączone z zasilaniem, przyłącza 2 i 4 z właściwymi komorami siłownika.",
+            "Zawory dławiąco-zwrotne zamontowane tak, że dławią powietrze wylotowe z siłownika.",
+            "Przewody przycięte prostopadle, bez załamań, w pełni wsunięte w złączki.",
+            "Brak słyszalnych nieszczelności po włączeniu sprężonego powietrza."
+          ]
+        },
+        {
+          "id": "R2",
+          "nazwa": "Zmontowany układ – część elektryczna",
+          "kryteria": [
+            "Połączenia elektryczne wykonane zgodnie ze schematem z rysunku 2.",
+            "Zachowana kolorystyka przewodów: +24 V czerwony, 0 V niebieski, sygnały czarny.",
+            "Obwód samopodtrzymania przekaźnika K1 z przyciskiem S2 (NC) wykonany poprawnie.",
+            "Czujniki 1B1 i 1B2 podłączone poprawnie (zasilanie, masa, wyjście sygnałowe).",
+            "Przewody prawidłowo zakończone i dokręcone, brak wystających żył i luźnych połączeń."
+          ]
+        },
+        {
+          "id": "R3",
+          "nazwa": "Protokół pomiarów rezystancji połączeń – tabela 1",
+          "kryteria": [
+            "Wpisany rodzaj i model przyrządu pomiarowego.",
+            "Zapisane wyniki pomiarów dla wszystkich połączeń z tabeli 1.",
+            "Wyniki pomiarów zgodne ze stanem rzeczywistym zmontowanego układu.",
+            "Prawidłowa ocena poprawności każdego z połączeń."
+          ]
+        },
+        {
+          "id": "R4",
+          "nazwa": "Uruchomiony układ i wyniki testu – tabela 2",
+          "kryteria": [
+            "Ciśnienie robocze ustawione na 4 bar.",
+            "Czasy wysuwania (3 s ± 0,5 s) i wsuwania (2 s ± 0,5 s) tłoczyska w tolerancji.",
+            "Układ realizuje cykl: S1 → wysunięcie z H1 → samoczynne wsunięcie po 1B2.",
+            "Przycisk S2 powoduje natychmiastowe wsunięcie tłoczyska.",
+            "Wyniki testu w tabeli 2 zgodne z rzeczywistym działaniem układu."
+          ]
+        },
+        {
+          "id": "P",
+          "nazwa": "Przebieg wykonania zadania",
+          "przebieg": true,
+          "kryteria": [
+            "Przed rozpoczęciem pracy sprawdził stan elementów i stanowiska.",
+            "Montaż i zmiany połączeń wykonywał przy wyłączonym zasilaniu elektrycznym i pneumatycznym.",
+            "Pomiary rezystancji wykonał przy odłączonym zasilaniu.",
+            "Zasilanie włączył po zgłoszeniu gotowości i uzyskaniu zgody.",
+            "Po zakończeniu pracy wyłączył zasilanie i uporządkował stanowisko."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -351,7 +351,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wybar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 12px}
 .sw{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer}.sw em{font-style:normal;font-weight:400;color:var(--muted);font-size:13px}
 .pnote{background:#eef5ff;border:1px solid #cfe0fb;color:#1b4f99;border-radius:10px;padding:8px 12px;font-size:14px;margin-bottom:12px}
-.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:16px}
+.kpis{display:grid;grid-template-columns:repeat(7,1fr);gap:12px;margin-bottom:16px}
 .kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;box-shadow:var(--sh);border-top:4px solid #257de0}
 .kpi b{display:block;font-size:28px;font-family:var(--mono);color:#191919;line-height:1.1}.kpi span{font-size:13px;color:var(--muted)}.kpi small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 .kpi.crit{border-top-color:#dc3c3d}.kpi.warn{border-top-color:#fbb315}
@@ -361,6 +361,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .wytw{overflow-x:auto}.wyt{width:100%;border-collapse:collapse;font-size:14px}.wyt th{text-align:left;font-size:12px;font-family:var(--mono);color:var(--muted);padding:8px;border-bottom:2px solid var(--line);cursor:pointer;white-space:nowrap}.wyt th.on{color:var(--ink)}
 .wyt td{padding:8px;border-bottom:1px solid var(--line2);vertical-align:top}.wyt tr.wr{cursor:pointer}.wyt tr.wr:hover td{background:#f6f8fb}
 .wyt td.bad{color:#b42318;font-weight:700}.wyt td.mid{color:#9a5b00;font-weight:600}
+.lowb{display:inline-block;background:#fff4dc;color:#8a5a00;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700;font-family:var(--mono)}.lowp{color:#b42318;font-family:var(--mono);font-size:12px}
 .zgb{display:inline-block;background:#fdecea;color:#a3301f;border-radius:99px;padding:1px 8px;font-size:12px;font-weight:700;font-family:var(--mono)}
 .wyt2{width:100%;border-collapse:collapse;font-size:13px;background:#fafbfd;border-radius:8px}.wyt2 th{font-size:11px;padding:6px 8px;cursor:default}.wyt2 td{padding:5px 8px;border-bottom:1px solid var(--line2)}.wyt2 tr.zg td{background:#fff5f4}
 @media print{header.top,footer,.noprint,.crumb{display:none!important}body{background:#fff}main{padding:0}.panel,.kpi{box-shadow:none;break-inside:avoid}.wygrid{grid-template-columns:1fr 1fr}.wyd{display:none}}
@@ -984,8 +985,8 @@ function wyStats(D){
   Object.keys(nrs).map(Number).sort(function(a,b){return a-b}).forEach(function(nr){
     var o=OC&&OC.uczniowie[nr],f=FR&&FR.uczniowie[nr]&&FR.uczniowie[nr].f["*"];
     var sr=o?wyMean(Object.keys(o.o).filter(function(k){return !/religia|etyka/i.test(k)}).map(function(k){return o.o[k].sr})):null;
-    var z=ZG[nr]?ZG[nr].p:[];
-    S.uczniowie.push({nr:nr,kto:nrs[nr],sr:sr,frek:f?f.pct:null,nb:f?f.nb:0,u:f?f.u:0,s:f?(f.s+f.su):0,ob:f?f.ob:0,zagr:z,uwagi:UW.filter(function(x){return x.nr===nr})});
+    var z=ZG[nr]?ZG[nr].p:[];var ff=FR&&FR.uczniowie[nr]?FR.uczniowie[nr].f:{},nz={};if(FR)FR.przedmioty.forEach(function(p){nz[p.kod]=p.nazwa});var low=Object.keys(ff).filter(function(k){return k!=="*"&&ff[k].pct!=null&&ff[k].pct<50}).map(function(k){return {kod:k,nazwa:nz[k]||k,pct:ff[k].pct}}).sort(function(a,b){return a.pct-b.pct});
+    S.uczniowie.push({nr:nr,kto:nrs[nr],sr:sr,frek:f?f.pct:null,nb:f?f.nb:0,u:f?f.u:0,s:f?(f.s+f.su):0,ob:f?f.ob:0,zagr:z,low:low,uwagi:UW.filter(function(x){return x.nr===nr})});
   });
   var names={};[OC,FR].forEach(function(X){if(X)X.przedmioty.forEach(function(p){names[p.kod]=p.nazwa})});
   Object.keys(names).forEach(function(k){
@@ -1000,7 +1001,7 @@ function wyStats(D){
   var U=S.uczniowie,tot=function(f){return U.reduce(function(s,u){return s+(u[f]||0)},0)};
   var dist=[0,0,0,0,0,0];if(OC)Object.keys(OC.uczniowie).forEach(function(n){var o=OC.uczniowie[n].o;Object.keys(o).forEach(function(k){o[k].d.forEach(function(v,i){dist[i]+=v})})});
   var ds=dist.reduce(function(a,b){return a+b},0);
-  S.kpi={n:U.length,sr:wyMean(U.map(function(u){return u.sr})),frek:wyMean(U.map(function(u){return u.frek})),zagrU:U.filter(function(u){return u.zagr.length}).length,zagr:U.reduce(function(s,u){return s+u.zagr.length},0),
+  S.kpi={low:U.filter(function(u){return u.low.length}).length,n:U.length,sr:wyMean(U.map(function(u){return u.sr})),frek:wyMean(U.map(function(u){return u.frek})),zagrU:U.filter(function(u){return u.zagr.length}).length,zagr:U.reduce(function(s,u){return s+u.zagr.length},0),
     ob:tot("ob"),nb:tot("nb"),u:tot("u"),s:tot("s"),dist:ds?dist.map(function(v){return v*100/ds}):null,uwagi:UW.length,pochwaly:UW.filter(function(x){return /pochwa/i.test(x.typ+x.kategoria)}).length};
   return S;
 }
@@ -1039,7 +1040,7 @@ function wyRender(){
    '<div class="wybar noprint"><label class="sw"><input type="checkbox" id="wy-par" '+(P?"checked":"")+'><span></span> Widok dla rodziców <em>(bez nazwisk i danych pojedynczych uczniów)</em></label><button class="btn ghost sm" id="wy-pr">🖨 Drukuj / zapisz PDF</button></div>'+
    (P?'<div class="pnote">Widok dla rodziców — pokazane są wyłącznie dane zbiorcze klasy.</div>':'')+
    '<div class="kpis">'+kp(K.n,"uczniów")+kp(wyFmt(K.sr),"średnia ocen klasy","","średnia ze średnich uczniów")+kp(wyFmt(K.frek,1)+"%","frekwencja klasy",K.frek!=null&&K.frek<80?"warn":"")+
-     kp(K.zagrU,"uczniów z zagrożeniem",K.zagrU?"crit":"","z "+K.n+" · "+K.zagr+" "+odm(K.zagr,"zagrożenie","zagrożenia","zagrożeń"))+kp(K.nb,"godz. nieusprawiedliwionych",K.nb?"warn":"")+kp(K.s,"spóźnień")+'</div>'+
+     kp(K.zagrU,"uczniów z zagrożeniem",K.zagrU?"crit":"","z "+K.n+" · "+K.zagr+" "+odm(K.zagr,"zagrożenie","zagrożenia","zagrożeń"))+kp(K.low,"uczniów z frekwencją &lt; 50%",K.low?"crit":"","z co najmniej 1 przedmiotu")+kp(K.nb,"godz. nieusprawiedliwionych",K.nb?"warn":"")+kp(K.s,"spóźnień")+'</div>'+
    '<div class="wygrid">'+
      wyBox("c-sr","Średnia ocen według przedmiotów","Średnia ocen cząstkowych klasy w każdym przedmiocie (bez religii w średniej ogólnej).",Math.max(220,S.przedm.filter(function(p){return p.sr!=null}).length*24+40),true)+
      wyBox("c-fr","Frekwencja według przedmiotów","Średnia frekwencja uczniów na lekcjach danego przedmiotu.",Math.max(220,S.przedm.filter(function(p){return p.frek!=null}).length*24+40),true)+
@@ -1076,16 +1077,16 @@ function wyRender(){
 function wyBox(id,t,sub,h,wide){return '<div class="panel wybox'+(wide?' wide':'')+'"><h3>'+esc(t)+'</h3><p class="note">'+esc(sub)+'</p><div style="position:relative;height:'+h+'px"><canvas id="'+id+'" role="img" aria-label="'+esc(t)+'"></canvas></div></div>'}
 function wyTable(S){
   var s=WY.sort,desc=s.charAt(0)==="-",k=desc?s.slice(1):s;
-  var U=S.uczniowie.slice().sort(function(a,b){var x=k==="zagr"?a.zagr.length:a[k],y=k==="zagr"?b.zagr.length:b[k];if(typeof x==="string")return desc?y.localeCompare(x,"pl"):x.localeCompare(y,"pl");x=x==null?-1:x;y=y==null?-1:y;return desc?y-x:x-y});
+  var U=S.uczniowie.slice().sort(function(a,b){var x=(k==="zagr"||k==="low")?a[k].length:a[k],y=(k==="zagr"||k==="low")?b[k].length:b[k];if(typeof x==="string")return desc?y.localeCompare(x,"pl"):x.localeCompare(y,"pl");x=x==null?-1:x;y=y==null?-1:y;return desc?y-x:x-y});
   var th=function(key,l){return '<th data-ws="'+key+'" class="'+(k===key?"on":"")+'">'+l+(k===key?(desc?" ▼":" ▲"):"")+'</th>'};
   var D=WY.dane,OC=D.oceny,FR=D.frekwencja;
-  return '<div class="panel" style="margin-top:18px" id="wy-tab"><h2>Uczniowie</h2><p class="note">Kliknij nagłówek, aby posortować. Kliknij ucznia, aby zobaczyć szczegóły z przedmiotów.</p><div class="wytw"><table class="wyt"><thead><tr>'+th("nr","Nr")+th("kto","Uczeń")+th("sr","Średnia")+th("frek","Frekwencja")+th("nb","Nieuspr. [h]")+th("s","Spóźnienia")+th("zagr","Zagrożenia")+'</tr></thead><tbody>'+
+  return '<div class="panel" style="margin-top:18px" id="wy-tab"><h2>Uczniowie</h2><p class="note">Kliknij nagłówek, aby posortować. Kliknij ucznia, aby zobaczyć szczegóły z przedmiotów.</p><div class="wytw"><table class="wyt"><thead><tr>'+th("nr","Nr")+th("kto","Uczeń")+th("sr","Średnia")+th("frek","Frekwencja")+th("nb","Nieuspr. [h]")+th("s","Spóźnienia")+th("zagr","Zagrożenia")+th("low","Frekwencja &lt; 50%")+'</tr></thead><tbody>'+
    U.map(function(u){
      var det='';var ks={};if(OC&&OC.uczniowie[u.nr])Object.keys(OC.uczniowie[u.nr].o).forEach(function(x){ks[x]=1});if(FR&&FR.uczniowie[u.nr])Object.keys(FR.uczniowie[u.nr].f).forEach(function(x){if(x!=="*")ks[x]=1});
      det=Object.keys(ks).map(function(x){var p=S.przedm.filter(function(q){return q.kod===x})[0],o=OC&&OC.uczniowie[u.nr]&&OC.uczniowie[u.nr].o[x],f=FR&&FR.uczniowie[u.nr]&&FR.uczniowie[u.nr].f[x],z=u.zagr.some(function(q){return q.kod===x});
        return '<tr class="'+(z?"zg":"")+'"><td>'+esc(p?p.nazwa:x)+(z?' <span class="zgb">zagrożenie</span>':'')+'</td><td>'+(o?wyFmt(o.sr):"—")+'</td><td class="'+(f&&f.pct<50?"bad":"")+'">'+(f?wyFmt(f.pct,1)+"%":"—")+'</td><td>'+(f?f.nb:"—")+'</td></tr>'}).join("");
-     return '<tr class="wr'+(u.zagr.length?" hz":"")+'" data-wu="'+u.nr+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b></td><td class="'+(u.sr!=null&&u.sr<2?"bad":"")+'">'+wyFmt(u.sr)+'</td><td class="'+(u.frek!=null&&u.frek<50?"bad":u.frek<75?"mid":"")+'">'+wyFmt(u.frek,1)+'%</td><td>'+u.nb+'</td><td>'+u.s+'</td><td>'+(u.zagr.length?'<span class="zgb">'+u.zagr.length+'</span> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", ")):'—')+'</td></tr>'+
-       '<tr class="wyd" id="wyd-'+u.nr+'" hidden><td></td><td colspan="6"><table class="wyt2"><thead><tr><th>Przedmiot</th><th>Średnia</th><th>Frekwencja</th><th>Nieuspr. [h]</th></tr></thead><tbody>'+det+'</tbody></table></td></tr>'}).join("")+
+     return '<tr class="wr'+(u.zagr.length?" hz":"")+'" data-wu="'+u.nr+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b></td><td class="'+(u.sr!=null&&u.sr<2?"bad":"")+'">'+wyFmt(u.sr)+'</td><td class="'+(u.frek!=null&&u.frek<50?"bad":u.frek<75?"mid":"")+'">'+wyFmt(u.frek,1)+'%</td><td>'+u.nb+'</td><td>'+u.s+'</td><td>'+(u.zagr.length?'<span class="zgb">'+u.zagr.length+'</span> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", ")):'—')+'</td><td>'+(u.low.length?'<span class="lowb">'+u.low.length+'</span> '+u.low.map(function(p){return esc(p.nazwa)+' <b class="lowp">'+wyFmt(p.pct,0)+'%</b>'}).join(", "):'—')+'</td></tr>'+
+       '<tr class="wyd" id="wyd-'+u.nr+'" hidden><td></td><td colspan="7"><table class="wyt2"><thead><tr><th>Przedmiot</th><th>Średnia</th><th>Frekwencja</th><th>Nieuspr. [h]</th></tr></thead><tbody>'+det+'</tbody></table></td></tr>'}).join("")+
    '</tbody></table></div></div>';
 }
 function wyBindUpload(){

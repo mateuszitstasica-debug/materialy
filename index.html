@@ -882,7 +882,8 @@ function egzResult(e,st){
    '<div class="toolbar" style="margin:14px 0 0"><a class="btn ghost" href="#egzaminy">← Lista egzaminów</a><button class="btn ghost" id="e-again">Rozwiąż ponownie</button></div></div></div>';
   if(r.przeglad&&r.przeglad.length){
     var pm={};r.przeglad.forEach(function(x){pm[x.id]=x});
-    var html='<div class="erev"><h2>Twój egzamin — odpowiedzi</h2><p class="note">Na zielono poprawna odpowiedź. Twoja odpowiedź jest oznaczona.</p>'+st.pytania.map(function(q,i){
+    var bezK=!r.przeglad.some(function(x){return x.k});
+    var html='<div class="erev"><h2>Twój egzamin — odpowiedzi</h2><p class="note">Na zielono poprawna odpowiedź. Twoja odpowiedź jest oznaczona.'+(bezK?' Ten test został oddany przed dodaniem wyjaśnień — kliknij „Rozwiąż ponownie”, aby po oddaniu zobaczyć wyjaśnienia odpowiedzi.':'')+'</p>'+st.pytania.map(function(q,i){
       var x=pm[q.id]||{w:-1,c:-1},okq=x.w>=0&&x.w===x.c;
       var body=q.parts&&q.parts.length?q.parts.map(function(pt){return pt.img?'<a class="eimg" href="'+esc(egzUrl(pt.img))+'" target="_blank" rel="noopener"><img src="'+esc(egzUrl(pt.img))+'" alt="Ilustracja" loading="lazy" style="max-width:min(100%,'+Math.round((pt.w||400)*1.4)+'px)"></a>':'<div class="wq">'+esc(pt.t)+'</div>'}).join(""):'<div class="wq">'+esc(q.q)+'</div>';
       return '<div class="erq '+(okq?'ok':'no')+'"><div class="erqn">'+(i+1)+'. <span>'+(okq?'✓ dobrze':(x.w<0?'✗ brak odpowiedzi':'✗ źle'))+'</span></div>'+body+'<div class="wopts">'+q.o.map(function(o,j){var orig=q.map[j],c=orig===x.c,u=orig===x.w;return '<div class="wopt'+(c?' good':'')+(u&&!c?' bad':'')+'"><span class="el">'+"ABCD"[j]+'</span><span>'+esc(o)+'</span>'+(u?'<em>'+(c?'Twoja odpowiedź — poprawna':'Twoja odpowiedź')+'</em>':(c?'<em>poprawna</em>':''))+'</div>'}).join("")+'</div>'+(x.k?'<div class="ewyj" data-q="'+esc(q.id)+'" data-k="'+esc(x.k)+'"></div>':'')+'</div>'}).join("")+'</div>';

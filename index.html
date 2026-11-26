@@ -108,6 +108,11 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .prlist{margin-top:18px}.prlist h3{margin:0 0 8px}.wyt td.okc{color:#0a7a1a}
 .przeg{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;gap:8px;align-items:center;background:#0d1830;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3)}.przt{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);min-width:120px;text-align:center}.przt.warn{color:#ff6b5a}
 .wytabs{margin:6px 0 16px}
+.uwk{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 12px}.uwk span{background:#fdecea;color:#7a2418;border-radius:99px;padding:3px 10px;font-size:13px}.uwl{display:grid;gap:4px}
+.uwr{border:1px solid var(--line2);border-radius:10px}.uwr summary{display:grid;grid-template-columns:minmax(180px,1.3fr) 1fr 190px;gap:12px;align-items:center;padding:8px 12px;cursor:pointer;font-size:14px}.uwr small{color:var(--muted)}
+.uwbar{height:8px;background:#f1f3f6;border-radius:9px;overflow:hidden}.uwbar i{display:block;height:100%;background:#dc3c3d;border-radius:9px}.uwc{text-align:right;font-size:13px}
+.uwr ul{margin:0;padding:4px 14px 10px 14px;list-style:none;font-size:14px}.uwr li{padding:5px 0;border-top:1px dotted var(--line2)}.uwr li em{color:var(--muted);font-size:12.5px}.uwr li.p .pill{background:#eaf7ee;color:#0a7a1a}
+@media(max-width:700px){.uwr summary{grid-template-columns:1fr auto}.uwbar{display:none}}
 .wyt.pt.ped td,.wyt.pt td.ptc{height:auto;padding:4px 6px}.ptc{text-align:center}.ptin{width:100%;min-width:64px;max-width:130px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:14px;text-align:center;background:#fff}.ptin:focus{outline:2px solid var(--c);border-color:transparent}
 .ptsel{min-width:76px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:14px;background:#fff;cursor:pointer}.ptsel:focus{outline:2px solid var(--c);border-color:transparent}
 .ptx{width:34px;height:30px;border:2px solid #c8d1dc;border-radius:7px;background:#fff;cursor:pointer;font-weight:800;font-size:16px;color:#fff}.ptx:hover{border-color:var(--c)}.ptx.on{background:var(--c);border-color:var(--c)}.ptv{font-weight:700;font-family:var(--mono)}
@@ -1216,7 +1221,8 @@ function artEgz(){return svgWrap("0 0 360 150",
 
 /* --- panel wychowawcy: parsowanie zestawień z dziennika --- */
 function wyNum(v){if(v==null||v==="")return null;var s=String(v).replace("%","").replace(",",".").trim();var n=parseFloat(s);return isNaN(n)?null:n}
-function wyUczen(s){var m=String(s||"").match(/^(.*),\s*nr\s*(\d+)\s*$/);return m?{nr:+m[2],kto:m[1].trim()}:null}
+function wyPochwala(x){return /pochwa/i.test((x.rodzaj||"")+" "+(x.typ||"")+" "+(x.kategoria||""))}
+function wyUczen(s){var m=String(s||"").match(/^(.*),\s*(?:nr\.?\s*)?(\d+)\s*$/);return m?{nr:+m[2],kto:m[1].trim()}:null}
 function wyKod(s){var m=String(s||"").match(/\(([^()]*)\)\s*$/);return m?m[1].trim():String(s||"").trim()}
 function wyNazwa(s){return String(s||"").replace(/\s*\([^()]*\)\s*$/,"").trim()}
 function wyRows(ws){return XLSX.utils.sheet_to_json(ws,{header:1,raw:false,defval:""})}
@@ -1385,7 +1391,7 @@ function wyStats(D){
   var dist=[0,0,0,0,0,0];if(OC)Object.keys(OC.uczniowie).forEach(function(n){var o=OC.uczniowie[n].o;Object.keys(o).forEach(function(k){o[k].d.forEach(function(v,i){dist[i]+=v})})});
   var ds=dist.reduce(function(a,b){return a+b},0);
   S.kpi={low:U.filter(function(u){return u.low.length}).length,n:U.length,sr:wyMean(U.map(function(u){return u.sr})),frek:wyMean(U.map(function(u){return u.frek})),zagrU:U.filter(function(u){return u.zagr.length}).length,zagr:U.reduce(function(s,u){return s+u.zagr.length},0),
-    ob:tot("ob"),nb:tot("nb"),u:tot("u"),s:tot("s"),dist:ds?dist.map(function(v){return v*100/ds}):null,uwagi:UW.length,pochwaly:UW.filter(function(x){return /pochwa/i.test(x.typ+x.kategoria)}).length};
+    ob:tot("ob"),nb:tot("nb"),u:tot("u"),s:tot("s"),dist:ds?dist.map(function(v){return v*100/ds}):null,uwagi:UW.length,pochwaly:UW.filter(wyPochwala).length};
   return S;
 }
 function wychowawcaView(){
@@ -1464,7 +1470,7 @@ function wyAnaliza(){
      (P?'':wyBox("c-sc","Średnia a frekwencja — uczniowie","Każdy punkt to jeden uczeń. Najedź na punkt, aby zobaczyć nazwisko.",340,true))+
    '</div>'+
    (P?'':wyKartyPanel(S))+(P?'':wyTable(S))+
-   (P||!(D.uwagi||[]).length?'':'<div class="panel" style="margin-top:18px"><h2>Uwagi i pochwały ('+D.uwagi.length+')</h2>'+D.uwagi.map(function(x){return '<div class="lrow"><b style="min-width:180px">'+esc(x.kto)+'</b><span class="pill">'+esc(x.typ||x.kategoria)+'</span><span class="grow">'+esc(x.tresc)+'</span></div>'}).join("")+'</div>')+
+   (P||!(D.uwagi||[]).length?'':wyUwagiPanel(D.uwagi))+
    (P?'':wyTop(S));
   wyBindUpload();
   $("#wy-par").onchange=function(){WY.rodzice=this.checked;wyRender()};
@@ -1511,7 +1517,7 @@ function wyKarta(u,S,o){
     var uw=[];if(z)uw.push('<span class="t z">zagrożenie</span>');if(lw)uw.push('<span class="t l">frek. &lt; 50%</span>');
     return '<tr class="'+(z?"z":"")+'"><td class="pn">'+esc(p.nazwa)+'</td><td class="n"><b>'+(x?wyFmt(x.sr):"—")+'</b></td>'+(o.cmp?'<td class="n c">'+(cl!=null?wyFmt(cl):"—")+'</td>':'')+'<td class="dd">'+dist(x&&x.d)+'</td><td class="n'+(lw?" bad":"")+'"><b>'+(f&&f.pct!=null?wyFmt(f.pct,1)+"%":"—")+'</b></td>'+(o.cmp?'<td class="n c">'+(cf!=null?wyFmt(cf,1)+"%":"—")+'</td>':'')+'<td class="n">'+(f?f.nb:"—")+'</td><td class="n">'+(f?(f.s+f.su):"—")+'</td><td class="u">'+uw.join(" ")+'</td></tr>'}).join("");
   var box=function(v,l,cls,sub){return '<div class="k '+(cls||"")+'"><b>'+v+'</b><span>'+l+'</span>'+(sub?'<small>'+sub+'</small>':'')+'</div>'};
-  var uwagi=o.uw?(u.uwagi||[]):[],poch=uwagi.filter(function(x){return /pochwa/i.test(x.typ+x.kategoria)});
+  var uwagi=o.uw?(u.uwagi||[]):[],poch=uwagi.filter(wyPochwala);
   return '<section class="kart">'+
    '<header><img src="'+o.logo+'" alt=""><div><div class="sch">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18</div><h1>Informacja o postępach w nauce i frekwencji</h1><div class="meta">'+esc([m.rok?"rok szkolny "+m.rok:"",m.okres||"",m.zakres?"frekwencja: "+m.zakres:""].filter(Boolean).join(" · "))+'</div></div></header>'+
    '<div class="who"><div><span>Uczeń / uczennica</span><b>'+esc(u.kto)+'</b></div><div><span>Klasa</span><b>'+esc(m.klasa||"—")+'</b></div><div><span>Nr w dzienniku</span><b>'+u.nr+'</b></div><div><span>Data</span><b>'+new Date().toLocaleDateString("pl-PL")+'</b></div></div>'+
@@ -1519,7 +1525,7 @@ function wyKarta(u,S,o){
    (u.zagr.length||u.low.length?'<div class="alert">'+(u.zagr.length?'<p><b>Przewidywana ocena niedostateczna:</b> '+esc(u.zagr.map(function(p){return p.nazwa}).join(", "))+'.</p>':'')+(u.low.length?'<p><b>Frekwencja poniżej 50%:</b> '+u.low.map(function(p){return esc(p.nazwa)+" ("+wyFmt(p.pct,0)+"%)"}).join(", ")+' — grozi nieklasyfikowaniem z przedmiotu.</p>':'')+'</div>':'')+
    '<table><thead><tr><th>Przedmiot</th><th class="n">Średnia</th>'+(o.cmp?'<th class="n c">klasa</th>':'')+'<th>Udział ocen</th><th class="n">Frekwencja</th>'+(o.cmp?'<th class="n c">klasa</th>':'')+'<th class="n">Nieuspr. [h]</th><th class="n">Spóźn.</th><th></th></tr></thead><tbody>'+(rows||'<tr><td colspan="9">Brak danych z przedmiotów.</td></tr>')+'</tbody></table>'+
    '<p class="leg">Udział ocen: np. <b>5</b> 40% oznacza, że 40% ocen cząstkowych z przedmiotu to oceny bardzo dobre. Średnia ogólna nie uwzględnia religii i etyki.'+(o.cmp?' „Klasa” – średnia wszystkich uczniów klasy.':'')+'</p>'+
-   (o.uw&&uwagi.length?'<h2>Uwagi i pochwały ('+uwagi.length+(poch.length?', w tym pochwał: '+poch.length:'')+')</h2><ul class="uw">'+uwagi.map(function(x){var pw=/pochwa/i.test(x.typ+x.kategoria);return '<li class="'+(pw?"p":"n")+'"><span>'+(pw?"pochwała":"uwaga")+'</span>'+esc(x.tresc)+(x.naucz?' <em>— '+esc(x.naucz)+'</em>':'')+'</li>'}).join("")+'</ul>':'')+
+   (o.uw&&uwagi.length?'<h2>Uwagi i pochwały ('+uwagi.length+(poch.length?', w tym pochwał: '+poch.length:'')+')</h2><ul class="uw">'+uwagi.map(function(x){var pw=wyPochwala(x);return '<li class="'+(pw?"p":"n")+'"><span>'+(pw?"pochwała":"uwaga")+'</span>'+esc(x.tresc)+(x.naucz?' <em>— '+esc(x.naucz)+'</em>':'')+'</li>'}).join("")+'</ul>':'')+
    (o.msg?'<h2>Wiadomość od wychowawcy</h2><div class="msg">'+esc(o.msg).replace(/\n/g,"<br>")+'</div>':'')+
    '<div class="sig"><div><span></span>podpis wychowawcy</div><div><span></span>podpis rodzica / opiekuna prawnego</div></div>'+
    (o.slip?'<div class="slip"><div class="cut">✂ odetnij i oddaj wychowawcy</div><p>Potwierdzam, że zapoznałem/zapoznałam się z informacją o postępach w nauce i frekwencji ucznia <b>'+esc(u.kto)+'</b>, klasa '+esc(m.klasa||"")+'.</p><div class="sig"><div><span></span>data</div><div><span></span>czytelny podpis rodzica / opiekuna prawnego</div></div></div>':'')+
@@ -1567,6 +1573,13 @@ function wyTop(S){
       b=lista("sr",function(v){return wyFmt(v)},"🏆 Top 3 — średnia ocen","Najwyższa średnia ocen cząstkowych (bez religii i etyki).");
   return (a||b)?'<div class="wytops">'+a+b+'</div>':'';
 }
+function wyUwagiPanel(U){
+  var by={},kat={};U.forEach(function(x){var k=x.nr+"";(by[k]=by[k]||{nr:x.nr,kto:x.kto,u:0,p:0,l:[]});var pw=wyPochwala(x);by[k][pw?"p":"u"]++;by[k].l.push(x);if(!pw)kat[x.kategoria||"inne"]=(kat[x.kategoria||"inne"]||0)+1});
+  var L=Object.keys(by).map(function(k){return by[k]}).sort(function(a,b){return b.u-a.u||b.p-a.p||a.nr-b.nr}),nu=U.filter(function(x){return !wyPochwala(x)}).length,np=U.length-nu,maxu=Math.max.apply(null,L.map(function(x){return x.u}).concat([1]));
+  var K=Object.keys(kat).sort(function(a,b){return kat[b]-kat[a]});
+  return '<div class="panel wyuw" style="margin-top:18px"><h2>Uwagi i pochwały</h2><p class="note">'+nu+' '+odm(nu,"uwaga","uwagi","uwag")+' · '+np+' '+odm(np,"pochwała","pochwały","pochwał")+' · '+L.length+' '+odm(L.length,"uczeń","uczniów","uczniów")+' z wpisami. Kliknij ucznia, aby zobaczyć treść wpisów.</p>'+
+   (K.length?'<div class="uwk">'+K.map(function(k){return '<span><b>'+kat[k]+'</b> '+esc(k)+'</span>'}).join("")+'</div>':'')+
+   '<div class="uwl">'+L.map(function(x){return '<details class="uwr"><summary><span class="uwn"><b>'+esc(x.kto)+'</b> <small>('+x.nr+')</small></span><span class="uwbar"><i style="width:'+Math.round(x.u*100/maxu)+'%"></i></span><span class="uwc">'+(x.u?'<b class="bad">'+x.u+'</b> '+odm(x.u,"uwaga","uwagi","uwag"):'')+(x.p?' <b class="okc">'+x.p+'</b> '+odm(x.p,"pochwała","pochwały","pochwał"):'')+'</span></summary><ul>'+x.l.map(function(e){var pw=wyPochwala(e);return '<li class="'+(pw?"p":"n")+'"><span class="pill">'+esc(pw?"pochwała":(e.kategoria||"uwaga"))+'</span> '+esc(e.tresc)+(e.naucz?' <em>— '+esc(e.naucz.replace(/\s*\[.*?\]\s*$/,""))+'</em>':'')+'</li>'}).join("")+'</ul></details>'}).join("")+'</div></div>'}
 function wyZgMapa(D){var m={};Object.keys(D.zagrozenia||{}).forEach(function(n){var z=D.zagrozenia[n];z.p.forEach(function(p){(m[p.kod]=m[p.kod]||[]).push({nr:+n,kto:z.kto})})});Object.keys(m).forEach(function(k){m[k].sort(function(a,b){return a.nr-b.nr})});return m}
 function wyZgLista(zc,D){var m=wyZgMapa(D);return '<details class="zgl" open><summary>Kto ma zagrożenie – według przedmiotów</summary><ul>'+zc.map(function(p){var u=m[p.kod]||[];return '<li data-zgk="'+esc(p.kod)+'"><b>'+esc(p.nazwa)+'</b> <span class="zgb">'+u.length+'</span><span class="zgn">'+u.map(function(x){return esc(x.kto)+' <small>('+x.nr+')</small>'}).join(", ")+'</span></li>'}).join("")+'</ul></details>'}
 function wyBox(id,t,sub,h,wide){return '<div class="panel wybox'+(wide?' wide':'')+'"><h3>'+esc(t)+'</h3><p class="note">'+esc(sub)+'</p><div style="position:relative;height:'+h+'px"><canvas id="'+id+'" role="img" aria-label="'+esc(t)+'"></canvas></div></div>'}

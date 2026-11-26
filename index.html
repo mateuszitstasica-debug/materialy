@@ -110,7 +110,8 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .wytabs{margin:6px 0 16px}
 .wyt.pt.ped td,.wyt.pt td.ptc{height:auto;padding:4px 6px}.ptc{text-align:center}.ptin{width:100%;min-width:64px;max-width:130px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:14px;text-align:center;background:#fff}.ptin:focus{outline:2px solid var(--c);border-color:transparent}
 .ptx{width:34px;height:30px;border:2px solid #c8d1dc;border-radius:7px;background:#fff;cursor:pointer;font-weight:800;font-size:16px;color:#fff}.ptx:hover{border-color:var(--c)}.ptx.on{background:var(--c);border-color:var(--c)}.ptv{font-weight:700;font-family:var(--mono)}
-.prsend{border:2px solid color-mix(in srgb,var(--c) 30%,white)}.prkarty{margin:12px 0 16px}.prkarty h3{margin:0 0 8px}.pknew td{background:#fff8f0}
+.prsend{border:2px solid color-mix(in srgb,var(--c) 30%,white)}.pkwait{background:#fff8e6;border:1px solid #f3d78a;border-radius:10px;padding:12px 14px;font-weight:600;color:#7a5600}
+.pkwyn{display:flex;gap:18px;align-items:center;border-radius:14px;padding:14px 18px;margin-bottom:12px}.pkwyn.ok{background:#eaf7ee}.pkwyn.no{background:#fdecea}.pkwyn h3{margin:0 0 4px}.pkbig b{display:block;font-family:var(--mono);font-size:34px}.pkwyn.ok .pkbig b{color:#0a7a1a}.pkwyn.no .pkbig b{color:#b42318}.pkbig span{color:var(--muted);font-size:13px}.pkr{max-width:560px}.pkbr{padding-left:20px;margin:0}.prkarty{margin:12px 0 16px}.prkarty h3{margin:0 0 8px}.pknew td{background:#fff8f0}
 .prkt{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:0 0 12px;background:#fafbfd}.prkt summary{cursor:pointer}
 .pra{display:block;font-size:12.5px;margin-top:2px}.pra.ok{color:#0a7a1a}.pra.zle{color:#b42318}.pra.rec{color:#8a5a00}
 .pwl{display:grid;gap:6px}.pwr{border:1px solid var(--line);border-radius:10px;background:#fff}.pwr summary{display:grid;grid-template-columns:90px minmax(140px,1.4fr) 70px 70px 1.6fr 140px;gap:10px;align-items:center;padding:10px 12px;cursor:pointer;font-size:14px}.pwp{font-weight:700;text-align:right}.pwp.ok{color:#0a7a1a}.pwp.no{color:#b42318}.pwz{color:var(--muted);font-size:12.5px}.pwd{padding:0 14px 12px;font-size:14px}.pwd ul{margin:4px 0 8px;padding-left:20px}
@@ -846,13 +847,14 @@ function praktykaView(id){
     if(curHash()!=="p-"+id) return;
     var z=d.zadania.filter(function(x){return x.id===id})[0];
     if(!z){app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka","praktyka"]])+'<div class="empty">Nie znaleziono zadania.</div>';return}
-    var k=kier(z.kierunek),prog=d.prog||75,K=prKarta(z),ed=(z.tabele||[]).some(function(t){return t.typy});
+    var k=kier(z.kierunek),prog=d.prog||75,K=prKarta(z),ed=(z.tabele||[]).some(function(t){return t.typy}),odd=!!K.id;
     app().innerHTML=crumb([["Egzaminy","egzaminy"],["Praktyka","praktyka"],[z.kwal]])+
      '<div class="prw" style="'+cvar(k)+'"><div class="panel"><span class="pill">'+esc(z.kwal)+' · część praktyczna'+(k?' · '+esc(k.nazwa):'')+'</span><h1>'+esc(z.nazwa)+'</h1><p class="note">'+esc(z.opis||"")+'</p>'+
      '<div class="erules"><div><b>'+esc(z.czas)+'</b>minut</div><div><b>'+z.rezultaty.filter(function(r){return !r.przebieg}).length+'</b>rezultaty</div><div><b>'+prMax(z)+'</b>kryteriów</div><div><b>'+prog+'%</b>próg zdania</div></div>'+
      '<div class="toolbar" style="margin:0"><button class="btn" id="pr-print">🖨 Drukuj arkusz zadania</button>'+(z.pdf?'<a class="btn ghost" href="'+esc(/^https?:/.test(z.pdf)?z.pdf:egzUrl(z.pdf))+'" target="_blank" rel="noopener">📄 '+esc(z.pdfNazwa||"Arkusz PDF")+'</a>':'')+'<button class="btn ghost" id="pr-clk">⏱ Zegar ćwiczenia</button></div></div>'+
-     (z.zrodlo?'<div class="prnote" style="margin:0">'+esc(z.zrodlo)+'</div>':'')+'<div class="panel prtxt" id="pr-txt">'+prTresc(z,false,{edit:ed,ans:K.a})+'</div>'+
-     (ed&&S.config.egzaminUrl?'<div class="panel prsend noprint"><h2 style="margin:0 0 4px">📨 Wyślij kartę odpowiedzi</h2><p class="note" style="margin:0 0 10px">Nauczyciel zobaczy Twoje tabele przy ocenie zadania.</p><div class="row2"><div class="field"><label>Imię i nazwisko</label><input type="text" id="pk-u" maxlength="80" value="'+esc(K.u)+'"></div><div class="field"><label>Klasa</label><input type="text" id="pk-k" maxlength="12" value="'+esc(K.k)+'"></div></div><div class="toolbar" style="margin:0"><button class="btn" id="pk-go">Wyślij kartę</button><button class="btn ghost" id="pk-clr">Wyczyść tabele</button><span class="status" id="pk-st">'+(K.wyslano?'Wysłano '+esc(new Date(K.wyslano).toLocaleString("pl-PL",{dateStyle:"short",timeStyle:"short"}))+'. Możesz poprawić wpisy i wysłać ponownie.':'')+'</span></div></div>':'')+
+     (z.zrodlo?'<div class="prnote" style="margin:0">'+esc(z.zrodlo)+'</div>':'')+'<div class="panel prtxt" id="pr-txt">'+prTresc(z,false,{edit:ed&&!odd,ans:K.a})+'</div>'+
+     (ed&&S.config.egzaminUrl?(odd?'<div class="panel prsend noprint" id="pk-box"><h2 style="margin:0 0 4px">✅ Zadanie oddane do oceny</h2><p class="note" style="margin:0 0 10px"><b>'+esc(K.u)+'</b> '+esc(K.k)+' · oddano '+esc(new Date(K.wyslano).toLocaleString("pl-PL",{dateStyle:"short",timeStyle:"short"}))+'. Tabele są zablokowane. Nauczyciel sprawdzi stanowisko i tabele – wynik całego egzaminu pojawi się tutaj.</p><div id="pk-wyn"><div class="pkwait">⏳ Czekam na ocenę nauczyciela…</div></div><div class="toolbar" style="margin:10px 0 0"><button class="btn ghost sm" id="pk-new">Nowe podejście (wyczyść kartę)</button></div></div>'
+       :'<div class="panel prsend noprint"><h2 style="margin:0 0 4px">📨 Zakończ i oddaj do oceny</h2><p class="note" style="margin:0 0 10px">Po wypełnieniu obu tabel wpisz imię, nazwisko i klasę i oddaj zadanie. Potem nauczyciel sprawdzi stanowisko i tabele, a tutaj zobaczysz wynik całego egzaminu.</p><div class="row2"><div class="field"><label>Imię i nazwisko</label><input type="text" id="pk-u" maxlength="80" value="'+esc(K.u)+'"></div><div class="field"><label>Klasa</label><input type="text" id="pk-k" maxlength="12" value="'+esc(K.k)+'"></div></div><div class="toolbar" style="margin:0"><button class="btn" id="pk-go">Oddaj do oceny</button><button class="btn ghost" id="pk-clr">Wyczyść tabele</button><span class="status" id="pk-st"></span></div></div>'):'')+
      '<details class="panel prgr noprint" id="pr-gr"><summary><b>✅ Ocena zadania — dla nauczyciela</b> <span class="note">— karta oceny według kryteriów, wynik zapisuje się w arkuszu Google</span></summary><div id="pr-go"></div></details></div>';
     $("#pr-print").onclick=function(){prDrukuj(z,prog)};
     $("#pr-clk").onclick=function(){prZegar(z)};
@@ -861,16 +863,26 @@ function praktykaView(id){
       $$("[data-pc]").forEach(function(i){i.oninput=function(){if(i.value.trim())K.a[i.dataset.pc]=i.value.slice(0,24);else delete K.a[i.dataset.pc];save()}});
       $$("[data-px]").forEach(function(b){b.onclick=function(){var k2=b.dataset.px+"-x",was=String(K.a[k2])===b.dataset.col;if(was)delete K.a[k2];else K.a[k2]=+b.dataset.col;save();
         $$('[data-px="'+b.dataset.px+'"]').forEach(function(x){var on=!was&&x===b;x.classList.toggle("on",on);x.textContent=on?"✕":"";x.setAttribute("aria-pressed",on)})}});
+      if($("#pk-new"))$("#pk-new").onclick=function(){var b=this;if(!b.dataset.ok){b.dataset.ok=1;b.textContent="Na pewno? Wpisy znikną z tego komputera";b.classList.add("danger");return}LS.set(prKartaKey(z),{u:K.u,k:K.k,a:{}});praktykaView(id)};
+      if(odd){var poll=function(){if(curHash()!=="p-"+id||!$("#pk-wyn"))return;fetch(S.config.egzaminUrl+"?akcja=praktykaWynik&id="+encodeURIComponent(K.id)).then(function(r){return r.json()}).then(function(r){
+          if(!r.ok||!$("#pk-wyn"))return;if(r.status==="oceniona"&&r.wynik){$("#pk-wyn").innerHTML=prWynikUcznia(r.wynik,prog);$("#pk-box h2").textContent="🏁 Wynik egzaminu";var nt=$("#pk-box p.note");if(nt)nt.innerHTML='<b>'+esc(K.u)+'</b> '+esc(K.k)+' · sprawdzono '+esc(new Date(r.wynik.data||Date.now()).toLocaleString("pl-PL",{dateStyle:"short",timeStyle:"short"}));return}
+          if(r.status==="brak")$("#pk-wyn").innerHTML='<div class="pkwait">Karta nie została znaleziona – mogła zostać usunięta. Kliknij „Nowe podejście”.</div>';else setTimeout(poll,15000)}).catch(function(){setTimeout(poll,30000)})};PR.poll=poll;poll()}
       if($("#pk-u")){["pk-u","pk-k"].forEach(function(i){$("#"+i).oninput=save});
         $("#pk-clr").onclick=function(){var b=this;if(!b.dataset.ok){b.dataset.ok=1;b.textContent="Na pewno wyczyścić?";b.classList.add("danger");return}K.a={};K.wyslano="";save();praktykaView(id)};
         $("#pk-go").onclick=function(){var b=this;save();if((K.u||"").trim().length<3)return setStatus($("#pk-st"),"Wpisz imię i nazwisko.",false);if(!Object.keys(K.a).length)return setStatus($("#pk-st"),"Tabele są puste.",false);
+          if(!b.dataset.ok){b.dataset.ok=1;b.textContent="Na pewno oddać? Potem nie poprawisz tabel";b.classList.add("danger");return}
           b.disabled=true;setStatus($("#pk-st"),"Wysyłanie…");
           fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"praktykaKarta",zid:z.id,uczen:K.u.trim(),klasa:(K.k||"").trim(),dane:{a:K.a}})}).then(function(r){return r.json()}).then(function(r){
-            b.disabled=false;if(!r.ok)throw new Error(/imienia|egzamin/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — powiedz nauczycielowi.":(r.blad||"Błąd"));K.wyslano=new Date().toISOString();save();setStatus($("#pk-st"),"Wysłano ✓ Nauczyciel zobaczy Twoją kartę.",true)}).catch(function(e){b.disabled=false;setStatus($("#pk-st"),e.message||"Nie udało się wysłać.",false)})}}
+            b.disabled=false;if(!r.ok)throw new Error(/imienia|egzamin/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — powiedz nauczycielowi.":(r.blad||"Błąd"));K.wyslano=new Date().toISOString();K.id=r.id;save();praktykaView(id)}).catch(function(e){b.disabled=false;setStatus($("#pk-st"),e.message||"Nie udało się wysłać.",false)})}}
     }
     prOcenaLogin(z,prog);
   });
 }
+function prWynikUcznia(w,prog){var ok=w.wynik==="zdany";
+  return '<div class="pkwyn '+(ok?"ok":"no")+'"><div class="pkbig"><b>'+wyFmt(w.procent,1)+'%</b><span>'+w.punkty+' / '+w.max+' pkt</span></div><div><h3>'+(ok?"Egzamin zdany 🎉":"Egzamin niezdany")+'</h3><p class="note" style="margin:0">Próg zdania: '+prog+'% punktów.</p></div></div>'+
+   '<table class="wyt pkr"><thead><tr><th>Rezultat</th><th>Punkty</th></tr></thead><tbody>'+(w.rez||[]).map(function(r){return '<tr><td><b>'+esc(r.id)+'</b> '+esc(r.nazwa)+'</td><td class="mono">'+r.pkt+' / '+r.max+'</td></tr>'}).join("")+'</tbody></table>'+
+   ((w.rez||[]).some(function(r){return r.brak&&r.brak.length})?'<h3 style="margin:12px 0 4px">Co poprawić</h3><ul class="pkbr">'+(w.rez||[]).map(function(r){return (r.brak||[]).map(function(b){return '<li><b>'+esc(r.id)+'</b> '+esc(b)+'</li>'}).join("")}).join("")+'</ul>':'<p>Wszystkie kryteria spełnione.</p>')+
+   (w.uwagi?'<p><b>Uwagi nauczyciela:</b> '+esc(w.uwagi)+'</p>':'')}
 function prDeszyfruj(z,k){
   PR.full=PR.full||{};if(PR.full[z.id])return Promise.resolve(PR.full[z.id]);
   return fetch(egzUrl("egzaminy/praktyka_klucz.json")+"?t="+Math.floor(Date.now()/60000)).then(function(r){if(!r.ok)throw new Error("Brak pliku z kryteriami.");return r.json()}).then(function(j){var e=j.z&&j.z[z.id];if(!e)throw new Error("Brak kryteriów dla tego zadania.");
@@ -922,6 +934,8 @@ function prOcenaForm(z,prog){
   $$("[data-pkd]").forEach(function(b){b.onclick=function(){if(!b.dataset.ok){b.dataset.ok=1;b.textContent="na pewno?";b.classList.add("danger");return}b.disabled=true;
     fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"praktykaUsun",typ:"karta",haslo:SEC.h,id:b.dataset.pkd})}).then(function(r){return r.json()}).then(function(){prOdswiez(z,prog,true)}).catch(function(){b.disabled=false})}});
   calc();prLista(z,RZ,prog);
+  var moja=prKarta(z).id,mi=-1;KT.forEach(function(c,i){if(c.id===moja&&!/^oceniona/.test(c.status))mi=i});
+  if(mi>=0){var mb=$('[data-pkk="'+mi+'"]');if(mb){mb.click();var kt=$("#pr-kt summary");if(kt)kt.insertAdjacentHTML("afterbegin",'<span class="pill" style="margin-right:6px">karta z tego komputera</span>')}}
   $("#pr-save").onclick=function(){
     var u=$("#pr-u").value.trim();if(u.length<3)return setStatus($("#pr-st"),"Wpisz imię i nazwisko ucznia.",false);
     if(!SEC.h){prOcenaLogin(z,prog);return}
@@ -932,10 +946,11 @@ function prOcenaForm(z,prog){
       b.disabled=false;if(!r.ok)throw new Error(r.blad||"Błąd zapisu");
       var msg="Zapisano: "+u+" — "+wyFmt(r.procent,1)+"%, "+r.wynik+".";
       ["pr-u","pr-uw"].forEach(function(i){$("#"+i).value=""});$$("[data-c]").forEach(function(c){c.checked=false});resetKarta();calc();prOdswiez(z,prog,!!body.karta,msg);setStatus($("#pr-st"),msg,true);
+      if(body.karta&&body.karta===prKarta(z).id){secClear();PR.full={};PR.lista=[];PR.karty=[];prOcenaLogin(z,prog);var gr=$("#pr-gr");if(gr)gr.open=false;if(PR.poll)PR.poll();var bx=$("#pk-box");if(bx)bx.scrollIntoView({behavior:"smooth",block:"center"})}
     }).catch(function(e){b.disabled=false;setStatus($("#pr-st"),e.message||"Nie udało się zapisać.",false)});
   };
 }
-function prOdswiez(z,prog,full,msg){if(!SEC.h)return;prPobierz(z,SEC.h).then(function(){if(full){prOcenaForm(z,prog);if(msg)setStatus($("#pr-st"),msg,true)}else prLista(z,PR.full[z.id].rezultaty,prog)}).catch(function(){})}
+function prOdswiez(z,prog,full,msg){if(!SEC.h)return;prPobierz(z,SEC.h).then(function(){if(!SEC.h){PR.full={};return}if(full){prOcenaForm(z,prog);if(msg)setStatus($("#pr-st"),msg,true)}else prLista(z,PR.full[z.id].rezultaty,prog)}).catch(function(){})}
 function prLista(z,RZ,prog){
   var el=$("#pr-l");if(!el)return;var L=PR.lista||[];
   if(!L.length){el.innerHTML='<p class="note">Brak zapisanych ocen.</p>';return}

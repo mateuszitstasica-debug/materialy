@@ -820,7 +820,7 @@ function praktykaListView(){
   prLoad().then(function(d){var el=$("#plist");if(!el)return;var l=d.zadania;
     if(!l.length){el.innerHTML='<div class="empty">Na razie nie ma zadań praktycznych.</div>';return}
     var ks=[];l.forEach(function(z){if(ks.indexOf(z.kwal)<0)ks.push(z.kwal)});
-    el.innerHTML=ks.map(function(q){var x=l.filter(function(z){return z.kwal===q}),k=kier(x[0].kierunek);return '<p class="sec-label">'+esc(q)+(k?' — '+esc(k.nazwa):'')+'</p><div class="elist">'+x.map(prCard).join("")+'</div>'}).join("")+'<p class="note" style="text-align:center;margin-top:10px"><a href="#praktyka-wyniki">Dla nauczyciela: wyniki części praktycznej →</a></p>';
+    el.innerHTML=ks.map(function(q){var x=l.filter(function(z){return z.kwal===q}),k=kier(x[0].kierunek);return '<p class="sec-label">'+esc(q)+(k?' — '+esc(k.nazwa):'')+'</p><div class="elist" style="grid-template-columns:1fr">'+x.map(prCard).join("")+'</div>'}).join("")+'<p class="note" style="text-align:center;margin-top:10px"><a href="#praktyka-wyniki">Dla nauczyciela: wyniki części praktycznej →</a></p>';
   });
 }
 function prMax(z){return z.rezultaty.reduce(function(s,r){return s+(r.n||(r.kryteria||[]).length)},0)}
@@ -895,8 +895,8 @@ function prOhm(v,u){var s=String(v||"")+" "+String(u||"");if(/∞|inf|\bOL\b|O\.
   var un=String(u||"").trim()||String(v||"").replace(/[0-9.,\s+-]/g,"");if(!/Ω|ohm|om/i.test(un))return null;var m=1;if(/^M/.test(un))m=1e6;else if(/^k/i.test(un))m=1e3;else if(/^m/.test(un))m=1e-3;return n*m}
 function prAuto(rule,A,z){if(!rule)return null;var t=z.tabele[rule.t],ty=t.typy||[],vi=ty.indexOf("txt"),ui=ty.indexOf("sel")>=0?ty.indexOf("sel"):ty.indexOf("txt",vi+1);
   if(rule.chce){var c=A[rule.t+"-"+rule.w[0]+"-x"],lab=c==null?"brak":t.kolumny[c];return {s:lab===rule.chce?"ok":"zle",d:"uczeń: "+lab}}
-  var all="ok",ds=[];rule.w.forEach(function(w){var k=rule.t+"-"+w,v=A[k+"-"+vi]||"",u=ui>=0?A[k+"-"+ui]||"":"",c=A[k+"-x"],lab=c==null?"—":t.kolumny[c],okM=/^poprawny/i.test(lab),R=prOhm(v,u),s;
-    if(rule.typ==="jest")s=v&&u?"rec":"zle";else if(rule.typ==="inf")s=(R===Infinity||R>=1e6)&&okM?"ok":"zle";else s=R!=null&&R!==Infinity&&R>=0&&R<=1&&okM?"ok":"zle";
+  var all="ok",ds=[];rule.w.forEach(function(w){var k=rule.t+"-"+w,v=A[k+"-"+vi]||"",u=ui>=0?A[k+"-"+ui]||"":"",c=A[k+"-x"],lab=c==null?"—":t.kolumny[c],okM=rule.ocena?lab.toLowerCase()===rule.ocena.toLowerCase():/^poprawny/i.test(lab),R=prOhm(v,u),s;
+    if(rule.typ==="jest")s=v&&u&&(!rule.ocena||okM)?"rec":"zle";else if(rule.typ==="inf")s=(R===Infinity||R>=1e6)&&okM?"ok":"zle";else s=R!=null&&R!==Infinity&&R>=0&&R<=1&&okM?"ok":"zle";
     if(s==="zle")all="zle";else if(s==="rec"&&all==="ok")all="rec";ds.push((w+1)+": "+(v||"—")+" "+u+" ("+lab.toLowerCase()+")")});
   return {s:all,d:ds.join(" · ")}}
 function prOcenaForm(z,prog){

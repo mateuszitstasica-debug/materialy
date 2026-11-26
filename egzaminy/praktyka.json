@@ -2,6 +2,307 @@
   "prog": 75,
   "zadania": [
     {
+      "id": "elm03-2026-01-02",
+      "kwal": "ELM.03",
+      "kierunek": "mechatronik",
+      "nazwa": "Egzamin CKE – styczeń 2026 (zadanie 02): dwa siłowniki sterowane sterownikiem PLC",
+      "opis": "Arkusz ELM.03-02-26.01-SG. Siłownik jednostronnego działania 1A1 (V1) i dwustronnego 1A2 (V3), łączniki krańcowe S2, S3, lampki H1, H2, sterownik PLC. Karta oceny według oficjalnych zasad oceniania CKE.",
+      "czas": 180,
+      "pdf": "praktyka/elm03-2026-01-02/arkusz.pdf",
+      "pdfNazwa": "Arkusz egzaminacyjny (PDF)",
+      "zrodlo": "Arkusz egzaminu zawodowego ELM.03-02-26.01-SG (sesja styczeń 2026). Program sterownika PLC przygotowuje nauczyciel na stanowisku.",
+      "rysunki": [
+        {
+          "img": "praktyka/elm03-2026-01-02/rys1.webp",
+          "podpis": "Rysunek 1. Rozmieszczenie elementów układu elektropneumatycznego na płycie montażowej"
+        },
+        {
+          "img": "praktyka/elm03-2026-01-02/rys2.webp",
+          "podpis": "Rysunek 2. Schemat połączeń elektrycznych w układzie elektropneumatycznym"
+        },
+        {
+          "img": "praktyka/elm03-2026-01-02/rys3.webp",
+          "podpis": "Rysunek 3. Schemat połączeń pneumatycznych w układzie elektropneumatycznym"
+        }
+      ],
+      "wstep": "Zmontuj i uruchom układ elektropneumatyczny. Potrzebne elementy wybierz ze sprzętu zgromadzonego na stanowisku i przed zamontowaniem sprawdź, czy są sprawne. Na podstawie dokumentacji technicznej zamontuj elementy, wykonaj połączenia, pomiary kontrolne, ustaw parametry i przetestuj działanie układu.",
+      "stanowisko": [
+        "+24 V, 0 V – złączki przyłączeniowe; PLC – sterownik PLC,",
+        "S1 – przycisk sterowniczy monostabilny NO,",
+        "S2, S3 – łączniki krańcowe z rolką, NO, 24 V DC,",
+        "1A1 – siłownik jednostronnego działania; 1A2 – siłownik dwustronnego działania,",
+        "V1 – elektrozawór 3/2 ze sprężyną zwrotną (cewka Y1); V3 – elektrozawór 5/2 (cewki Y2, Y3); V2 – zawór dławiąco-zwrotny,",
+        "ZPP – zespół przygotowania sprężonego powietrza,",
+        "H1 – lampka sygnalizacyjna zielona, H2 – lampka sygnalizacyjna czerwona."
+      ],
+      "dzialanie": [
+        "obowiązuje logika elektryczna: styk zamknięty przycisku lub aktywny czujnik = 1,",
+        "stan początkowy: tłoczyska 1A1 i 1A2 wsunięte, S2 = 0, S3 = 0, cewki Y1, Y2, Y3 oraz lampki H1, H2 wyłączone,",
+        "naciśnięcie S1 powoduje wysunięcie tłoczyska 1A1 w ciągu 2 s ± 0,5 s,",
+        "po całkowitym wysunięciu 1A1 (S2 = 1) zaczyna się wysuwać tłoczysko 1A2,",
+        "po całkowitym wysunięciu 1A2 (S3 = 1) zapala się lampka H1,",
+        "po 4 s H1 gaśnie, zapala się H2, a tłoczyska 1A1 i 1A2 natychmiast zaczynają się wsuwać; H2 świeci około 5 s,",
+        "ponowne uruchomienie – naciśnięcie S1 po zgaśnięciu H2."
+      ],
+      "polecenia": [
+        "Przed zamocowaniem elementów elektrycznych sprawdź miernikiem ich działanie.",
+        "Zamontuj elementy na płycie zgodnie z rysunkiem 1.",
+        "Wykonaj połączenia elektryczne zgodnie z rysunkiem 2 i pneumatyczne zgodnie z rysunkiem 3.",
+        "Sprawdź poprawność montażu; w razie niezgodności z rysunkami 2 i 3 wprowadź poprawki.",
+        "Wypełnij protokół z wykonania pomiarów kontrolnych – tabela 1.",
+        "Włącz zasilanie elektryczne i sprężone powietrze.",
+        "Wyreguluj ciśnienie robocze na 4 bary.",
+        "Wyreguluj zawór dławiąco-zwrotny tak, aby wysuwanie tłoczyska 1A1 trwało 2 s ± 0,5 s.",
+        "Przeprowadź test działania układu – wypełnij tabelę 2.",
+        "Połączenia z +24 V wykonaj kablem brązowym lub czerwonym, z 0 V – niebieskim, pozostałe – czarnym.",
+        "Przed każdym włączeniem mediów zgłoś gotowość przez podniesienie ręki. Chroń oczy podczas uruchamiania. Po zakończeniu uporządkuj stanowisko i pozostaw media włączone."
+      ],
+      "tabele": [
+        {
+          "tytul": "Tabela 1. Protokół pomiarów kontrolnych – rezystancja elementów (poz. 1–4)",
+          "kolumny": [
+            "Lp.",
+            "Element elektryczny",
+            "Wartość",
+            "Jednostka",
+            "Sprawny",
+            "Uszkodzony"
+          ],
+          "typy": [
+            "",
+            "",
+            "txt",
+            "sel",
+            "x",
+            "x"
+          ],
+          "opcje": {
+            "3": [
+              "mΩ",
+              "Ω",
+              "kΩ",
+              "MΩ",
+              "mV",
+              "V",
+              "mA",
+              "A",
+              "W",
+              "Hz",
+              "F",
+              "H"
+            ]
+          },
+          "wiersze": [
+            [
+              "1.",
+              "S1:3 / S1:4 (niepodłączony przycisk S1 – przed wciśnięciem)",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "S2:3 / S2:4 (niepodłączony łącznik S2 – po przesterowaniu)",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "Y2:A2 / Y2:A1 (niepodłączona cewka Y2)",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "Y3:A2 / Y3:A1 (niepodłączona cewka Y3)",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        },
+        {
+          "tytul": "Tabela 1 (cd.). Rezystancja połączeń (poz. 5–10)",
+          "kolumny": [
+            "Lp.",
+            "Odcinek pomiaru",
+            "Wartość",
+            "Jednostka",
+            "Ciągły",
+            "Przerwa"
+          ],
+          "typy": [
+            "",
+            "",
+            "txt",
+            "sel",
+            "x",
+            "x"
+          ],
+          "opcje": {
+            "3": [
+              "mΩ",
+              "Ω",
+              "kΩ",
+              "MΩ",
+              "mV",
+              "V",
+              "mA",
+              "A",
+              "W",
+              "Hz",
+              "F",
+              "H"
+            ]
+          },
+          "wiersze": [
+            [
+              "5.",
+              "+24 V / S2:4",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "+24 V / S3:3",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "S2:3 / PLC:I0.1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "H1:X1 / PLC:Q0.3",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "9.",
+              "0 V / Y3:A2",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10.",
+              "0 V / Y1:A2",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ]
+        },
+        {
+          "tytul": "Tabela 2. Testowanie działania układu elektropneumatycznego",
+          "kolumny": [
+            "Lp.",
+            "Czynności operatorskie i oczekiwane efekty",
+            "TAK",
+            "NIE"
+          ],
+          "typy": [
+            "",
+            "",
+            "x",
+            "x"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "Wciśnięcie przycisku S1 powoduje wysunięcie tłoczyska siłownika 1A1.",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "Zwolnienie przycisku S1 powoduje natychmiastowe wsunięcie tłoczysk siłowników 1A1 i 1A2.",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "Wysuwanie tłoczyska siłownika 1A1 trwa 2 s ± 0,5 s.",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "Przesterowanie łącznika S3 (S3 = 1) powoduje natychmiastowe rozpoczęcie wsuwania tłoczysk 1A1 i 1A2.",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "Lampka H2 świeci się około 5 s.",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "Całkowite wysunięcie tłoczyska 1A1 powoduje przesterowanie łącznika S2 (S2 = 1).",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "Zawór V1 steruje pracą siłownika 1A1.",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "Zawór V2 steruje pracą siłownika 1A2.",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
+      "rezultaty": [
+        {
+          "id": "R1",
+          "nazwa": "Zmontowany układ elektropneumatyczny",
+          "n": 9
+        },
+        {
+          "id": "R2",
+          "nazwa": "Protokół z wykonania pomiarów kontrolnych – tabela 1",
+          "n": 10
+        },
+        {
+          "id": "R3",
+          "nazwa": "Testowanie działania układu – tabela 2",
+          "n": 8
+        },
+        {
+          "id": "P",
+          "nazwa": "Przebieg prac związanych z montażem i uruchomieniem układu",
+          "n": 6,
+          "przebieg": true
+        }
+      ]
+    },
+    {
       "id": "elm03-2026-01-03",
       "kwal": "ELM.03",
       "kierunek": "mechatronik",
@@ -302,6 +603,244 @@
           "id": "P",
           "nazwa": "Przebieg prac związanych z montażem i uruchomieniem układu",
           "n": 7,
+          "przebieg": true
+        }
+      ]
+    },
+    {
+      "id": "elm03-2026-06-03",
+      "kwal": "ELM.03",
+      "kierunek": "mechatronik",
+      "nazwa": "Egzamin CKE – czerwiec 2026 (zadanie 03): układ elektropneumatyczny z czujnikiem B1 i przekaźnikiem czasowym",
+      "opis": "Arkusz ELM.03-03-26.06. Siłownik dwustronnego działania sterowany pneumatycznie (1V1, zawór AND 1V2), elektrozawór 1V5, czujnik B1, przekaźniki K1 i KT1. Karta oceny według oficjalnych zasad oceniania CKE.",
+      "czas": 180,
+      "pdf": "praktyka/elm03-2026-06-03/arkusz.pdf",
+      "pdfNazwa": "Arkusz egzaminacyjny (PDF)",
+      "zrodlo": "Arkusz egzaminu zawodowego ELM.03, zadanie 03 (sesja czerwiec 2026).",
+      "rysunki": [
+        {
+          "img": "praktyka/elm03-2026-06-03/rys1.webp",
+          "podpis": "Rysunek 1. Rozmieszczenie elementów układu elektropneumatycznego na płycie montażowej"
+        },
+        {
+          "img": "praktyka/elm03-2026-06-03/rys2.webp",
+          "podpis": "Rysunek 2. Schemat połączeń elektrycznych układu elektropneumatycznego"
+        },
+        {
+          "img": "praktyka/elm03-2026-06-03/rys3.webp",
+          "podpis": "Rysunek 3. Schemat połączeń pneumatycznych układu elektropneumatycznego"
+        }
+      ],
+      "wstep": "Zmontuj na płycie montażowej układ elektropneumatyczny zgodnie ze schematami z dokumentacji technicznej. Do montażu wykorzystaj elementy i urządzenia zgromadzone na stanowisku, a przed zamontowaniem elementów stykowych sprawdź, czy są sprawne. Sprawdź poprawność połączeń, przeprowadź pomiary elektryczne i oceń ciągłość połączeń (tabela 1). Podłącz media, przetestuj działanie układu i wypełnij tabelę 2.",
+      "stanowisko": [
+        "ZPP – zespół przygotowania powietrza, 1A1 – siłownik pneumatyczny dwustronnego działania,",
+        "1V1 – zawór rozdzielający 5/2 bistabilny, sterowany pneumatycznie; 1V2 – zawór logiczny AND; 1V3, 1V4 – zawory dławiąco-zwrotne,",
+        "1V5 – elektrozawór 3/2 NC monostabilny ze sprężyną zwrotną (cewka Y1),",
+        "1S1 – zawór 3/2 NC z przyciskiem; 1S2 – zawór krańcowy 3/2 NC z rolką,",
+        "B1 – półprzewodnikowy czujnik położenia tłoka PNP, NO,",
+        "K1 – przekaźnik z gniazdem; KT1 – przekaźnik czasowy (opóźnione załączenie); złączki X1:+24V i X1:0V."
+      ],
+      "dzialanie": [
+        "po włączeniu mediów tłoczysko 1A1 jest wsunięte,",
+        "gdy aktywny jest czujnik B1, przekaźnik KT1 odlicza 6,0 s ± 0,5 s, po czym załącza cewkę Y1 elektrozaworu 1V5 – tłoczysko 1A1 się wysuwa,",
+        "całkowite wysunięcie przesterowuje zawór krańcowy 1S2; tłoczysko pozostaje wysunięte do naciśnięcia przycisku zaworu 1S1, co rozpoczyna wsuwanie,",
+        "po całkowitym wsunięciu (aktywny B1) znów odliczane jest 6,0 s ± 0,5 s i tłoczysko się wysuwa,",
+        "czas wysuwania 3,0 s ± 0,5 s, czas wsuwania 2,0 s ± 0,5 s."
+      ],
+      "polecenia": [
+        "Przed zamontowaniem elementów stykowych sprawdź, czy są sprawne.",
+        "Zmontuj układ zgodnie z rysunkami 1, 2 i 3.",
+        "Sprawdź poprawność połączeń, zmierz rezystancję wskazanych odcinków i oceń ich ciągłość (tabela 1).",
+        "Podłącz zasilanie elektryczne i sprężone powietrze.",
+        "Przetestuj działanie układu i wypełnij tabelę 2.",
+        "Połączenia z X1:+24V wykonaj kablem brązowym lub czerwonym, z X1:0V – niebieskim, pozostałe – czarnym.",
+        "Przed każdym włączeniem mediów zgłoś gotowość przez podniesienie ręki. Chroń oczy podczas uruchamiania. Po zakończeniu uporządkuj stanowisko i pozostaw media włączone."
+      ],
+      "tabele": [
+        {
+          "tytul": "Tabela 1. Protokół pomiarów rezystancji połączeń i ocena ich poprawności",
+          "kolumny": [
+            "Lp.",
+            "Odcinek pomiaru",
+            "Wartość",
+            "Jednostka",
+            "Ciągłe",
+            "Przerwa"
+          ],
+          "typy": [
+            "",
+            "",
+            "txt",
+            "sel",
+            "x",
+            "x"
+          ],
+          "opcje": {
+            "3": [
+              "mΩ",
+              "Ω",
+              "kΩ",
+              "MΩ",
+              "mV",
+              "V",
+              "mA",
+              "A",
+              "W",
+              "Hz",
+              "F",
+              "H"
+            ]
+          },
+          "wiersze": [
+            [
+              "1.",
+              "X1:+24V / K1:14",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "X1:+24V / KT1:18",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "K1:11 / KT1:A1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "KT1:15 / Y1:A1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "K1:A2 / X1:0V",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "KT1:A2 / X1:0V",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "Y1:A2 / X1:0V",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "K1:A2 / KT1:A2",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "9.",
+              "KT1:A2 / Y1:A2",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "stopka": "Pomiary przy odłączonych przewodach od zacisków zasilacza +24V i 0V, wyłączonym ciśnieniu i tłoczysku siłownika 1A1 ustawionym w połowie długości roboczej."
+        },
+        {
+          "tytul": "Tabela 2. Wyniki testowania działania układu elektropneumatycznego",
+          "kolumny": [
+            "Lp.",
+            "Czynności operatorskie i oczekiwane efekty",
+            "TAK",
+            "NIE"
+          ],
+          "typy": [
+            "",
+            "",
+            "x",
+            "x"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "Po upływie 6,0 s ± 0,5 s od aktywacji czujnika B1 tłoczysko siłownika 1A1 wysuwa się.",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "Dezaktywacja czujnika B1 powoduje natychmiastowy powrót tłoczyska 1A1 do pozycji całkowitego wsunięcia.",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "Wsuwanie tłoczyska 1A1 następuje po naciśnięciu przycisku 1S1 przy przesterowanym zaworze krańcowym 1S2.",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "Wsuwanie tłoczyska 1A1 następuje po naciśnięciu przycisku 1S1 przy aktywnym czujniku B1.",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "Czas trwania wysuwania tłoczyska wynosi 3,0 s ± 0,5 s.",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "Czas trwania wsuwania tłoczyska wynosi 2,0 s ± 0,5 s.",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
+      "rezultaty": [
+        {
+          "id": "R1",
+          "nazwa": "Zmontowany układ elektropneumatyczny",
+          "n": 10
+        },
+        {
+          "id": "R2",
+          "nazwa": "Protokół pomiarów rezystancji połączeń i ocena ich poprawności – tabela 1",
+          "n": 9
+        },
+        {
+          "id": "R3",
+          "nazwa": "Wyniki testowania działania układu – tabela 2",
+          "n": 6
+        },
+        {
+          "id": "P",
+          "nazwa": "Przebieg prac związanych z montażem i uruchomieniem układu",
+          "n": 8,
           "przebieg": true
         }
       ]

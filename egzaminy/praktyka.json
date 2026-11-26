@@ -190,7 +190,15 @@
               ""
             ]
           ],
-          "stopka": "Pomiary przy odłączonych przewodach od zacisków zasilacza +24V i 0V, wyłączonym ciśnieniu i tłoczysku 1A1 ustawionym w połowie długości roboczej."
+          "stopka": "Pomiary przy odłączonych przewodach od zacisków zasilacza +24V i 0V, wyłączonym ciśnieniu i tłoczysku 1A1 ustawionym w połowie długości roboczej.",
+          "typy": [
+            "",
+            "",
+            "txt",
+            "txt",
+            "x",
+            "x"
+          ]
         },
         {
           "tytul": "Tabela 2. Analiza działania układu elektropneumatycznego",
@@ -249,6 +257,12 @@
               "",
               ""
             ]
+          ],
+          "typy": [
+            "",
+            "",
+            "x",
+            "x"
           ]
         }
       ],
@@ -256,65 +270,23 @@
         {
           "id": "R1",
           "nazwa": "Zmontowany układ elektropneumatyczny",
-          "kryteria": [
-            "Wszystkie elementy układu rozmieszczone na płycie zgodnie z rysunkiem 1.",
-            "Szyny montażowe stabilnie zamocowane na płycie.",
-            "Kolory kabli zasilających: tylko czerwone lub brązowe do złączek X2:+24V, tylko niebieskie do złączek X2:0V.",
-            "Połączenia między zaciskami elementów a wejściami i wyjściami sterownika wykonane przewodem czarnym.",
-            "S3 wykrywa pozycję wsunięcia tłoczyska 1A1; S4 wykrywa całkowite wysunięcie tłoczyska.",
-            "Długości kabli prawidłowo dobrane – nie są naciągnięte, spod kołnierza tulejek nie widać rdzenia przewodu.",
-            "Wszystkie kable mają założone i zaciśnięte końcówki tulejkowe.",
-            "Wszystkie kable ułożone w korytkach grzebieniowych.",
-            "Korytka grzebieniowe mają założone pokrywy maskujące."
-          ]
+          "n": 9
         },
         {
           "id": "R2",
           "nazwa": "Protokół z wykonania pomiarów kontrolnych – tabela 1",
-          "uwaga": "Za stan faktyczny uznaje się pomiar wykonany przez egzaminatora.",
-          "kryteria": [
-            "Poz. 1–4: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
-            "Poz. 5–6: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
-            "Poz. 7: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
-            "Poz. 8: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
-            "Poz. 9: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
-            "Poz. 10: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
-            "Poz. 11: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
-            "Poz. 12: rezystancja cewki Y1 z jednostką zgodna ze stanem faktycznym.",
-            "Poz. 13: rezystancja cewki Y2 z jednostką zgodna ze stanem faktycznym.",
-            "Poz. 14–15: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”."
-          ]
+          "n": 10
         },
         {
           "id": "R3",
           "nazwa": "Przesłany i uruchomiony program sterownika oraz analiza działania – tabela 2",
-          "uwaga": "Kryteria 3–10 uznaje się tylko, gdy ocena zdającego jest zgodna ze stanem faktycznym (oceną egzaminatora).",
-          "kryteria": [
-            "Program do sterownika PLC uruchomiony i widoczny na ekranie monitora.",
-            "Program przesłany do pamięci sterownika i sterownik w trybie RUN.",
-            "Tabela 2, wiersz 1 – TAK.",
-            "Tabela 2, wiersz 2 – TAK.",
-            "Tabela 2, wiersz 3 – TAK.",
-            "Tabela 2, wiersz 4 – TAK.",
-            "Tabela 2, wiersz 5 – TAK.",
-            "Tabela 2, wiersz 6 – NIE.",
-            "Tabela 2, wiersz 7 – TAK.",
-            "Tabela 2, wiersz 8 – TAK."
-          ]
+          "n": 10
         },
         {
           "id": "P",
           "nazwa": "Przebieg prac związanych z montażem i uruchomieniem układu",
-          "przebieg": true,
-          "kryteria": [
-            "Używał narzędzi zgodnie z przeznaczeniem.",
-            "Przed zamontowaniem na szynie przycisków S1 i S2 sprawdzał miernikiem ich działanie.",
-            "Przed zamontowaniem łączników krańcowych S3 i S4 sprawdzał miernikiem ich działanie.",
-            "Poprawnie zaciskał końcówki tulejkowe na przewodach.",
-            "Zgłaszał przez podniesienie ręki gotowość do włączenia mediów zasilających.",
-            "Po zakończeniu posprzątał stanowisko z resztek przewodów, kabli i końcówek, ułożył narzędzia i przyrządy.",
-            "Podczas uruchamiania układu stosował okulary ochronne."
-          ]
+          "n": 7,
+          "przebieg": true
         }
       ]
     }

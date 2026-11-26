@@ -221,6 +221,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .officebox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .pdfpage{display:block;max-width:100%;height:auto;margin:0 0 16px;background:#fff;box-shadow:0 2px 14px rgba(17,26,46,.14);border-radius:4px}
 .fileicon{width:44px;height:52px;flex:none;border-radius:8px;display:grid;place-items:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#fff;background:var(--c);position:relative}
+.fic2{width:58px;height:62px;border-radius:12px;color:var(--c);background:color-mix(in srgb,var(--c) 11%,white);border:1px solid color-mix(in srgb,var(--c) 22%,white);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.fic2:after{display:none}.fic2 svg{width:32px;height:32px}.fic2 span{font-size:9px;font-weight:700;letter-spacing:.04em;background:var(--c);color:#fff;border-radius:4px;padding:0 4px;line-height:14px}
 .fileicon:after{content:"";position:absolute;right:0;top:0;border-style:solid;border-width:0 12px 12px 0;border-color:transparent var(--paper) rgba(255,255,255,.35) transparent;border-radius:0 8px 0 4px}
 .item .ftop{display:flex;gap:14px;align-items:flex-start}
 /* ADMIN */
@@ -1713,12 +1714,36 @@ function subjCard(p){
   return '<div class="item" style="'+cvar(k)+'"><div class="meta"><span class="pill" style="'+cvar(k)+'">'+esc(k?k.skrot:"")+'</span><span>klasa '+esc(p.klasa)+'</span></div><h3>'+esc(p.nazwa)+'</h3><p>'+esc(p.opis||"")+'</p>'+
     '<div class="counts"><span><b>'+c.teoria+'</b> teoria</span><span><b>'+c.cwiczenia+'</b> ćwiczenia</span></div><a class="btn accent" href="#s-'+p.id+'">Otwórz przedmiot →</a></div>';
 }
+var MATI={
+ plc:'<rect x="6" y="8" width="36" height="32" rx="3"/><path d="M12 8V4M18 8V4M24 8V4M30 8V4M36 8V4M12 40v4M18 40v4M24 40v4M30 40v4M36 40v4"/><rect x="12" y="15" width="24" height="9" rx="1.5"/><circle cx="14" cy="32" r="1.6" fill="currentColor"/><circle cx="20" cy="32" r="1.6" fill="currentColor"/><path d="M27 32h8"/>',
+ grafcet:'<rect x="17" y="3" width="14" height="10" rx="1"/><rect x="19" y="5" width="10" height="6" rx=".5"/><path d="M24 13v6M19 19h10M24 19v5"/><rect x="17" y="24" width="14" height="9" rx="1"/><path d="M31 28.5h7M24 33v5M19 38h10M24 38v6"/><rect x="38" y="25" width="6" height="7"/>',
+ pneu:'<rect x="4" y="16" width="26" height="14" rx="2"/><path d="M12 16v14M12 23h32M8 30v6M26 30v6"/><path d="M36 19l4 4-4 4"/>',
+ hydr:'<path d="M24 5c6 9 11 15 11 21a11 11 0 0 1-22 0c0-6 5-12 11-21z"/><path d="M18 27a6 6 0 0 0 6 6"/>',
+ motor:'<circle cx="22" cy="24" r="14"/><path d="M15 30V18l7 8 7-8v12"/><path d="M36 24h8"/>',
+ czuj:'<path d="M6 20h18v8H6z"/><path d="M24 22h6M24 26h6"/><path d="M34 16a10 10 0 0 1 0 16M38 12a16 16 0 0 1 0 24"/>',
+ rel:'<rect x="10" y="16" width="16" height="16"/><path d="M10 32l16-16M18 8v8M18 32v8M32 12l8-4M32 12v10M40 22v10"/>',
+ elek:'<rect x="9" y="4" width="30" height="40" rx="4"/><rect x="14" y="9" width="20" height="10" rx="1.5"/><circle cx="24" cy="31" r="6"/><path d="M24 31l3-4"/><circle cx="15" cy="40" r="1.5" fill="currentColor"/><circle cx="33" cy="40" r="1.5" fill="currentColor"/>',
+ chip:'<rect x="12" y="12" width="24" height="24" rx="3"/><rect x="18" y="18" width="12" height="12"/><path d="M16 12V6M24 12V6M32 12V6M16 42v-6M24 42v-6M32 42v-6M12 16H6M12 24H6M12 32H6M42 16h-6M42 24h-6M42 32h-6"/>',
+ cyber:'<path d="M24 4l16 6v12c0 10-7 17-16 22C15 39 8 32 8 22V10z"/><rect x="18" y="21" width="12" height="10" rx="1.5"/><path d="M20 21v-3a4 4 0 0 1 8 0v3"/>',
+ term:'<rect x="4" y="8" width="40" height="32" rx="3"/><path d="M4 15h40M11 23l6 5-6 5M21 33h10"/>',
+ reg:'<circle cx="24" cy="24" r="18"/><path d="M24 24l9-7"/><path d="M8 24h4M36 24h4M24 8v4M12.5 12.5l3 3M35.5 12.5l-3 3"/><circle cx="24" cy="24" r="2.5" fill="currentColor"/>',
+ rys:'<path d="M8 40L40 8M8 40l3-10 7 7z"/><path d="M6 8h14M6 8v14M28 40h14M42 40V26"/>',
+ sieci:'<rect x="18" y="4" width="12" height="9" rx="1.5"/><rect x="4" y="34" width="12" height="9" rx="1.5"/><rect x="32" y="34" width="12" height="9" rx="1.5"/><path d="M24 13v10M10 34v-6h28v6M24 23v5"/>',
+ clock:'<circle cx="24" cy="26" r="17"/><path d="M24 15v11l7 5M19 4h10M24 4v5"/>',
+ count:'<rect x="4" y="12" width="40" height="24" rx="3"/><path d="M12 20v8M10 22l2-2M20 20h5v4h-5v4h5M31 20h5v8h-5M31 24h5"/>',
+ lamp:'<circle cx="24" cy="20" r="12"/><path d="M15.5 11.5l17 17M32.5 11.5l-17 17M18 36h12M20 42h8"/>',
+ doc:'<path d="M12 4h17l9 9v31H12z"/><path d="M29 4v9h9M17 22h16M17 28h16M17 34h11"/>'};
+function matIkonaKlucz(m,p){
+  var R=[["grafcet","grafcet"],["opóźni|timer|etap|cykl|\bton\b|\btof\b|czas pod|zegar","clock"],["licznik|zlicz|dozowa","count"],["lamp|oświetl|sygnaliz","lamp"],["silnik|napęd|krokow","motor"],["czujnik|krańców|kontaktron|indukcyjn|poziom wody","czuj"],["przekaźnik|stycznik|stykow|pamięć|bramk|funkcja and|funkcja or|nieparzyst|głosowan","rel"],["pneum|siłownik|zawór|kompresor|manometr|sprężon","pneu"],["hydraul","hydr"],["plc|lad\b|fbd|sterownik|tia portal|s7-","plc"],["arduino|mikrokontroler|mikroprocesor","chip"],["cyber|bezpiecze|zagrożen|ryzyk|\bcia\b|incydent|ochron","cyber"],["ubuntu|linux|terminal","term"],["sieć|sieci|szerokopasm|ethernet|router","sieci"],["regulat|pid|uchyb|automatyk","reg"],["rysun|dokumentacj|schemat","rys"],["multimetr|zasilacz|obwód|obwody|elektr|zabezpiecz|bhp","elek"]];
+  var T=[m.tytul||"",m.opis||"",p?p.nazwa:""];
+  for(var j=0;j<T.length;j++){var t=T[j].toLowerCase();for(var i=0;i<R.length;i++)if(new RegExp(R[i][0]).test(t))return R[i][1]}return "doc"}
+function matIkona(m,p){return '<div class="fileicon fic2" title="'+esc(fileExt(m.plik))+'"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'+MATI[matIkonaKlucz(m,p)]+'</svg><span>'+esc(fileExt(m.plik))+'</span></div>'}
 function matCard(m,showSubj){
   var p=przedmiot(m.przedmiot),k=p&&kier(p.kierunek);
   var meta='<span class="pill" style="'+cvar(k)+'">'+DZIALY[dzialOf(m)]+'</span>'+(m.plik?'':'<span>'+TYPY[m.typ]+'</span>');
   if(showSubj&&p) meta+='<span>'+esc(p.nazwa)+' · kl. '+esc(p.klasa)+'</span>';
   if(m.plik){meta+='<span>'+esc(fileExt(m.plik))+' · '+fmtSize(m.plik.rozmiar)+'</span>';
-    return '<div class="item" style="'+cvar(k)+'"><div class="ftop"><div class="fileicon">'+esc(fileExt(m.plik))+'</div><div style="flex:1"><div class="meta">'+meta+'</div><h3 style="margin-top:6px">'+esc(m.tytul)+'</h3></div></div><p>'+esc(m.opis||"")+'</p><div class="toolbar" style="margin:0"><a class="btn accent" href="#m-'+m.id+'">Otwórz →</a><a class="btn ghost" href="'+esc(fileUrl(m.plik))+'" download="'+esc(m.plik.nazwa)+'" target="_blank" rel="noopener">⬇ Pobierz</a></div></div>';}
+    return '<div class="item" style="'+cvar(k)+'"><div class="ftop">'+matIkona(m,p)+'<div style="flex:1"><div class="meta">'+meta+'</div><h3 style="margin-top:6px">'+esc(m.tytul)+'</h3></div></div><p>'+esc(m.opis||"")+'</p><div class="toolbar" style="margin:0"><a class="btn accent" href="#m-'+m.id+'">Otwórz →</a><a class="btn ghost" href="'+esc(fileUrl(m.plik))+'" download="'+esc(m.plik.nazwa)+'" target="_blank" rel="noopener">⬇ Pobierz</a></div></div>';}
   if(m.typ==="prezentacja") meta+='<span>'+((m.slajdy||[]).length)+' slajdów</span>';
   if(m.typ==="test") meta+='<span>'+((m.pytania||[]).length)+' pytań · '+(m.czas||0)+' min</span>';
   if(m.typ==="zadanie"&&m.czas) meta+='<span>'+m.czas+' min</span>';

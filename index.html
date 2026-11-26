@@ -107,6 +107,19 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .prsum{display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;padding:12px 0;border-top:1px solid var(--line)}.prtot b{font-family:var(--mono);font-size:24px;margin-right:8px}.prtot b.ok{color:#0a7a1a}.prtot b.no{color:#b42318}.prtot span{color:var(--muted)}
 .prlist{margin-top:18px}.prlist h3{margin:0 0 8px}.wyt td.okc{color:#0a7a1a}
 .przeg{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;gap:8px;align-items:center;background:#0d1830;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3)}.przt{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);min-width:120px;text-align:center}.przt.warn{color:#ff6b5a}
+.wytabs{margin:6px 0 16px}
+.wyls .wylsh,.wyl1 .wylsh{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.wylsh h2{margin:0 0 4px}
+.wlf{border:1px solid var(--line);border-radius:12px;padding:14px;margin:12px 0;background:#fafbfd}.wlf textarea{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;resize:vertical}
+.wlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:14px}
+.wlc{display:flex;flex-direction:column;gap:6px;text-align:left;background:#fff;border:1px solid var(--line);border-left:4px solid #19829a;border-radius:12px;padding:12px 14px;cursor:pointer;font:inherit;transition:box-shadow .15s,transform .15s}.wlc:hover{box-shadow:var(--sh);transform:translateY(-1px)}.wlc b{font-size:16px}
+.wlbar{height:7px;background:#e8eef4;border-radius:9px;overflow:hidden}.wlbar i{display:block;height:100%;background:#19829a;border-radius:9px}.wlst{font-size:13px;color:var(--muted)}.wlst em{font-style:normal;color:#a3301f;font-weight:600}.wlst em.ok{color:#0a7a1a}
+.wlt th.wlk{text-align:center;min-width:90px;position:relative;cursor:default}.wlt th.wlk span{display:block}.wlt th.wlk small{display:block;font-family:var(--mono);color:#a3301f;font-weight:700}.wlt th.wlk small.ok{color:#0a7a1a}
+.wlx{position:absolute;top:2px;right:2px;border:0;background:none;color:#999;cursor:pointer;font-size:11px;padding:1px 4px;border-radius:5px;display:none}.wlt th.wlk:hover .wlx{display:block}.wlx.on{display:block;color:#fff;background:#c2462f}
+.wlcell{text-align:center}.wlb{width:32px;height:32px;border:2px solid #c8d1dc;border-radius:8px;background:#fff;cursor:pointer;font-weight:800;color:#fff;font-size:17px;line-height:1}.wlb:hover{border-color:#19829a}.wlb.on{background:#19829a;border-color:#19829a}
+.wlt tr.wlok td{background:#f2faf4}.wlokb{color:#0a7a1a;font-weight:800}.wlu{width:100%;min-width:140px;border:1px solid transparent;border-radius:6px;padding:4px 6px;font:inherit;font-size:13px;background:transparent}.wlu:hover,.wlu:focus{border-color:var(--line);background:#fff}
+.wlask{display:inline-flex;gap:6px}.wlask input{padding:5px 8px;border:1px solid var(--line);border-radius:8px;font:inherit;font-size:13px}
+label.ck{display:inline-flex;gap:6px;align-items:center;font-size:14px}.kact{white-space:nowrap;display:flex;gap:6px}
+@media print{.wyl1 .wlb{border-color:#333}.wlu{border:0}}
 .tabs{display:inline-flex;gap:4px;background:#fff;border:1px solid var(--line);padding:5px;border-radius:12px;margin-bottom:20px;box-shadow:var(--sh)}
 .tabs button{background:none;border:0;padding:9px 20px;font-weight:600;color:var(--muted);border-radius:9px;transition:background .15s,color .15s}
 .tabs button:hover{color:var(--ink)}
@@ -830,7 +843,7 @@ function praktykaView(id){
 function prOcenaLogin(z,prog){
   var box=$("#pr-go");if(!box)return;
   if(!S.config.egzaminUrl){box.innerHTML='<div class="empty">Moduł nie jest połączony z arkuszem Google.</div>';return}
-  if(SEC.h){prOcenaForm(z,prog);return}
+  if(SEC.h&&!SEC.l){prOcenaForm(z,prog);return}
   box.innerHTML='<div class="toolbar wtool" style="margin:10px 0 0"><input type="password" id="pr-h" placeholder="Hasło nauczyciela" autocomplete="off" value="" style="max-width:240px"><button class="btn" id="pr-hgo">Otwórz kartę oceny</button><span class="status" id="pr-hst"></span></div>';
   var go=$("#pr-hgo");
   go.onclick=function(){var h=$("#pr-h").value;if(!h)return setStatus($("#pr-hst"),"Wpisz hasło.",false);$("#pr-h").value="";setStatus($("#pr-hst"),"Sprawdzam…");
@@ -1165,6 +1178,99 @@ function wyParse(wb){
   return out;
 }
 function wyMerge(a,b){var o=JSON.parse(JSON.stringify(a||{}));["oceny","frekwencja","zagrozenia","uwagi"].forEach(function(k){if(b[k]!==undefined)o[k]=b[k]});o.meta=Object.assign({},o.meta||{},b.meta||{});o.wczytano=new Date().toISOString();return o}
+/* --- panel wychowawcy: zakładki, checklisty, konta --- */
+function wyApi(body){body.login=SEC.l||"";body.haslo=SEC.h;return fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)}).then(function(r){return r.json()}).then(function(r){if(!r.ok)throw new Error(r.blad||"Błąd");return r})}
+function wyTabs(){var K=WY.konto||{},t=WY.tab||"analiza",it=[["analiza","📊 Analiza klasy"],["listy","✅ Checklisty ("+(WY.listy||[]).length+")"],["konta",K.admin?"👥 Konta wychowawców":"👤 Moje konto"]];
+  return '<div class="tabs wytabs noprint" style="--c:#19829a">'+it.map(function(x){return '<button data-wyt="'+x[0]+'" class="'+(t===x[0]?"on":"")+'">'+x[1]+'</button>'}).join("")+'</div>'}
+function wyRender(){
+  WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];
+  var out=$("#wy-out");if(!out)return;
+  out.innerHTML=wyTabs()+'<div id="wy-main"></div>';
+  $$("[data-wyt]").forEach(function(b){b.onclick=function(){WY.tab=b.dataset.wyt;wyRender()}});
+  var t=WY.tab||"analiza";if(t==="listy")return wyListy();if(t==="konta")return wyKonta();wyAnaliza();
+}
+function wyUczniowie(){if(!WY.dane)return [];return wyStats(WY.dane).uczniowie.map(function(u){return {nr:u.nr,kto:u.kto}})}
+function wyId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function wyListy(){
+  var m=$("#wy-main"),L=WY.listy||[],cur=L.filter(function(x){return x.id===WY.lista})[0];
+  if(cur) return wyListaView(cur);
+  var prog=function(l){var n=l.uczniowie.length*l.kolumny.length,z=0;l.uczniowie.forEach(function(u){l.kolumny.forEach(function(c){if(l.z[u.nr+":"+c.id])z++})});return {z:z,n:n}};
+  m.innerHTML='<div class="panel wyls"><div class="wylsh"><div><h2>Checklisty</h2><p class="note">Listy typu „kto oddał zgodę”, „kto wpłacił”, „kto przyniósł dokument”. Zapisują się w Twoim arkuszu Google i są widoczne tylko na Twoim koncie.</p></div><button class="btn" id="wl-new">+ Nowa lista</button></div>'+
+   '<div id="wl-form"></div>'+
+   (L.length?'<div class="wlgrid">'+L.slice().sort(function(a,b){return (b.utworzono||"").localeCompare(a.utworzono||"")}).map(function(l){var p=prog(l),pc=p.n?Math.round(p.z*100/p.n):0,brak=l.uczniowie.filter(function(u){return l.kolumny.some(function(c){return !l.z[u.nr+":"+c.id]})}).length;
+     return '<button class="wlc" data-wl="'+esc(l.id)+'"><b>'+esc(l.nazwa)+'</b><span class="note">'+l.kolumny.length+' '+odm(l.kolumny.length,"punkt","punkty","punktów")+' · '+l.uczniowie.length+' '+odm(l.uczniowie.length,"uczeń","uczniów","uczniów")+(l.termin?' · termin '+esc(new Date(l.termin).toLocaleDateString("pl-PL")):'')+'</span><span class="wlbar"><i style="width:'+pc+'%"></i></span><span class="wlst">'+(brak?'<em>brakuje u '+brak+'</em>':'<em class="ok">komplet ✓</em>')+' · '+pc+'%</span></button>'}).join("")+'</div>':'<div class="empty">Nie masz jeszcze żadnej listy. Kliknij „+ Nowa lista”.</div>')+'</div>';
+  $$("[data-wl]").forEach(function(b){b.onclick=function(){WY.lista=b.dataset.wl;wyListy();window.scrollTo(0,$("#wy-out").offsetTop-10)}});
+  $("#wl-new").onclick=function(){
+    var U=wyUczniowie();
+    $("#wl-form").innerHTML='<div class="form wlf"><div class="row2"><div class="field"><label>Nazwa listy</label><input type="text" id="wl-n" maxlength="80" placeholder="np. Wycieczka do Krakowa – maj"></div><div class="field"><label>Termin (nieobowiązkowy)</label><input type="date" id="wl-t"></div></div>'+
+     '<div class="field"><label>Punkty do odhaczenia – każdy w nowej linii</label><textarea id="wl-k" rows="3" placeholder="Zgoda rodziców&#10;Wpłata 120 zł&#10;Legitymacja"></textarea></div>'+
+     '<div class="field"><label>Uczniowie</label>'+(U.length?'<p class="note" style="margin:0 0 6px">Lista zostanie utworzona dla '+U.length+' uczniów z wczytanego dziennika. Możesz też wpisać własną listę poniżej (np. dla części klasy) – każdy uczeń w nowej linii.</p>':'<p class="note" style="margin:0 0 6px">Brak danych z dziennika – wpisz uczniów, każdego w nowej linii.</p>')+'<textarea id="wl-u" rows="'+(U.length?2:6)+'" placeholder="'+(U.length?'zostaw puste = cała klasa z dziennika':'Jan Kowalski&#10;Anna Nowak')+'"></textarea></div>'+
+     '<div class="toolbar" style="margin:0"><button class="btn" id="wl-ok">Utwórz listę</button><button class="btn ghost" id="wl-no">Anuluj</button><span class="status" id="wl-st"></span></div></div>';
+    $("#wl-no").onclick=function(){$("#wl-form").innerHTML=""};
+    $("#wl-ok").onclick=function(){
+      var n=$("#wl-n").value.trim(),ks=$("#wl-k").value.split("\n").map(function(x){return x.trim()}).filter(Boolean).slice(0,20),ut=$("#wl-u").value.split("\n").map(function(x){return x.trim()}).filter(Boolean).slice(0,60);
+      if(!n)return setStatus($("#wl-st"),"Wpisz nazwę listy.",false);if(!ks.length)return setStatus($("#wl-st"),"Dodaj co najmniej jeden punkt.",false);
+      var us=ut.length?ut.map(function(x,i){return {nr:i+1,kto:x.slice(0,80)}}):U;if(!us.length)return setStatus($("#wl-st"),"Dodaj uczniów.",false);
+      var l={id:wyId(),nazwa:n.slice(0,80),termin:$("#wl-t").value||"",utworzono:new Date().toISOString(),kolumny:ks.map(function(k){return {id:wyId().slice(-6),n:k.slice(0,60)}}),uczniowie:us,z:{},uw:{}};
+      WY.listy=(WY.listy||[]).concat([l]);WY.lista=l.id;wyListaZapisz(l,true);wyRender();
+    };
+    $("#wl-n").focus();
+  };
+}
+function wyListaZapisz(l,now){
+  clearTimeout(WY.lzt);var st=function(t,ok){var e=$("#wl-save");if(e)setStatus(e,t,ok)};st("Zapisywanie…");
+  var go=function(){l.zmieniono=new Date().toISOString();wyApi({akcja:"zapiszListe",lista:l}).then(function(){st("Zapisano ✓",true)}).catch(function(e){st("Nie zapisano: "+e.message,false)})};
+  if(now)go();else WY.lzt=setTimeout(go,700);
+}
+function wyListaView(l){
+  var m=$("#wy-main"),f=WY.lfiltr||"",K=l.kolumny;
+  var cnt=function(c){return l.uczniowie.filter(function(u){return l.z[u.nr+":"+c.id]}).length};
+  var full=function(u){return K.every(function(c){return l.z[u.nr+":"+c.id]})};
+  var U=l.uczniowie.filter(function(u){return f!=="brak"||!full(u)});
+  m.innerHTML='<div class="panel wyl1"><div class="wylsh"><div><a href="#wychowawca" id="wl-back" class="note">← wszystkie listy</a><h2 style="margin:4px 0 2px">'+esc(l.nazwa)+'</h2><p class="note" style="margin:0">'+(l.termin?'Termin: <b>'+esc(new Date(l.termin).toLocaleDateString("pl-PL"))+'</b> · ':'')+'kliknij kratkę, aby odhaczyć · zmiany zapisują się same</p></div><span class="status" id="wl-save"></span></div>'+
+   '<div class="toolbar noprint" style="margin:10px 0"><label class="ck"><input type="checkbox" id="wl-f" '+(f==="brak"?"checked":"")+'> pokaż tylko uczniów z brakami</label><button class="btn ghost sm" id="wl-ak">+ punkt</button><button class="btn ghost sm" id="wl-au">+ uczeń</button><button class="btn ghost sm" id="wl-pr">🖨 Drukuj</button><button class="btn ghost sm" id="wl-ren">Zmień nazwę</button><button class="btn ghost sm" id="wl-del">Usuń listę</button></div>'+
+   '<div class="wytw"><table class="wyt wlt"><thead><tr><th>Nr</th><th>Uczeń</th>'+K.map(function(c){var n=cnt(c);return '<th class="wlk"><span>'+esc(c.n)+'</span><small class="'+(n===l.uczniowie.length?"ok":"")+'">'+n+' / '+l.uczniowie.length+'</small><button class="wlx noprint" data-dk="'+c.id+'" title="Usuń punkt">✕</button></th>'}).join("")+'<th>Uwagi</th></tr></thead><tbody>'+
+   U.map(function(u){var ok=full(u);return '<tr class="'+(ok?"wlok":"")+'"><td>'+u.nr+'</td><td><b>'+esc(u.kto)+'</b>'+(ok?' <span class="wlokb">✓</span>':'')+'</td>'+K.map(function(c){var k=u.nr+":"+c.id,v=l.z[k];return '<td class="wlcell"><button class="wlb'+(v?" on":"")+'" data-z="'+k+'" aria-pressed="'+(v?"true":"false")+'" title="'+(v?"odhaczone "+esc(new Date(v).toLocaleDateString("pl-PL")):"brak")+'">'+(v?"✓":"")+'</button></td>'}).join("")+'<td><input class="wlu" data-uw="'+u.nr+'" maxlength="120" value="'+esc((l.uw||{})[u.nr]||"")+'"></td></tr>'}).join("")+
+   (U.length?'':'<tr><td colspan="'+(K.length+3)+'" class="note">Wszyscy uczniowie mają komplet. 🎉</td></tr>')+'</tbody></table></div></div>';
+  $("#wl-back").onclick=function(e){e.preventDefault();WY.lista=null;wyListy()};
+  $("#wl-f").onchange=function(){WY.lfiltr=this.checked?"brak":"";wyListaView(l)};
+  $$("[data-z]").forEach(function(b){b.onclick=function(){var k=b.dataset.z;if(l.z[k])delete l.z[k];else l.z[k]=new Date().toISOString().slice(0,10);wyListaZapisz(l);wyListaView(l);var nb=$('[data-z="'+k+'"]');if(nb)nb.focus()}});
+  $$("[data-uw]").forEach(function(i){i.oninput=function(){l.uw=l.uw||{};if(i.value.trim())l.uw[i.dataset.uw]=i.value.slice(0,120);else delete l.uw[i.dataset.uw];wyListaZapisz(l)}});
+  $$("[data-dk]").forEach(function(b){b.onclick=function(){if(!b.dataset.ok){b.dataset.ok=1;b.textContent="usuń?";b.classList.add("on");return}l.kolumny=l.kolumny.filter(function(c){return c.id!==b.dataset.dk});Object.keys(l.z).forEach(function(k){if(k.split(":")[1]===b.dataset.dk)delete l.z[k]});wyListaZapisz(l,true);wyListaView(l)}});
+  var ask=function(btn,ph,cb){var t=document.createElement("span");t.className="wlask";t.innerHTML='<input maxlength="80" placeholder="'+ph+'"><button class="btn sm">OK</button>';btn.replaceWith(t);var i=t.querySelector("input");i.focus();var ok=function(){var v=i.value.trim();if(v)cb(v);else wyListaView(l)};t.querySelector("button").onclick=ok;i.onkeydown=function(e){if(e.key==="Enter")ok();if(e.key==="Escape")wyListaView(l)}};
+  $("#wl-ak").onclick=function(){ask(this,"nazwa punktu, np. Zgoda",function(v){if(l.kolumny.length>=20)return;l.kolumny.push({id:wyId().slice(-6),n:v});wyListaZapisz(l,true);wyListaView(l)})};
+  $("#wl-au").onclick=function(){ask(this,"imię i nazwisko",function(v){var nr=l.uczniowie.reduce(function(m,u){return Math.max(m,u.nr)},0)+1;l.uczniowie.push({nr:nr,kto:v});wyListaZapisz(l,true);wyListaView(l)})};
+  $("#wl-ren").onclick=function(){var b=this;ask(b,l.nazwa,function(v){l.nazwa=v;wyListaZapisz(l,true);wyListaView(l)})};
+  $("#wl-del").onclick=function(){var b=this;if(!b.dataset.ok){b.dataset.ok=1;b.textContent="Na pewno usunąć?";b.classList.add("danger");return}
+    wyApi({akcja:"usunListe",id:l.id}).then(function(){WY.listy=WY.listy.filter(function(x){return x.id!==l.id});WY.lista=null;wyRender()}).catch(function(e){setStatus($("#wl-save"),e.message,false)})};
+  $("#wl-pr").onclick=function(){window.print()};
+}
+function wyKonta(){
+  var m=$("#wy-main"),K=WY.konto||{};
+  if(!K.admin){
+    m.innerHTML='<div class="panel"><h2>Moje konto</h2><p>Zalogowano jako <b>'+esc(K.nazwa)+'</b> (login: <code>'+esc(K.login)+'</code>). Twoje dane klasy i checklisty widzisz tylko Ty i administrator arkusza.</p><h3>Zmiana hasła</h3><div class="toolbar"><input type="password" id="kh-n" placeholder="nowe hasło (min. 10 znaków)" autocomplete="new-password" style="max-width:260px"><input type="password" id="kh-n2" placeholder="powtórz hasło" autocomplete="new-password" style="max-width:200px"><button class="btn" id="kh-go">Zmień hasło</button><span class="status" id="kh-st"></span></div></div>';
+    $("#kh-go").onclick=function(){var a=$("#kh-n").value,b=$("#kh-n2").value;if(a.length<10)return setStatus($("#kh-st"),"Hasło musi mieć co najmniej 10 znaków.",false);if(a!==b)return setStatus($("#kh-st"),"Hasła się różnią.",false);
+      wyApi({akcja:"konto",co:"mojeHaslo",nowe:a}).then(function(){SEC.h=a;$("#kh-n").value=$("#kh-n2").value="";setStatus($("#kh-st"),"Hasło zmienione.",true)}).catch(function(e){setStatus($("#kh-st"),e.message,false)})};
+    return;
+  }
+  var L=WY.konta||[];
+  m.innerHTML='<div class="panel"><h2>Konta wychowawców</h2><p class="note">Każdy wychowawca loguje się w tym panelu swoim loginem i hasłem. Widzi tylko swoją klasę (wgrane zestawienia, wykresy, kartki dla rodziców) i swoje checklisty. Nie ma dostępu do wyników egzaminów ani do innych kont. Ty logujesz się jak dotąd – samym hasłem, bez loginu.</p>'+
+   '<div class="form kform"><div class="row2"><div class="field"><label>Imię i nazwisko / klasa</label><input type="text" id="kn-n" maxlength="80" placeholder="np. Anna Kowalska – 2TM"></div><div class="field"><label>Login</label><input type="text" id="kn-l" maxlength="30" placeholder="np. akowalska" autocapitalize="off"></div></div>'+
+   '<div class="field"><label>Hasło startowe (min. 10 znaków) – przekaż je wychowawcy, może je potem zmienić</label><div class="toolbar" style="margin:0"><input type="text" id="kn-h" maxlength="60" style="max-width:280px;font-family:var(--mono)" autocomplete="off"><button class="btn ghost sm" id="kn-gen" type="button">Wygeneruj</button></div></div>'+
+   '<div class="toolbar" style="margin:0"><button class="btn" id="kn-go">Utwórz konto</button><span class="status" id="kn-st"></span></div></div>'+
+   (L.length?'<div class="wytw" style="margin-top:16px"><table class="wyt"><thead><tr><th>Wychowawca</th><th>Login</th><th>Utworzono</th><th></th></tr></thead><tbody>'+L.map(function(k){return '<tr><td><b>'+esc(k.nazwa)+'</b></td><td><code>'+esc(k.login)+'</code></td><td>'+esc(k.utworzono?new Date(k.utworzono).toLocaleDateString("pl-PL"):"")+'</td><td class="kact"><button class="btn ghost sm" data-kh="'+esc(k.login)+'">Nowe hasło</button><button class="btn ghost sm" data-kd="'+esc(k.login)+'">Usuń</button></td></tr>'}).join("")+'</tbody></table></div>':'<p class="note" style="margin-top:14px">Nie ma jeszcze kont wychowawców.</p>')+'</div>';
+  var gen=function(){var a="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",r=new Uint32Array(14),s="";crypto.getRandomValues(r);for(var i=0;i<14;i++)s+=a[r[i]%a.length];return s.slice(0,5)+"-"+s.slice(5,10)+"-"+s.slice(10)};
+  $("#kn-gen").onclick=function(){$("#kn-h").value=gen()};$("#kn-h").value=gen();
+  $("#kn-n").oninput=function(){var l=$("#kn-l");if(l.dataset.t)return;var p=this.value.split(/[–-]/)[0].trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ł/g,"l").split(/\s+/).filter(Boolean);l.value=p.length>1?(p[0][0]+p[p.length-1]).replace(/[^a-z0-9._-]/g,""):(p[0]||"").replace(/[^a-z0-9._-]/g,"")};
+  $("#kn-l").oninput=function(){this.dataset.t=1};
+  $("#kn-go").onclick=function(){var b=this,l=$("#kn-l").value.trim().toLowerCase(),h=$("#kn-h").value;
+    if(!/^[a-z0-9._-]{3,30}$/.test(l))return setStatus($("#kn-st"),"Login: 3–30 znaków (małe litery, cyfry, kropka, myślnik).",false);if(h.length<10)return setStatus($("#kn-st"),"Hasło musi mieć co najmniej 10 znaków.",false);
+    b.disabled=true;wyApi({akcja:"konto",co:"dodaj",cel:l,nazwa:$("#kn-n").value.trim(),nowe:h}).then(function(r){WY.konta=r.konta;wyKonta();setStatus($("#kn-st"),"Utworzono konto „"+l+"”. Hasło: "+h+" – przekaż je wychowawcy.",true)}).catch(function(e){b.disabled=false;setStatus($("#kn-st"),e.message,false)})};
+  $$("[data-kd]").forEach(function(b){b.onclick=function(){if(!b.dataset.ok){b.dataset.ok=1;b.textContent="Usunąć z danymi?";b.classList.add("danger");return}
+    b.disabled=true;wyApi({akcja:"konto",co:"usun",cel:b.dataset.kd}).then(function(r){WY.konta=r.konta;wyKonta()}).catch(function(e){alertSt(e)})}});
+  $$("[data-kh]").forEach(function(b){b.onclick=function(){var h=gen();b.disabled=true;wyApi({akcja:"konto",co:"haslo",cel:b.dataset.kh,nowe:h}).then(function(){wyKonta();setStatus($("#kn-st"),"Nowe hasło dla „"+b.dataset.kh+"”: "+h+" – przekaż je wychowawcy.",true)}).catch(function(e){b.disabled=false;alertSt(e)})}});
+  function alertSt(e){setStatus($("#kn-st"),e.message,false)}
+}
 /* --- panel wychowawcy: widok --- */
 var WY={dane:null,zapisano:"",rodzice:false,charts:[],sort:"nr"};
 var WY_C={blue:"#2b66ae",orange:"#f47230",aqua:"#19a7b8",yellow:"#f2a600",crit:"#dc3c3d",warn:"#fbb315",good:"#0aac23",ink:"#191919",ink2:"#666666",grid:"#ececec"};
@@ -1205,25 +1311,28 @@ function wychowawcaView(){
   hero(false);
   secClear();
   app().innerHTML='<div class="zspm">'+crumb([["Panel wychowawcy"]])+'<div class="zsband"><div class="zslogo"><img src="'+egzUrl("assets/zspm-logo.webp")+'" alt="Logo ZSPM Katowice im. Armii Krajowej"></div><div class="zstxt"><div class="zsschool">Zespół Szkół Poligraficzno-Mechanicznych<br>im. Armii Krajowej w Katowicach</div><h1>Panel wychowawcy</h1><p id="wy-sub">Analiza klasy na podstawie zestawień z dziennika. Strona tylko dla wychowawcy.</p></div></div>'+
-   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="password" id="wy-h" placeholder="Hasło" autocomplete="off" value="" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div>'+secBar("wy-sec","Panel otwarty").replace('class="secbar','style="display:none" class="secbar')+'<div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>')+'<div class="zsfoot">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · wychowawca: Mateusz Stasica</div></div>';
+   (S.config.egzaminUrl?'<div class="toolbar wtool noprint"><input type="text" id="wy-l" placeholder="Login (konto główne: puste)" autocomplete="username" autocapitalize="off" maxlength="30" style="max-width:220px"><input type="password" id="wy-h" placeholder="Hasło" autocomplete="off" value="" style="max-width:240px"><button class="btn" id="wy-go">Otwórz panel</button><span class="status" id="wy-st"></span></div>'+secBar("wy-sec","Panel otwarty").replace('class="secbar','style="display:none" class="secbar')+'<div id="wy-out"></div>':'<div class="empty">Panel nie jest połączony z arkuszem Google.</div>')+'<div class="zsfoot">Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · wychowawca: Mateusz Stasica</div></div>';
   var go=$("#wy-go");if(!go)return;
   go.onclick=function(){
-    var h=$("#wy-h").value;if(!h)return setStatus($("#wy-st"),"Wpisz hasło.",false);
+    var h=$("#wy-h").value,lg=$("#wy-l").value.trim().toLowerCase();if(!h)return setStatus($("#wy-st"),"Wpisz hasło.",false);
     $("#wy-h").value="";setStatus($("#wy-st"),"Wczytywanie…");
-    Promise.all([wyLibs(false),fetch(S.config.egzaminUrl+"?akcja=klasa&haslo="+encodeURIComponent(h)).then(function(r){return r.json()})]).then(function(x){var r=x[1];
+    Promise.all([wyLibs(false),fetch(S.config.egzaminUrl+"?akcja=klasa&login="+encodeURIComponent(lg)+"&haslo="+encodeURIComponent(h)).then(function(r){return r.json()})]).then(function(x){var r=x[1];
       if(!r.ok) throw new Error(/egzamin/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd"));
       if(r.dane===undefined&&r.info) throw new Error("Skrypt Google jest w starej wersji — zaktualizuj go.");
-      secSet(h,wyLock);WY.dane=r.dane;WY.zapisano=r.zapisano||"";setStatus($("#wy-st"),"",true);
-      $(".wtool").style.display="none";var sb=$("#wy-sec");if(sb){sb.style.display="";sb.querySelector("button").onclick=wyLock}wyRender();
+      if(!r.konto) throw new Error(lg?"Skrypt Google jest w starej wersji — konta wychowawców wymagają wersji 8.":"Skrypt Google jest w starej wersji — zaktualizuj go do wersji 8.");
+      secSet(h,wyLock);SEC.l=lg;WY.dane=r.dane;WY.zapisano=r.zapisano||"";WY.konto=r.konto;WY.listy=r.listy||[];WY.konta=r.konta||[];WY.tab="analiza";WY.lista=null;setStatus($("#wy-st"),"",true);$("#wy-l").value="";
+      $(".wtool").style.display="none";var sb=$("#wy-sec");if(sb){sb.style.display="";sb.querySelector("span").textContent="🔓 "+r.konto.nazwa+(r.konto.login?" ("+r.konto.login+")":"")+" · hasło nie jest zapamiętywane, panel zablokuje się sam po 20 min";sb.querySelector("button").onclick=wyLock}
+      var ft=$(".zsfoot");if(ft&&!r.konto.admin)ft.textContent="Zespół Szkół Poligraficzno-Mechanicznych im. Armii Krajowej w Katowicach · Technikum nr 18 · "+r.konto.nazwa;
+      wyRender();
     }).catch(function(e){setStatus($("#wy-st"),e.message||"Nie udało się wczytać.",false)});
   };
   $("#wy-h").onkeydown=function(e){if(e.key==="Enter")go.click()};
 }
-function wyLock(){secClear();WY.dane=null;WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];if(location.hash==="#wychowawca")wychowawcaView()}
+function wyLock(){secClear();WY.dane=null;WY.konto=null;WY.listy=[];WY.konta=[];WY.lista=null;WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];if(location.hash==="#wychowawca")wychowawcaView()}
 
 /* hasło trzymane tylko w pamięci strony: nie zapisuje się w przeglądarce i znika po wyjściu z widoku */
-var SEC={h:"",t:0};
-function secClear(){SEC.h="";clearTimeout(SEC.t);try{localStorage.removeItem("pz-haslo")}catch(e){}}
+var SEC={h:"",l:"",t:0};
+function secClear(){SEC.h="";SEC.l="";clearTimeout(SEC.t);try{localStorage.removeItem("pz-haslo")}catch(e){}}
 function secSet(h,onLock){SEC.h=h;clearTimeout(SEC.t);SEC.t=setTimeout(function(){SEC.h="";if(onLock)onLock()},20*60*1000)}
 function secBar(id,txt){return '<div class="secbar noprint" id="'+id+'"><span>🔓 '+txt+' · hasło nie jest zapamiętywane, panel zablokuje się sam po 20 min</span><button class="btn ghost sm" type="button">Zablokuj</button></div>'}
 
@@ -1251,9 +1360,8 @@ function wyUpload(){
    '<p class="note">Wybierz naraz wszystkie pliki wyeksportowane z dziennika. Strona rozpozna je sama i pokaże podgląd. Dane trafią tylko do Twojego arkusza Google (nie na stronę).</p>'+
    '<input type="file" id="wy-f" multiple accept=".xlsx,.xls"><div id="wy-prev"></div></details>';
 }
-function wyRender(){
-  WY.charts.forEach(function(c){try{c.destroy()}catch(e){}});WY.charts=[];
-  var out=$("#wy-out");if(!out)return;var D=WY.dane;
+function wyAnaliza(){
+  var out=$("#wy-main");if(!out)return;var D=WY.dane;
   if(!D){out.innerHTML=wySciaga()+wyUpload()+'<div class="empty">Brak danych. Wczytaj zestawienia z dziennika powyżej.</div>';wyBindUpload();return}
   var S=wyStats(D),K=S.kpi,P=WY.rodzice,m=D.meta||{};WY.S=S;
   $("#wy-sub").textContent="Klasa "+(m.klasa||"")+(m.okres?" · "+m.okres:"")+(m.zakres?" · frekwencja: "+m.zakres:"")+(WY.zapisano?" · dane z "+new Date(WY.zapisano).toLocaleDateString("pl-PL"):"");
@@ -1332,7 +1440,7 @@ function wyKarta(u,S,o){
    (o.msg?'<h2>Wiadomość od wychowawcy</h2><div class="msg">'+esc(o.msg).replace(/\n/g,"<br>")+'</div>':'')+
    '<div class="sig"><div><span></span>podpis wychowawcy</div><div><span></span>podpis rodzica / opiekuna prawnego</div></div>'+
    (o.slip?'<div class="slip"><div class="cut">✂ odetnij i oddaj wychowawcy</div><p>Potwierdzam, że zapoznałem/zapoznałam się z informacją o postępach w nauce i frekwencji ucznia <b>'+esc(u.kto)+'</b>, klasa '+esc(m.klasa||"")+'.</p><div class="sig"><div><span></span>data</div><div><span></span>czytelny podpis rodzica / opiekuna prawnego</div></div></div>':'')+
-   '<footer>Dokument zawiera dane osobowe ucznia – przeznaczony wyłącznie dla rodziców / opiekunów prawnych. Wychowawca: Mateusz Stasica · na podstawie zestawień z dziennika elektronicznego.</footer></section>';
+   '<footer>Dokument zawiera dane osobowe ucznia – przeznaczony wyłącznie dla rodziców / opiekunów prawnych. '+(WY.konto&&!WY.konto.admin?esc(WY.konto.nazwa):'Wychowawca: Mateusz Stasica')+' · na podstawie zestawień z dziennika elektronicznego.</footer></section>';
 }
 function wyKartyDrukuj(nrs){
   var S=WY.S;if(!S||!WY.dane)return;
@@ -1401,7 +1509,7 @@ function wyBindUpload(){
         opis.push('<li><b>'+esc(r.n)+'</b> — '+(k.length?k.map(function(x){var v=r.p[x];return x==="oceny"?"rozkład ocen ("+Object.keys(v.uczniowie).length+" uczniów)":x==="frekwencja"?"frekwencja ("+Object.keys(v.uczniowie).length+" uczniów)":x==="zagrozenia"?"przewidywane oceny niedostateczne ("+Object.keys(v).length+" uczniów)":"uwagi i pochwały ("+v.length+")"}).join(", "):'<span style="color:#a3301f">nie rozpoznano zestawienia</span>')+'</li>')});
       pv.innerHTML='<ul class="wyl">'+opis.join("")+'</ul><div class="toolbar" style="margin:8px 0 0"><button class="btn" id="wy-save">Zapisz w arkuszu i pokaż analizę</button><span class="status" id="wy-sst"></span></div>';
       $("#wy-save").onclick=function(){var b=this;b.disabled=true;setStatus($("#wy-sst"),"Zapisywanie…");
-        fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"zapiszKlase",haslo:SEC.h,dane:JSON.stringify(nowe)})}).then(function(r){return r.json()}).then(function(r){
+        fetch(S.config.egzaminUrl,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({akcja:"zapiszKlase",login:SEC.l||"",haslo:SEC.h,dane:JSON.stringify(nowe)})}).then(function(r){return r.json()}).then(function(r){
           if(!r.ok) throw new Error(/egzamin|imienia/i.test(r.blad||"")?"Skrypt Google jest w starej wersji — zaktualizuj go.":(r.blad||"Błąd zapisu"));
           WY.dane=nowe;WY.zapisano=new Date().toISOString();wyRender();
         }).catch(function(e){b.disabled=false;setStatus($("#wy-sst"),e.message,false)})};

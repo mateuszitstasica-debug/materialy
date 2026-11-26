@@ -109,6 +109,7 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .przeg{position:fixed;right:18px;bottom:18px;z-index:50;display:flex;gap:8px;align-items:center;background:#0d1830;color:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3)}.przt{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--accent);min-width:120px;text-align:center}.przt.warn{color:#ff6b5a}
 .wytabs{margin:6px 0 16px}
 .wyt.pt.ped td,.wyt.pt td.ptc{height:auto;padding:4px 6px}.ptc{text-align:center}.ptin{width:100%;min-width:64px;max-width:130px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:14px;text-align:center;background:#fff}.ptin:focus{outline:2px solid var(--c);border-color:transparent}
+.ptsel{min-width:76px;padding:6px 8px;border:1px solid var(--line);border-radius:7px;font:inherit;font-size:14px;background:#fff;cursor:pointer}.ptsel:focus{outline:2px solid var(--c);border-color:transparent}
 .ptx{width:34px;height:30px;border:2px solid #c8d1dc;border-radius:7px;background:#fff;cursor:pointer;font-weight:800;font-size:16px;color:#fff}.ptx:hover{border-color:var(--c)}.ptx.on{background:var(--c);border-color:var(--c)}.ptv{font-weight:700;font-family:var(--mono)}
 .prsend{border:2px solid color-mix(in srgb,var(--c) 30%,white)}.pkwait{background:#fff8e6;border:1px solid #f3d78a;border-radius:10px;padding:12px 14px;font-weight:600;color:#7a5600}
 .pkwyn{display:flex;gap:18px;align-items:center;border-radius:14px;padding:14px 18px;margin-bottom:12px}.pkwyn.ok{background:#eaf7ee}.pkwyn.no{background:#fdecea}.pkwyn h3{margin:0 0 4px}.pkbig b{display:block;font-family:var(--mono);font-size:34px}.pkwyn.ok .pkbig b{color:#0a7a1a}.pkwyn.no .pkbig b{color:#b42318}.pkbig span{color:var(--muted);font-size:13px}.pkr{max-width:560px}.pkbr{padding-left:20px;margin:0}.prkarty{margin:12px 0 16px}.prkarty h3{margin:0 0 8px}.pknew td{background:#fff8f0}
@@ -826,6 +827,7 @@ function prMax(z){return z.rezultaty.reduce(function(s,r){return s+(r.n||(r.kryt
 function prTabela(t,print,ti,o){o=o||{};var A=o.ans||{},ty=t.typy||[];
   return '<div class="prtab"><p class="prtt">'+esc(t.tytul)+'</p><table class="'+(print?'':'wyt pt'+(o.edit?' ped':''))+'"><thead><tr>'+t.kolumny.map(function(c){return '<th>'+esc(c)+'</th>'}).join("")+'</tr></thead><tbody>'+t.wiersze.map(function(r,ri){return '<tr>'+r.map(function(c,ci){var k=ti+"-"+ri,y=ty[ci];
     if(!print&&y==="txt"){var v=A[k+"-"+ci]||"";return '<td class="ptc">'+(o.edit?'<input class="ptin" data-pc="'+k+'-'+ci+'" value="'+esc(v)+'" maxlength="24" autocomplete="off">':'<span class="ptv">'+esc(v)+'</span>')+'</td>'}
+    if(!print&&y==="sel"){var v2=A[k+"-"+ci]||"",op=(t.opcje&&t.opcje[ci])||[];return '<td class="ptc">'+(o.edit?'<select class="ptsel" data-pc="'+k+'-'+ci+'"><option value="">—</option>'+op.map(function(x){return '<option'+(x===v2?' selected':'')+'>'+esc(x)+'</option>'}).join("")+'</select>':'<span class="ptv">'+esc(v2)+'</span>')+'</td>'}
     if(!print&&y==="x"){var on=String(A[k+"-x"])===String(ci);return '<td class="ptc">'+(o.edit?'<button type="button" class="ptx'+(on?' on':'')+'" data-px="'+k+'" data-col="'+ci+'" aria-pressed="'+on+'">'+(on?'✕':'')+'</button>':'<span class="ptv">'+(on?'✕':'')+'</span>')+'</td>'}
     return '<td>'+esc(c)+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table>'+(t.stopka?'<p class="prst">'+esc(t.stopka)+'</p>':'')+'</div>'}
 function prTresc(z,print,o){
@@ -858,7 +860,7 @@ function praktykaView(id){
     $("#pr-clk").onclick=function(){prZegar(z)};
     if(ed){
       var K=PR.ans;
-      $$("[data-pc]").forEach(function(i){i.oninput=function(){if(PR.zamk)return;if(i.value.trim())K[i.dataset.pc]=i.value.slice(0,24);else delete K[i.dataset.pc]}});
+      $$("[data-pc]").forEach(function(i){i.oninput=i.onchange=function(){if(PR.zamk)return;if(i.value.trim())K[i.dataset.pc]=i.value.slice(0,24);else delete K[i.dataset.pc]}});
       $$("[data-px]").forEach(function(b){b.onclick=function(){if(PR.zamk)return;var k2=b.dataset.px+"-x",was=String(K[k2])===b.dataset.col;if(was)delete K[k2];else K[k2]=+b.dataset.col;
         $$('[data-px="'+b.dataset.px+'"]').forEach(function(x){var on=!was&&x===b;x.classList.toggle("on",on);x.textContent=on?"✕":"";x.setAttribute("aria-pressed",on)})}});
     }
@@ -891,7 +893,7 @@ function prOcenaLogin(z,prog){
 }
 function prOhm(v,u){var s=String(v||"")+" "+String(u||"");if(/∞|inf|\bOL\b|O\.L|przerw|niesk/i.test(s))return Infinity;var n=parseFloat(String(v||"").replace(",",".").replace(/\s/g,""));if(isNaN(n))return null;
   var un=String(u||"").trim()||String(v||"").replace(/[0-9.,\s+-]/g,"");if(!/Ω|ohm|om/i.test(un))return null;var m=1;if(/^M/.test(un))m=1e6;else if(/^k/i.test(un))m=1e3;else if(/^m/.test(un))m=1e-3;return n*m}
-function prAuto(rule,A,z){if(!rule)return null;var t=z.tabele[rule.t],ty=t.typy||[],vi=ty.indexOf("txt"),ui=ty.indexOf("txt",vi+1);
+function prAuto(rule,A,z){if(!rule)return null;var t=z.tabele[rule.t],ty=t.typy||[],vi=ty.indexOf("txt"),ui=ty.indexOf("sel")>=0?ty.indexOf("sel"):ty.indexOf("txt",vi+1);
   if(rule.chce){var c=A[rule.t+"-"+rule.w[0]+"-x"],lab=c==null?"brak":t.kolumny[c];return {s:lab===rule.chce?"ok":"zle",d:"uczeń: "+lab}}
   var all="ok",ds=[];rule.w.forEach(function(w){var k=rule.t+"-"+w,v=A[k+"-"+vi]||"",u=ui>=0?A[k+"-"+ui]||"":"",c=A[k+"-x"],lab=c==null?"—":t.kolumny[c],okM=/^poprawny/i.test(lab),R=prOhm(v,u),s;
     if(rule.typ==="jest")s=v&&u?"rec":"zle";else if(rule.typ==="inf")s=(R===Infinity||R>=1e6)&&okM?"ok":"zle";else s=R!=null&&R!==Infinity&&R>=0&&R<=1&&okM?"ok":"zle";

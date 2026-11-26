@@ -195,10 +195,26 @@
             "",
             "",
             "txt",
-            "txt",
+            "sel",
             "x",
             "x"
-          ]
+          ],
+          "opcje": {
+            "3": [
+              "mΩ",
+              "Ω",
+              "kΩ",
+              "MΩ",
+              "mV",
+              "V",
+              "mA",
+              "A",
+              "W",
+              "Hz",
+              "F",
+              "H"
+            ]
+          }
         },
         {
           "tytul": "Tabela 2. Analiza działania układu elektropneumatycznego",

@@ -1163,7 +1163,8 @@ function wyParse(wb){
       bl.forEach(function(b){var g=function(t){return b.map[t]==null?0:(wyNum(r[b.map[t]])||0)};
         var x={ob:g("●"),nb:g("▬"),u:g("u"),s:g("s"),su:g("su"),ns:g("ns"),z:g("z"),pct:b.map.pct==null?null:wyNum(r[b.map.pct])};
         if(x.ob+x.nb+x.u+x.s+x.su+x.ns+x.z===0)return;(ucz[u.nr]=ucz[u.nr]||{kto:u.kto,f:{}}).f[b.kod]=x})});
-    out.frekwencja={przedmioty:bl.filter(function(b){return b.kod!=="*"}).map(function(b){return {kod:b.kod,nazwa:b.nazwa}}),uczniowie:ucz};
+    if(!Object.keys(ucz).length&&R.slice(2).some(function(r){return String(r[0]||"").trim()}))out.frekwencjaBlad="oddzial";
+    else out.frekwencja={przedmioty:bl.filter(function(b){return b.kod!=="*"}).map(function(b){return {kod:b.kod,nazwa:b.nazwa}}),uczniowie:ucz};
   }
   if(wb.Sheets["Oceny Niedostateczne"]){
     var R=wyRows(wb.Sheets["Oceny Niedostateczne"]),z={};
@@ -1338,7 +1339,7 @@ function secBar(id,txt){return '<div class="secbar noprint" id="'+id+'"><span>�
 
 var WY_PLIKI=[
  {k:"oceny",n:"Zestawienie ocen cząstkowych uczniów według przedmiotów",f:"ZestawienieROCUczniowiePrzedmioty.xlsx",a:"ZestROCUcznPrzedmioty",p:"okres klasyfikacyjny (np. Semestr 1), dziennik Twojej klasy, zaznaczone wszystkie przedmioty",w:"średnia klasy, średnie według przedmiotów, rozkład ocen 1–6, średnie uczniów w tabeli"},
- {k:"frekwencja",n:"Zestawienie frekwencji na lekcjach przedmiotów",f:"ZestawienieFrekwencjeNaLekcjachPrzedmiotow.xlsx",a:"Frekwencja oddziałów",p:"rok szkolny, badany okres od 1 września do dziś, dziennik klasy, wszystkie przedmioty",w:"frekwencja klasy i według przedmiotów, struktura obecności, godziny nieusprawiedliwione, spóźnienia, kolumna „Frekwencja < 50%”"},
+ {k:"frekwencja",n:"Zestawienie frekwencji na lekcjach przedmiotów",f:"ZestawienieFrekwencjeNaLekcjachPrzedmiotow.xlsx",a:"Frekwencja oddziałów",p:"rok szkolny, badany okres od 1 września do dziś, dziennik klasy, wszystkie przedmioty, z podziałem na uczniów (w pliku musi być kolumna „Uczeń, nr w dzienniku”, a nie tylko jeden wiersz z całym oddziałem)",w:"frekwencja klasy i według przedmiotów, struktura obecności, godziny nieusprawiedliwione, spóźnienia, kolumna „Frekwencja < 50%”"},
  {k:"zagrozenia",n:"Zestawienie przewidywanych ocen niedostatecznych",f:"ZestawieniePrzewidywaneOcenyNiedostateczne.xlsx",a:"Oceny Niedostateczne",p:"okres klasyfikacyjny, dziennik klasy, wszystkie przedmioty",w:"liczba uczniów z zagrożeniem, zagrożenia według przedmiotów i na ucznia, kolumna „Zagrożenia”"},
  {k:"uwagi",n:"Wykaz pochwał i uwag",f:"Wykaz_uwag_pochwał.xlsx",a:"Wykaz pochwał i uwag",p:"dziennik klasy, ten sam okres co frekwencja",w:"lista uwag i pochwał pod tabelą (plik nieobowiązkowy)"}];
 function wySciaga(){
@@ -1505,7 +1506,8 @@ function wyBindUpload(){
     var files=[].slice.call(f.files);if(!files.length)return;var pv=$("#wy-prev");pv.innerHTML='<p class="note">Wczytywanie plików…</p>';
     wyLibs(true).then(function(){return Promise.all(files.map(function(fl){return fl.arrayBuffer().then(function(b){return {n:fl.name,p:wyParse(XLSX.read(b,{type:"array"}))}})}))}).then(function(res){
       var nowe=WY.dane||{},opis=[];
-      res.forEach(function(r){var k=Object.keys(r.p).filter(function(x){return x!=="meta"});nowe=wyMerge(nowe,r.p);
+      res.forEach(function(r){var fb=r.p.frekwencjaBlad;delete r.p.frekwencjaBlad;var k=Object.keys(r.p).filter(function(x){return x!=="meta"});
+        if(fb){opis.push('<li><b>'+esc(r.n)+'</b> — <span style="color:#a3301f">to zestawienie frekwencji zawiera tylko podsumowanie całego oddziału, bez listy uczniów. Wygeneruj je w dzienniku ponownie z podziałem na uczniów (w pliku musi być kolumna „Uczeń, nr w dzienniku”). Ten plik nie zostanie użyty.</span></li>');return}nowe=wyMerge(nowe,r.p);
         opis.push('<li><b>'+esc(r.n)+'</b> — '+(k.length?k.map(function(x){var v=r.p[x];return x==="oceny"?"rozkład ocen ("+Object.keys(v.uczniowie).length+" uczniów)":x==="frekwencja"?"frekwencja ("+Object.keys(v.uczniowie).length+" uczniów)":x==="zagrozenia"?"przewidywane oceny niedostateczne ("+Object.keys(v).length+" uczniów)":"uwagi i pochwały ("+v.length+")"}).join(", "):'<span style="color:#a3301f">nie rozpoznano zestawienia</span>')+'</li>')});
       pv.innerHTML='<ul class="wyl">'+opis.join("")+'</ul><div class="toolbar" style="margin:8px 0 0"><button class="btn" id="wy-save">Zapisz w arkuszu i pokaż analizę</button><span class="status" id="wy-sst"></span></div>';
       $("#wy-save").onclick=function(){var b=this;b.disabled=true;setStatus($("#wy-sst"),"Zapisywanie…");

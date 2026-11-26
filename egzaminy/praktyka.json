@@ -2,6 +2,323 @@
   "prog": 75,
   "zadania": [
     {
+      "id": "elm03-2026-01-03",
+      "kwal": "ELM.03",
+      "kierunek": "mechatronik",
+      "nazwa": "Egzamin CKE – styczeń 2026 (zadanie 03): układ elektropneumatyczny sterowany sterownikiem PLC",
+      "opis": "Arkusz ELM.03-03-26.01-SG. Montaż układu z siłownikiem 1A1, zaworem 5/2 dwucewkowym, łącznikami krańcowymi S3/S4 i lampkami H1/H2, pomiary kontrolne, wgranie programu PLC i analiza działania. Karta oceny według oficjalnych zasad oceniania CKE.",
+      "czas": 180,
+      "pdf": "praktyka/elm03-2026-01-03/arkusz.pdf",
+      "pdfNazwa": "Arkusz egzaminacyjny (PDF)",
+      "zrodlo": "Arkusz egzaminu zawodowego ELM.03-03-26.01-SG (sesja styczeń 2026). Program sterownika PLC przygotowuje nauczyciel na stanowisku.",
+      "rysunki": [
+        {
+          "img": "praktyka/elm03-2026-01-03/rys1.webp",
+          "podpis": "Rysunek 1. Rozmieszczenie elementów układu na płycie montażowej"
+        },
+        {
+          "img": "praktyka/elm03-2026-01-03/rys2.webp",
+          "podpis": "Rysunek 2. Schemat połączeń elektrycznych sterownika PLC z elementami współpracy"
+        },
+        {
+          "img": "praktyka/elm03-2026-01-03/rys3.webp",
+          "podpis": "Rysunek 3. Schemat połączeń pneumatycznych układu"
+        }
+      ],
+      "wstep": "Na stanowisku egzaminacyjnym znajduje się płyta montażowa z zamontowanymi wybranymi elementami układu elektropneumatycznego. Pozostałe elementy, materiały oraz narzędzia zostały przygotowane na stanowisku montażowym. Na podstawie dokumentacji technicznej zamontuj brakujące elementy, wykonaj połączenia, pomiary kontrolne, uruchom układ ze sterownikiem PLC i przeanalizuj jego działanie.",
+      "stanowisko": [
+        "1A1 – siłownik dwustronnego działania,",
+        "1V1 – zawór rozdzielający 5/2, dwucewkowy 24 V DC (cewki Y1, Y2),",
+        "1V2, 1V3 – zawory dławiąco-zwrotne, ZPP – zespół przygotowania sprężonego powietrza,",
+        "S1 – przycisk sterowniczy monostabilny NO, S2 – przycisk sterowniczy monostabilny NC,",
+        "S3, S4 – łączniki krańcowe z rolką NC,",
+        "H1 – lampka sygnalizacyjna czerwona 24 V DC, H2 – lampka sygnalizacyjna zielona 24 V DC,",
+        "sterownik PLC, zasilacz 230 V AC / 24 V DC, złączki X1, X2, komputer z programem sterownika."
+      ],
+      "dzialanie": [
+        "stan początkowy: tłoczysko 1A1 wsunięte, cewki Y1, Y2 wyłączone, lampki H1 i H2 zgaszone, łącznik S3 przesterowany, S4 nieprzesterowany,",
+        "chwilowe naciśnięcie S1 przy niewciśniętym S2 zaświeca lampkę H1; po 4 s H1 gaśnie i rozpoczyna się wysuwanie tłoczyska 1A1, które trwa 3 s,",
+        "tłoczysko pozostaje wysunięte przez 5 s, po czym wsuwa się w czasie 2 s,",
+        "po wsunięciu tłoczyska zapala się lampka H2 i świeci przez 6 s – zgaszenie H2 kończy cykl,",
+        "naciśnięcie S2 w dowolnej chwili gasi H1 i H2 i powoduje powrót tłoczyska do pozycji wsuniętej,",
+        "ponowne uruchomienie – naciśnięcie S1 przy niewciśniętym S2 w stanie początkowym."
+      ],
+      "polecenia": [
+        "Przed zamontowaniem sprawdź działanie elementów stykowych.",
+        "Zamontuj na płycie brakujące elementy układu zgodnie z rysunkiem 1.",
+        "Wykonaj połączenia elektryczne zgodnie ze schematem z rysunku 2.",
+        "Wykonaj połączenia pneumatyczne zgodnie ze schematem z rysunku 3.",
+        "Sprawdź poprawność montażu; w razie niezgodności z rysunkami 2 i 3 wprowadź poprawki.",
+        "Wypełnij protokół z wykonania pomiarów kontrolnych – tabela 1.",
+        "Włącz zasilanie elektryczne układu sterowania.",
+        "Prześlij do sterownika PLC program z folderu opisanego numerem zadania i uruchom sterownik.",
+        "Włącz zasilanie sprężonym powietrzem.",
+        "Przetestuj działanie układu i wypełnij tabelę 2.",
+        "Połączenia z grupą złączek +24 V wykonaj kablem brązowym lub czerwonym, z grupą 0 V – niebieskim, pozostałe – czarnym.",
+        "Przed każdym włączeniem mediów zgłoś gotowość przez podniesienie ręki. Chroń oczy podczas uruchamiania. Po zakończeniu pozostaw media włączone."
+      ],
+      "tabele": [
+        {
+          "tytul": "Tabela 1. Protokół z wykonania pomiarów kontrolnych",
+          "kolumny": [
+            "Lp.",
+            "Adres pomiaru rezystancji",
+            "Wartość",
+            "Jednostka",
+            "Poprawny",
+            "Niepoprawny"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "X1:+24V / S1:3",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "X1:+24V / S2:1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "X1:+24V / S3:1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "X1:+24V / S4:1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "S1:4 / X2:WE1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "S2:2 / X2:WE2",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "S3:2 / X2:WE2",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "S3:2 / X2:WE3",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "9.",
+              "S3:2 / X2:WE4",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "10.",
+              "S4:2 / X2:WE4",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "11.",
+              "S4:2 / X2:WE3",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "12.",
+              "X2:WY1 / X1:0V",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "13.",
+              "X2:WY2 / X1:0V",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "14.",
+              "X2:WY3 / H1:X1",
+              "",
+              "",
+              "",
+              ""
+            ],
+            [
+              "15.",
+              "X2:WY4 / H2:X1",
+              "",
+              "",
+              "",
+              ""
+            ]
+          ],
+          "stopka": "Pomiary przy odłączonych przewodach od zacisków zasilacza +24V i 0V, wyłączonym ciśnieniu i tłoczysku 1A1 ustawionym w połowie długości roboczej."
+        },
+        {
+          "tytul": "Tabela 2. Analiza działania układu elektropneumatycznego",
+          "kolumny": [
+            "Lp.",
+            "Czynności operatorskie i oczekiwane efekty",
+            "TAK",
+            "NIE"
+          ],
+          "wiersze": [
+            [
+              "1.",
+              "Naciśnięcie S1 przy wsuniętym tłoczysku 1A1 i niewciśniętym S2 powoduje zapalenie lampki H1.",
+              "",
+              ""
+            ],
+            [
+              "2.",
+              "Wysuwanie tłoczyska siłownika 1A1 trwa 3 s ± 0,5 s.",
+              "",
+              ""
+            ],
+            [
+              "3.",
+              "Lampka H1 świeci przez 4 sekundy.",
+              "",
+              ""
+            ],
+            [
+              "4.",
+              "Czas pozostawania tłoczyska w pozycji całkowitego wysunięcia wynosi 5 sekund.",
+              "",
+              ""
+            ],
+            [
+              "5.",
+              "Wsuwanie tłoczyska siłownika 1A1 trwa 2 s ± 0,5 s.",
+              "",
+              ""
+            ],
+            [
+              "6.",
+              "Po całkowitym wsunięciu tłoczyska lampka H2 miga przez 6 sekund.",
+              "",
+              ""
+            ],
+            [
+              "7.",
+              "Naciśnięcie S1 przy niewciśniętym S2, wsuniętym tłoczysku i zgaszonych H1, H2 rozpoczyna kolejny cykl.",
+              "",
+              ""
+            ],
+            [
+              "8.",
+              "Naciśnięcie S2, gdy tłoczysko jest całkowicie wysunięte, powoduje natychmiastowe rozpoczęcie wsuwania.",
+              "",
+              ""
+            ]
+          ]
+        }
+      ],
+      "rezultaty": [
+        {
+          "id": "R1",
+          "nazwa": "Zmontowany układ elektropneumatyczny",
+          "kryteria": [
+            "Wszystkie elementy układu rozmieszczone na płycie zgodnie z rysunkiem 1.",
+            "Szyny montażowe stabilnie zamocowane na płycie.",
+            "Kolory kabli zasilających: tylko czerwone lub brązowe do złączek X2:+24V, tylko niebieskie do złączek X2:0V.",
+            "Połączenia między zaciskami elementów a wejściami i wyjściami sterownika wykonane przewodem czarnym.",
+            "S3 wykrywa pozycję wsunięcia tłoczyska 1A1; S4 wykrywa całkowite wysunięcie tłoczyska.",
+            "Długości kabli prawidłowo dobrane – nie są naciągnięte, spod kołnierza tulejek nie widać rdzenia przewodu.",
+            "Wszystkie kable mają założone i zaciśnięte końcówki tulejkowe.",
+            "Wszystkie kable ułożone w korytkach grzebieniowych.",
+            "Korytka grzebieniowe mają założone pokrywy maskujące."
+          ]
+        },
+        {
+          "id": "R2",
+          "nazwa": "Protokół z wykonania pomiarów kontrolnych – tabela 1",
+          "uwaga": "Za stan faktyczny uznaje się pomiar wykonany przez egzaminatora.",
+          "kryteria": [
+            "Poz. 1–4: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
+            "Poz. 5–6: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
+            "Poz. 7: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
+            "Poz. 8: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
+            "Poz. 9: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
+            "Poz. 10: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”.",
+            "Poz. 11: wartość świadcząca o przerwie lub ∞ Ω i zaznaczone „poprawny”.",
+            "Poz. 12: rezystancja cewki Y1 z jednostką zgodna ze stanem faktycznym.",
+            "Poz. 13: rezystancja cewki Y2 z jednostką zgodna ze stanem faktycznym.",
+            "Poz. 14–15: rezystancja 0,0–1,0 Ω i zaznaczone „poprawny”."
+          ]
+        },
+        {
+          "id": "R3",
+          "nazwa": "Przesłany i uruchomiony program sterownika oraz analiza działania – tabela 2",
+          "uwaga": "Kryteria 3–10 uznaje się tylko, gdy ocena zdającego jest zgodna ze stanem faktycznym (oceną egzaminatora).",
+          "kryteria": [
+            "Program do sterownika PLC uruchomiony i widoczny na ekranie monitora.",
+            "Program przesłany do pamięci sterownika i sterownik w trybie RUN.",
+            "Tabela 2, wiersz 1 – TAK.",
+            "Tabela 2, wiersz 2 – TAK.",
+            "Tabela 2, wiersz 3 – TAK.",
+            "Tabela 2, wiersz 4 – TAK.",
+            "Tabela 2, wiersz 5 – TAK.",
+            "Tabela 2, wiersz 6 – NIE.",
+            "Tabela 2, wiersz 7 – TAK.",
+            "Tabela 2, wiersz 8 – TAK."
+          ]
+        },
+        {
+          "id": "P",
+          "nazwa": "Przebieg prac związanych z montażem i uruchomieniem układu",
+          "przebieg": true,
+          "kryteria": [
+            "Używał narzędzi zgodnie z przeznaczeniem.",
+            "Przed zamontowaniem na szynie przycisków S1 i S2 sprawdzał miernikiem ich działanie.",
+            "Przed zamontowaniem łączników krańcowych S3 i S4 sprawdzał miernikiem ich działanie.",
+            "Poprawnie zaciskał końcówki tulejkowe na przewodach.",
+            "Zgłaszał przez podniesienie ręki gotowość do włączenia mediów zasilających.",
+            "Po zakończeniu posprzątał stanowisko z resztek przewodów, kabli i końcówek, ułożył narzędzia i przyrządy.",
+            "Podczas uruchamiania układu stosował okulary ochronne."
+          ]
+        }
+      ]
+    },
+    {
       "id": "elm03-p01",
       "kwal": "ELM.03",
       "kierunek": "mechatronik",

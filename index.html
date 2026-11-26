@@ -101,7 +101,7 @@ h2{font-size:22px;margin:0 0 14px;letter-spacing:-.2px}
 .prtxt h2{margin:0 0 8px}.prtxt h3{margin:18px 0 6px;font-size:16px;color:var(--c)}.prtxt ul,.prtxt ol{padding-left:22px;line-height:1.65;margin:4px 0}.prtxt p{line-height:1.6}
 .prtab{margin-top:16px}.prtt{font-weight:700;margin:0 0 6px}.prst{color:var(--muted);font-size:13.5px;margin:6px 0 0}.wyt.pt td{height:30px}
 .prnote{background:color-mix(in srgb,var(--c) 7%,white);border-left:4px solid var(--c);border-radius:8px;padding:10px 14px;margin:12px 0;font-size:14px}
-.prfig{margin:14px 0;text-align:center}.prfig img{max-width:100%;border:1px solid var(--line);border-radius:8px}.prfig figcaption{font-size:13px;color:var(--muted)}
+.prfig{margin:14px 0;text-align:center}.prfig img{max-width:100%;max-height:640px;border:1px solid var(--line);border-radius:8px;cursor:zoom-in}.prfig figcaption{font-size:13px;color:var(--muted)}
 .prgr summary{cursor:pointer}.prform{margin-top:12px}.prr{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}.prrh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}.prrh>b{background:var(--c);color:#fff;border-radius:7px;padding:1px 8px;font-family:var(--mono)}.prpk{font-family:var(--mono);font-weight:700}
 .prk{display:flex;gap:10px;align-items:flex-start;padding:6px 4px;border-top:1px solid var(--line2);cursor:pointer;font-size:14.5px}.prk input{margin-top:3px;width:18px;height:18px;flex:none}.prk:has(input:checked){color:#145c2a}
 .prsum{display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;background:#fff;padding:12px 0;border-top:1px solid var(--line)}.prtot b{font-family:var(--mono);font-size:24px;margin-right:8px}.prtot b.ok{color:#0a7a1a}.prtot b.no{color:#b42318}.prtot span{color:var(--muted)}
@@ -816,7 +816,7 @@ function prTresc(z,print){
   var R=z.rezultaty.filter(function(r){return !r.przebieg}),P=z.rezultaty.filter(function(r){return r.przebieg});
   return '<h2>Treść zadania</h2><p>'+esc(z.wstep)+'</p>'+
    (z.dzialanie&&z.dzialanie.length?'<h3>Opis działania układu</h3><ul>'+z.dzialanie.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
-   (z.rysunki&&z.rysunki.length?z.rysunki.map(function(r,i){return '<figure class="prfig"><img src="'+esc(print?new URL(egzUrl(r.img),location.href).href:egzUrl(r.img))+'" alt="'+esc(r.podpis||"")+'"><figcaption>'+esc(r.podpis||("Rysunek "+(i+1)))+'</figcaption></figure>'}).join(""):(print?'':'<div class="prnote">'+esc(z.notaRysunki||"Schematy (rysunek 1 – pneumatyczny, rysunek 2 – elektryczny) wydaje nauczyciel na stanowisku.")+'</div>'))+
+   (z.rysunki&&z.rysunki.length?z.rysunki.map(function(r,i){return '<figure class="prfig">'+(print?'':'<a href="'+esc(egzUrl(r.img))+'" target="_blank" rel="noopener" title="Kliknij, aby powiększyć">')+'<img src="'+esc(print?new URL(egzUrl(r.img),location.href).href:egzUrl(r.img))+'" alt="'+esc(r.podpis||"")+'" loading="lazy">'+(print?'':'</a>')+'<figcaption>'+esc(r.podpis||("Rysunek "+(i+1)))+'</figcaption></figure>'}).join(""):(print?'':'<div class="prnote">'+esc(z.notaRysunki||"Schematy (rysunek 1 – pneumatyczny, rysunek 2 – elektryczny) wydaje nauczyciel na stanowisku.")+'</div>'))+
    (z.stanowisko&&z.stanowisko.length?'<h3>Wyposażenie stanowiska</h3><ul>'+z.stanowisko.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul>':'')+
    '<h3>Polecenia</h3><ol>'+z.polecenia.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ol>'+
    (z.tabele||[]).map(function(t){return prTabela(t,print)}).join("")+
@@ -858,7 +858,7 @@ function prOcenaForm(z,prog){
   var box=$("#pr-go");if(!box)return;
   box.innerHTML=secBar("pr-sec","Karta oceny otwarta")+
    '<div class="form prform"><div class="row2"><div class="field"><label>Uczeń (imię i nazwisko)</label><input type="text" id="pr-u" maxlength="80"></div><div class="field"><label>Klasa</label><input type="text" id="pr-k" maxlength="12"></div></div>'+
-   z.rezultaty.map(function(r,ri){return '<div class="prr" data-r="'+ri+'"><div class="prrh"><b>'+esc(r.id)+'</b><span class="grow">'+esc(r.nazwa)+'</span><span class="prpk" id="pr-pk'+ri+'">0 / '+r.kryteria.length+'</span><button type="button" class="btn ghost sm" data-all="'+ri+'">wszystkie spełnione</button></div>'+
+   z.rezultaty.map(function(r,ri){return '<div class="prr" data-r="'+ri+'"><div class="prrh"><b>'+esc(r.id)+'</b><span class="grow">'+esc(r.nazwa)+'</span><span class="prpk" id="pr-pk'+ri+'">0 / '+r.kryteria.length+'</span><button type="button" class="btn ghost sm" data-all="'+ri+'">wszystkie spełnione</button></div>'+(r.uwaga?'<p class="note" style="margin:0 0 4px">'+esc(r.uwaga)+'</p>':'')+
      r.kryteria.map(function(c,ci){return '<label class="prk"><input type="checkbox" data-c="'+ri+'-'+ci+'"><span>'+esc(c)+'</span></label>'}).join("")+'</div>'}).join("")+
    '<div class="field"><label>Uwagi (nieobowiązkowe)</label><textarea id="pr-uw" maxlength="1000" rows="2"></textarea></div>'+
    '<div class="prsum"><div id="pr-tot" class="prtot"></div><button class="btn" id="pr-save">Zapisz ocenę</button><span class="status" id="pr-st"></span></div></div>'+

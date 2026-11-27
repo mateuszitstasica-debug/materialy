@@ -20,5 +20,16 @@
   "czas": 60,
   "opis": "Egzamin próbny w formule egzaminu zawodowego: 40 pytań losowanych z bazy, 60 minut, próg zaliczenia 50%.",
   "pytan": 560
+ },
+ {
+  "id": "elm06",
+  "nazwa": "ELM.06 — Eksploatacja i programowanie urządzeń i systemów mechatronicznych",
+  "przedmiot": "",
+  "kierunek": "mechatronik",
+  "klasa": null,
+  "liczba": 40,
+  "czas": 60,
+  "opis": "Egzamin próbny w formule egzaminu zawodowego: 40 pytań losowanych z bazy, 60 minut, próg zaliczenia 50%.",
+  "pytan": 307
  }
 ]

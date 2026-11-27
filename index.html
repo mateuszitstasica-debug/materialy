@@ -1048,19 +1048,18 @@ function egzView(id){
   });
 }
 function egzStart(e){
-  var k=kier(e.kierunek),ready=!!S.config.egzaminUrl,last=LS.get("pz-uczen",{});
+  var k=kier(e.kierunek),ready=!!S.config.egzaminUrl;try{localStorage.removeItem("pz-uczen")}catch(er){}
   app().innerHTML=crumb([["Egzaminy","egzaminy"],[e.nazwa]])+
    '<div class="estart" style="'+cvar(k)+'"><div class="panel"><span class="pill">'+esc(k?k.nazwa:"")+(e.klasa?' · klasa '+esc(e.klasa):'')+'</span><h1>'+esc(e.nazwa)+'</h1><p class="note">'+esc(e.opis||"")+'</p>'+
    '<div class="erules"><div><b>'+esc(e.liczba)+'</b>pytań</div><div><b>'+esc(e.czas)+'</b>minut</div><div><b>1</b>poprawna odpowiedź</div><div><b>50%</b>próg zaliczenia</div></div>'+
    '<ul class="elist-rules"><li>Pytania są losowane z bazy — każdy uczeń dostaje inny zestaw.</li><li>Możesz wracać do pytań i zmieniać odpowiedzi do momentu wysłania.</li><li>Po upływie czasu test wyśle się automatycznie.</li><li>Nie odświeżaj karty i nie zamykaj przeglądarki w trakcie testu.</li></ul>'+
-   (ready?'<div class="form eform"><div class="row2"><div class="field"><label>Imię</label><input type="text" id="e-im" autocomplete="given-name" maxlength="40" value="'+esc(last.imie||"")+'"></div><div class="field"><label>Nazwisko</label><input type="text" id="e-na" autocomplete="family-name" maxlength="60" value="'+esc(last.nazwisko||"")+'"></div></div><div class="field"><label>Klasa (np. 3TM)</label><input type="text" id="e-kl" maxlength="12" value="'+esc(last.klasa||"")+'"></div>'+
+   (ready?'<div class="form eform"><div class="row2"><div class="field"><label>Imię</label><input type="text" id="e-im" autocomplete="off" maxlength="40" value=""></div><div class="field"><label>Nazwisko</label><input type="text" id="e-na" autocomplete="off" maxlength="60" value=""></div></div><div class="field"><label>Klasa (np. 3TM)</label><input type="text" id="e-kl" autocomplete="off" maxlength="12" value=""></div>'+
    '<div class="toolbar" style="margin:0"><button class="btn" id="e-go">Rozpocznij test →</button><span class="status" id="e-st"></span></div></div>':'<div class="banner" style="display:block">Moduł egzaminów nie jest jeszcze połączony z arkuszem wyników. Test będzie dostępny wkrótce.</div>')+
    '</div></div>';
   var go=$("#e-go"); if(!go) return;
   go.onclick=function(){
     var im=$("#e-im").value.trim(),na=$("#e-na").value.trim(),kl=$("#e-kl").value.trim();
     if(im.length<2||na.length<2) return setStatus($("#e-st"),"Wpisz imię i nazwisko.",false);
-    LS.set("pz-uczen",{imie:im,nazwisko:na,klasa:kl});
     go.disabled=true;setStatus($("#e-st"),"Losuję pytania…");
     egzBank(e.id).then(function(b){
       var gs={},pool=shuffle(b.pytania).filter(function(q){var g=q.g||q.id;if(gs[g])return false;gs[g]=1;return true});var qs=pool.slice(0,Math.min(b.liczba||40,pool.length)).map(function(q){
